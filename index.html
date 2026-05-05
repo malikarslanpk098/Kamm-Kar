@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kamm Kar - Professional Services</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Kamm Kar - Pakistan's Local Services Experts</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <style>
         .loader { border-top-color: #059669; animation: spinner 1.5s linear infinite; }
         @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .page-section { min-height: 85vh; }
+        .page-section { min-height: 80vh; }
         .blue-tick { color: #1d9bf0; margin-left: 4px; font-size: 0.9em; }
-        .pinned-badge { background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 99px; font-size: 10px; font-weight: 800; border: 1px solid #f59e0b; }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        .pinned-badge { background: #fef3c7; color: #92400e; padding: 2px 12px; border-radius: 99px; font-size: 10px; font-weight: 800; border: 1px solid #f59e0b; }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 20px; }
+        .city-tag { transition: all 0.2s ease; }
+        .city-tag:hover { transform: translateY(-2px); background-color: #ecfdf5; border-color: #10b981; }
+        #manual-city-input:focus, #city-filter:focus, #gig-city-manual:focus { ring: 2px solid #10b981; }
     </style>
 </head>
 <body class="bg-slate-50 font-sans text-slate-900">
 
-    <!-- Loading Overlay -->
+    <!-- LOADING OVERLAY -->
     <div id="loading-overlay" class="fixed inset-0 bg-white z-[100] flex items-center justify-center">
         <div class="loader w-12 h-12 border-4 border-slate-200 rounded-full"></div>
     </div>
 
-    <!-- Navigation -->
+    <!-- NAVIGATION -->
     <nav class="sticky top-0 z-50 bg-emerald-700 text-white shadow-xl p-4">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-black tracking-tighter cursor-pointer flex items-center" onclick="showPage('home')">
                 <i class="fas fa-tools mr-2 text-emerald-300"></i>KAMM KAR
             </h1>
-            
             <div class="hidden md:flex space-x-6 items-center font-bold">
                 <button onclick="showPage('home')" class="hover:text-emerald-200">Home</button>
                 <button onclick="showPage('hire')" class="hover:text-emerald-200">Find Workers</button>
@@ -38,12 +40,10 @@
                 </button>
                 <div id="auth-buttons-desktop" class="flex items-center space-x-4"></div>
             </div>
-
             <button class="md:hidden text-2xl" onclick="toggleMobileMenu()">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
-        
         <div id="mobile-menu" class="hidden md:hidden bg-emerald-800 p-4 mt-2 space-y-4 rounded-2xl shadow-inner">
             <button onclick="showPage('home'); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-emerald-600">Home</button>
             <button onclick="showPage('hire'); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-emerald-600">Hire Worker</button>
@@ -54,7 +54,7 @@
 
     <main id="main-content" class="container mx-auto p-4 md:p-6">
 
-        <!-- AUTH SECTION -->
+        <!-- AUTH PAGE -->
         <section id="page-auth" class="page-section hidden">
             <div class="max-w-md mx-auto bg-white p-10 rounded-[2.5rem] shadow-2xl mt-10 border border-slate-100">
                 <div class="flex justify-center mb-8 bg-slate-100 p-1.5 rounded-2xl">
@@ -63,18 +63,18 @@
                 </div>
                 <form onsubmit="handleAuth(event)" class="space-y-5">
                     <div id="signup-fields" class="hidden">
-                        <label class="block text-xs font-black text-slate-400 uppercase tracking-widest ml-1 mb-1">Pura Naam</label>
+                        <label class="block text-xs font-black text-slate-400 uppercase ml-1 mb-1">Apna Naam</label>
                         <input type="text" id="auth-name" class="w-full border-2 border-slate-50 rounded-2xl p-4 focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
                     </div>
                     <div>
-                        <label class="block text-xs font-black text-slate-400 uppercase tracking-widest ml-1 mb-1">Email</label>
+                        <label class="block text-xs font-black text-slate-400 uppercase ml-1 mb-1">Email</label>
                         <input type="email" id="auth-email" required class="w-full border-2 border-slate-50 rounded-2xl p-4 focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
                     </div>
                     <div>
-                        <label class="block text-xs font-black text-slate-400 uppercase tracking-widest ml-1 mb-1">Password</label>
+                        <label class="block text-xs font-black text-slate-400 uppercase ml-1 mb-1">Password</label>
                         <input type="password" id="auth-password" required class="w-full border-2 border-slate-50 rounded-2xl p-4 focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
                     </div>
-                    <button type="submit" id="auth-submit-btn" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-emerald-700 shadow-xl shadow-emerald-100 transition-all active:scale-95">Login Abhi Karein</button>
+                    <button type="submit" id="auth-submit-btn" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-emerald-700 shadow-xl transition-all active:scale-95">Login / Register</button>
                 </form>
             </div>
         </section>
@@ -83,415 +83,171 @@
         <section id="page-home" class="page-section">
             <div class="text-center py-20 bg-white rounded-[3rem] shadow-sm mb-12 px-6 border border-slate-100 relative overflow-hidden">
                 <div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none" style="background-image: radial-gradient(#10b981 1px, transparent 1px); background-size: 20px 20px;"></div>
-                <h2 class="text-5xl md:text-7xl font-black text-slate-800 mb-6 tracking-tight">Ab Har Kaam<br><span class="text-emerald-600">Asaan Hoga!</span></h2>
-                <p class="text-slate-400 text-lg md:text-2xl max-w-2xl mx-auto mb-12 font-medium">Pakistan ki sabse trusted service marketplace. Verified experts ab aapki reach mein.</p>
+                <h2 class="text-5xl md:text-7xl font-black text-slate-800 mb-6 tracking-tight">Har Shehar,<br><span class="text-emerald-600">Har Kaam Asaan!</span></h2>
+                <p class="text-slate-400 text-lg md:text-2xl max-w-2xl mx-auto mb-12 font-medium">170+ cities | Verified Experts | Local service at your doorstep</p>
                 <div class="max-w-3xl mx-auto flex flex-col md:flex-row gap-4 p-2 bg-slate-50 rounded-[2rem] shadow-inner border border-slate-100">
-                    <input type="text" id="home-search" placeholder="City ya Skill likhein (e.g. Lahore Welder)" class="flex-grow bg-transparent px-8 py-5 outline-none font-bold text-xl">
-                    <button onclick="globalSearch()" class="bg-emerald-600 text-white px-12 py-5 rounded-2xl font-black text-xl shadow-2xl hover:bg-emerald-700 transition-all hover:scale-[1.02]">Search</button>
+                    <input type="text" id="home-search" placeholder="City, Skill ya Expert naam (e.g: Karachi Plumber)" class="flex-grow bg-transparent px-8 py-5 outline-none font-bold text-xl">
+                    <button onclick="globalSearch()" class="bg-emerald-600 text-white px-12 py-5 rounded-2xl font-black text-xl shadow-2xl hover:bg-emerald-700 transition-all">Search Now</button>
                 </div>
             </div>
-            
             <h3 class="text-2xl font-black mb-8 text-slate-800 px-2 flex items-center">
-                <span class="w-8 h-1 bg-emerald-500 mr-3 rounded-full"></span>
-                Popular Services
+                <span class="w-8 h-1 bg-emerald-500 mr-3 rounded-full"></span> Popular Services
             </h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                <div class="bg-white p-8 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all cursor-pointer border border-slate-50" onclick="filterByCategory('Electrician')">
-                    <div class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-emerald-600 text-2xl"><i class="fas fa-bolt"></i></div>
-                    <h4 class="font-black text-sm uppercase text-slate-600">Electrician</h4>
-                </div>
-                <div class="bg-white p-8 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all cursor-pointer border border-slate-50" onclick="filterByCategory('Plumber')">
-                    <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-blue-600 text-2xl"><i class="fas fa-faucet"></i></div>
-                    <h4 class="font-black text-sm uppercase text-slate-600">Plumber</h4>
-                </div>
-                <div class="bg-white p-8 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all cursor-pointer border border-slate-50" onclick="filterByCategory('Welder')">
-                    <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-orange-600 text-2xl"><i class="fas fa-fire"></i></div>
-                    <h4 class="font-black text-sm uppercase text-slate-600">Welder</h4>
-                </div>
-                <div class="bg-white p-8 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all cursor-pointer border border-slate-50" onclick="filterByCategory('Cleaner')">
-                    <div class="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-purple-600 text-2xl"><i class="fas fa-broom"></i></div>
-                    <h4 class="font-black text-sm uppercase text-slate-600">Cleaner</h4>
-                </div>
-                <div class="bg-white p-8 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all cursor-pointer border border-slate-50" onclick="filterByCategory('Gardner')">
-                    <div class="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-green-600 text-2xl"><i class="fas fa-leaf"></i></div>
-                    <h4 class="font-black text-sm uppercase text-slate-600">Gardner</h4>
-                </div>
-                <div class="bg-white p-8 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all cursor-pointer border border-slate-50" onclick="filterByCategory('Painter')">
-                    <div class="w-14 h-14 bg-pink-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-pink-600 text-2xl"><i class="fas fa-paint-roller"></i></div>
-                    <h4 class="font-black text-sm uppercase text-slate-600">Painter</h4>
-                </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+                <div class="bg-white p-6 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border" onclick="filterByCategory('Electrician')"><div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-emerald-600 text-xl"><i class="fas fa-bolt"></i></div><h4 class="font-black text-xs uppercase">Electrician</h4></div>
+                <div class="bg-white p-6 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border" onclick="filterByCategory('Plumber')"><div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-blue-600 text-xl"><i class="fas fa-faucet"></i></div><h4 class="font-black text-xs uppercase">Plumber</h4></div>
+                <div class="bg-white p-6 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border" onclick="filterByCategory('Welder')"><div class="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-orange-600 text-xl"><i class="fas fa-fire"></i></div><h4 class="font-black text-xs uppercase">Welder</h4></div>
+                <div class="bg-white p-6 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border" onclick="filterByCategory('Cleaner')"><div class="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-purple-600 text-xl"><i class="fas fa-broom"></i></div><h4 class="font-black text-xs uppercase">Cleaner</h4></div>
+                <div class="bg-white p-6 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border" onclick="filterByCategory('Gardner')"><div class="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-green-600 text-xl"><i class="fas fa-leaf"></i></div><h4 class="font-black text-xs uppercase">Gardener</h4></div>
+                <div class="bg-white p-6 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border" onclick="filterByCategory('Painter')"><div class="w-12 h-12 bg-pink-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-pink-600 text-xl"><i class="fas fa-paint-roller"></i></div><h4 class="font-black text-xs uppercase">Painter</h4></div>
+                <div class="bg-white p-6 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border" onclick="filterByCategory('Carpenter')"><div class="w-12 h-12 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-amber-600 text-xl"><i class="fas fa-hammer"></i></div><h4 class="font-black text-xs uppercase">Carpenter</h4></div>
             </div>
         </section>
 
-        <!-- HIRE SECTION -->
+        <!-- HIRE / WORKERS SECTION -->
         <section id="page-hire" class="page-section hidden">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
-                <div>
-                    <h2 class="text-4xl font-black text-slate-800">Available Experts</h2>
-                    <p class="text-slate-400 font-bold">Total <span id="worker-count" class="text-emerald-600">0</span> Experts Available</p>
-                </div>
+                <div><h2 class="text-4xl font-black text-slate-800">Available Experts</h2><p class="text-slate-400 font-bold">Total <span id="worker-count" class="text-emerald-600">0</span> Experts Pakistan-wide</p></div>
                 <div class="flex flex-wrap gap-3">
-                    <div class="bg-white px-5 py-3 rounded-2xl shadow-sm border border-slate-100 flex items-center">
-                        <i class="fas fa-city text-emerald-500 mr-3"></i>
-                        <select id="city-filter" onchange="applyFilters()" class="outline-none font-black text-slate-700 bg-transparent text-sm">
-                            <option value="All">All Cities</option>
-                            <option>Lahore</option><option>Karachi</option><option>Islamabad</option>
-                            <option>Faisalabad</option><option>Sahiwal</option><option>Multan</option>
+                    <div class="bg-white px-5 py-3 rounded-2xl shadow-sm border flex items-center gap-2">
+                        <i class="fas fa-city text-emerald-500"></i>
+                        <select id="city-filter" onchange="applyFilters()" class="outline-none font-black text-slate-700 bg-transparent text-sm min-w-[140px]">
+                            <option value="All">All Cities (170+)</option>
                         </select>
                     </div>
-                    <div class="bg-white px-5 py-3 rounded-2xl shadow-sm border border-slate-100 flex items-center">
-                        <i class="fas fa-cog text-emerald-500 mr-3"></i>
+                    <div class="bg-white px-5 py-3 rounded-2xl shadow-sm border flex items-center gap-2">
+                        <i class="fas fa-cog text-emerald-500"></i>
                         <select id="skill-filter" onchange="applyFilters()" class="outline-none font-black text-slate-700 bg-transparent text-sm">
                             <option value="All">All Skills</option>
-                            <option>Electrician</option><option>Plumber</option><option>Welder</option>
-                            <option>Cleaner</option><option>Gardner</option><option>Painter</option>
-                            <option>Carpenter</option><option>Other</option>
+                            <option>Electrician</option><option>Plumber</option><option>Welder</option><option>Cleaner</option><option>Gardner</option><option>Painter</option><option>Carpenter</option><option>Other</option>
                         </select>
                     </div>
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="worker-list">
-                <!-- Workers Cards Rendered Here -->
-            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="worker-list"></div>
         </section>
 
-        <!-- POST GIG SECTION -->
+        <!-- POST GIG (with manual city + auto-suggest) -->
         <section id="page-post-gig" class="page-section hidden">
             <div class="max-w-2xl mx-auto bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-50">
-                <h2 class="text-4xl font-black text-center mb-10 text-slate-800">Apni Gig Banayein</h2>
-                <div class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest ml-1 mb-2">Pura Naam</label>
-                            <input type="text" id="gig-name" placeholder="Apna naam likhein" class="w-full p-4 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 font-bold">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest ml-1 mb-2">Aap Ka Hunar (Skill)</label>
-                            <select id="gig-skill" class="w-full p-4 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 font-bold">
-                                <option>Electrician</option><option>Plumber</option><option>Welder</option>
-                                <option>Cleaner</option><option>Gardner</option><option>Painter</option>
-                                <option>Carpenter</option><option>Other</option>
-                            </select>
+                <h2 class="text-4xl font-black text-center mb-8 text-slate-800">Apni Gig Banayein</h2>
+                <div class="space-y-5">
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div><label class="block text-xs font-black text-slate-400 uppercase">Pura Naam</label><input type="text" id="gig-name" placeholder="Ahmad Raza" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 font-bold"></div>
+                        <div><label class="block text-xs font-black text-slate-400 uppercase">Hunar (Skill)</label><select id="gig-skill" class="w-full p-4 bg-slate-50 rounded-2xl"><option>Electrician</option><option>Plumber</option><option>Welder</option><option>Cleaner</option><option>Gardner</option><option>Painter</option><option>Carpenter</option><option>Other</option></select></div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div><label class="block text-xs font-black text-slate-400 uppercase">Experience (Years)</label><input type="number" id="gig-exp" placeholder="5" class="w-full p-4 bg-slate-50 rounded-2xl"></div>
+                        <div><label class="block text-xs font-black text-slate-400 uppercase">Visit Fee (Rs.)</label><input type="number" id="gig-price" placeholder="800" class="w-full p-4 bg-slate-50 rounded-2xl"></div>
+                    </div>
+                    <div><label class="block text-xs font-black text-slate-400 uppercase">WhatsApp Number</label><input type="text" id="gig-phone" placeholder="03XXXXXXXXX" class="w-full p-4 bg-slate-50 rounded-2xl"></div>
+                    
+                    <!-- CITY SELECTOR WITH MANUAL INPUT + 170+ cities dropdown -->
+                    <div class="relative">
+                        <label class="block text-xs font-black text-slate-400 uppercase">Apna Shehar (City)</label>
+                        <div class="flex flex-col gap-2">
+                            <input type="text" id="manual-city-input" placeholder="Type city name (eg: Gilgit, Turbat, or select from list)" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 font-medium" autocomplete="off">
+                            <div class="relative">
+                                <select id="gig-city-select" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2">
+                                    <option value="">-- OR Select from 170+ cities --</option>
+                                </select>
+                            </div>
+                            <p class="text-[10px] text-slate-400 mt-1"><i class="fas fa-map-marker-alt"></i> Manual likh sakte hain ya select karein, dono me se koi bhi valid city add hoga.</p>
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest ml-1 mb-2">Experience (Sal)</label>
-                            <input type="number" id="gig-exp" placeholder="e.g. 5" class="w-full p-4 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 font-bold">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest ml-1 mb-2">Visit Fee (Rs.)</label>
-                            <input type="number" id="gig-price" placeholder="500" class="w-full p-4 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 font-bold">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-black text-slate-400 uppercase tracking-widest ml-1 mb-2">WhatsApp Number</label>
-                        <input type="text" id="gig-phone" placeholder="03XXXXXXXXX" class="w-full p-4 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 font-bold">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-black text-slate-400 uppercase tracking-widest ml-1 mb-2">City Select Karein</label>
-                        <select id="gig-city" class="w-full p-4 bg-slate-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 font-bold">
-                            <option value="">City Select Karein...</option>
-                            <option>Lahore</option><option>Karachi</option><option>Islamabad</option>
-                            <option>Faisalabad</option><option>Sahiwal</option><option>Multan</option>
-                        </select>
-                    </div>
-                    <button onclick="saveGig()" class="w-full bg-emerald-600 text-white py-6 rounded-[2rem] font-black text-xl hover:bg-emerald-700 shadow-2xl shadow-emerald-100 transition-all active:scale-95 mt-4">Gig Live Karein</button>
+                    
+                    <button onclick="saveGig()" class="w-full bg-emerald-600 text-white py-6 rounded-[2rem] font-black text-xl hover:bg-emerald-700 shadow-xl transition-all active:scale-95 mt-4">Giyg Live Karein <i class="fas fa-arrow-right"></i></button>
                 </div>
             </div>
         </section>
 
-        <!-- ADMIN SECTION -->
+        <!-- ADMIN PANEL -->
         <section id="page-admin" class="page-section hidden">
             <div class="flex flex-col gap-8">
                 <div class="bg-gradient-to-r from-red-600 to-rose-700 p-10 rounded-[3rem] text-white flex justify-between items-center shadow-2xl">
-                    <div>
-                        <h2 class="text-4xl font-black italic mb-2 tracking-tighter uppercase">Kamm Kar Control</h2>
-                        <p class="opacity-80 font-bold tracking-widest text-xs">OFFICIAL ADMINISTRATION PORTAL</p>
-                    </div>
-                    <div class="hidden md:block bg-white/10 p-6 rounded-3xl backdrop-blur-xl">
-                        <i class="fas fa-fingerprint text-4xl"></i>
-                    </div>
+                    <div><h2 class="text-4xl font-black italic">Kamm Kar Control</h2><p class="opacity-80 font-bold tracking-widest text-xs">OFFICIAL ADMIN</p></div>
+                    <i class="fas fa-fingerprint text-5xl opacity-70"></i>
                 </div>
-
-                <div class="overflow-hidden bg-white rounded-[2.5rem] shadow-sm border border-slate-100">
-                    <div class="p-8 border-b border-slate-50 flex flex-col md:flex-row justify-between items-center gap-4">
-                        <h3 class="font-black text-2xl text-slate-800">Worker Management</h3>
-                        <div class="flex gap-2 w-full md:w-auto">
-                            <input type="text" onkeyup="filterAdminTable(this.value)" placeholder="Search workers..." class="flex-grow bg-slate-50 px-6 py-3 rounded-2xl outline-none border-2 border-transparent focus:border-red-100 font-bold text-sm">
-                        </div>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left">
-                            <thead class="bg-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
-                                <tr>
-                                    <th class="p-8">Expert Profile</th>
-                                    <th class="p-8">Location</th>
-                                    <th class="p-8">Verification</th>
-                                    <th class="p-8">Promotion</th>
-                                    <th class="p-8 text-right">Delete</th>
-                                </tr>
-                            </thead>
-                            <tbody id="admin-worker-table" class="divide-y divide-slate-50">
-                                <!-- Table rows -->
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="bg-white rounded-[2.5rem] shadow-sm border">
+                    <div class="p-8 border-b flex flex-wrap justify-between items-center gap-4"><h3 class="font-black text-2xl">Workers Management</h3><input type="text" id="admin-search" onkeyup="filterAdminTable(this.value)" placeholder="Search name/skill/city" class="bg-slate-50 px-6 py-3 rounded-2xl outline-none focus:ring-2 focus:ring-red-200"></div>
+                    <div class="overflow-x-auto"><table class="w-full text-left"><thead class="bg-slate-50 text-slate-400 text-[10px] font-black uppercase"><tr><th class="p-6">Expert</th><th>City</th><th>Verify</th><th>Promote</th><th class="text-right">Delete</th></tr></thead><tbody id="admin-worker-table"></tbody></table></div>
                 </div>
             </div>
         </section>
-
     </main>
 
-    <!-- PROMOTION MODAL -->
-    <div id="promo-modal" class="fixed inset-0 bg-slate-900/80 flex items-center justify-center hidden z-[200] p-4 backdrop-blur-md">
-        <div class="bg-white w-full max-w-lg p-10 rounded-[3rem] shadow-2xl text-center relative overflow-hidden">
-            <div class="absolute -top-10 -right-10 w-40 h-40 bg-amber-50 rounded-full blur-3xl"></div>
-            <div class="w-20 h-20 bg-amber-100 text-amber-600 rounded-3xl flex items-center justify-center mx-auto mb-8 transform rotate-12 shadow-xl border-4 border-white">
-                <i class="fas fa-crown text-3xl"></i>
-            </div>
-            <h3 class="text-3xl font-black mb-2 text-slate-800 tracking-tight">Post Featured Karein!</h3>
-            <p class="text-slate-400 mb-8 font-bold text-sm uppercase tracking-widest">Sabse upar show honay ke liye plan select karein</p>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-                <div class="bg-slate-50 border-2 border-slate-100 p-6 rounded-3xl cursor-pointer hover:border-amber-500 transition-all group" onclick="selectPromoPlan('Weekly', 500)">
-                    <p class="font-black text-slate-400 group-hover:text-amber-600 uppercase text-[10px] tracking-widest mb-2">1 Week Plan</p>
-                    <p class="text-3xl font-black text-slate-800">Rs. 500</p>
-                </div>
-                <div class="bg-slate-50 border-2 border-slate-100 p-6 rounded-3xl cursor-pointer hover:border-amber-500 transition-all group" onclick="selectPromoPlan('Monthly', 5000)">
-                    <p class="font-black text-slate-400 group-hover:text-amber-600 uppercase text-[10px] tracking-widest mb-2">1 Month Plan</p>
-                    <p class="text-3xl font-black text-slate-800">Rs. 5000</p>
-                </div>
-            </div>
+    <!-- MODALS (Promo, Admin, Rating, Reviews) same as original but simplified -->
+    <div id="promo-modal" class="fixed inset-0 bg-black/60 hidden z-[200] flex items-center justify-center p-4"><div class="bg-white max-w-md p-8 rounded-3xl text-center"><h3 class="text-2xl font-black">Boost your Gig</h3><div class="grid grid-cols-2 gap-3 my-6"><button onclick="selectPromoPlan('Weekly',500)" class="bg-amber-50 p-4 rounded-2xl font-black">Weekly Rs.500</button><button onclick="selectPromoPlan('Monthly',5000)" class="bg-amber-50 p-4 rounded-2xl font-black">Monthly Rs.5000</button></div><button onclick="closePromoModal()" class="mt-3 text-sm text-slate-400">Cancel</button></div></div>
+    <div id="admin-login-modal" class="fixed inset-0 bg-black/70 hidden z-[200] flex items-center justify-center"><div class="bg-white p-8 rounded-3xl text-center"><i class="fas fa-shield-alt text-5xl text-red-600 mb-4"></i><h3 class="font-black text-xl">Admin Code</h3><input type="password" id="admin-code-input" class="border p-3 rounded-xl my-4 text-center"><div><button onclick="closeAdminLogin()" class="px-4 py-2">Close</button><button onclick="verifyAdminCode()" class="bg-red-600 text-white px-6 py-2 rounded-xl ml-3">Unlock</button></div></div></div>
+    <div id="rating-modal" class="fixed inset-0 bg-black/50 hidden z-[200] flex items-center justify-center"><div class="bg-white p-8 rounded-3xl max-w-md"><h3 class="font-black text-xl">Worker ko Rate karein</h3><div class="flex justify-center gap-2 text-4xl my-4" id="rating-stars-mod"><i class="far fa-star cursor-pointer" onclick="setRating(1)"></i><i class="far fa-star" onclick="setRating(2)"></i><i class="far fa-star" onclick="setRating(3)"></i><i class="far fa-star" onclick="setRating(4)"></i><i class="far fa-star" onclick="setRating(5)"></i></div><textarea id="rating-comment" placeholder="Kaisa tha kaam?" class="w-full border rounded-2xl p-3"></textarea><button onclick="submitRating()" class="bg-emerald-600 text-white w-full py-3 rounded-xl mt-4">Submit</button><button onclick="closeRatingModal()" class="w-full mt-2 text-slate-400">Skip</button></div></div>
+    <div id="reviews-modal" class="fixed inset-0 bg-black/50 hidden z-[200] flex items-center justify-center p-4"><div class="bg-white rounded-3xl max-w-lg w-full p-6 max-h-[80vh] overflow-auto"><div class="flex justify-between"><h3 class="font-black text-2xl">Reviews</h3><button onclick="closeReviewsModal()" class="text-2xl">&times;</button></div><div id="reviews-list-modal" class="mt-4 space-y-4"></div></div></div>
 
-            <div id="promo-action" class="hidden">
-                <p class="text-xs font-bold text-slate-400 mb-6 flex items-center justify-center gap-2">
-                    <i class="fas fa-info-circle"></i> Admin ko payment proof WhatsApp bhein
-                </p>
-                <div class="flex gap-4">
-                    <button onclick="closePromoModal()" class="flex-1 py-4 font-black text-slate-300 hover:text-slate-500">Cancel</button>
-                    <button id="promo-btn-final" class="flex-1 bg-emerald-600 text-white py-4 rounded-[1.5rem] font-black shadow-xl shadow-emerald-100 active:scale-95 transition-all flex items-center justify-center gap-2">
-                        <i class="fab fa-whatsapp"></i> Pay & Pin
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ADMIN LOGIN MODAL -->
-    <div id="admin-login-modal" class="fixed inset-0 bg-slate-900/90 flex items-center justify-center hidden z-[200] p-4 backdrop-blur-md">
-        <div class="bg-white w-full max-w-sm p-10 rounded-[3rem] shadow-2xl text-center">
-            <div class="w-24 h-24 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-8 border-8 border-white shadow-xl">
-                <i class="fas fa-shield-alt text-4xl"></i>
-            </div>
-            <h3 class="text-3xl font-black mb-2 text-slate-800 tracking-tight">Access Locked</h3>
-            <p class="text-slate-400 mb-8 font-bold text-sm uppercase tracking-widest">Admin Security Code</p>
-            <input type="password" id="admin-code-input" placeholder="••••••" class="w-full text-center text-3xl tracking-[0.8rem] p-5 bg-slate-50 border-2 border-slate-100 rounded-[2rem] mb-8 outline-none focus:border-red-500 font-black">
-            <div class="flex gap-4">
-                <button onclick="closeAdminLogin()" class="flex-1 py-4 font-black text-slate-300 hover:text-slate-500">Close</button>
-                <button onclick="verifyAdminCode()" class="flex-1 bg-red-600 text-white py-4 rounded-[1.5rem] font-black shadow-xl shadow-red-100 active:scale-95 transition-all">Unlock</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- RATING MODAL -->
-    <div id="rating-modal" class="fixed inset-0 bg-emerald-950/40 flex items-center justify-center hidden z-[100] p-4 backdrop-blur-sm">
-        <div class="bg-white w-full max-w-md p-10 rounded-[3rem] shadow-2xl relative overflow-hidden text-center">
-            <div class="absolute top-0 left-0 w-full h-3 bg-emerald-500"></div>
-            <h3 class="text-3xl font-black mb-4 text-slate-800">Kaam Khatam?</h3>
-            <p class="text-slate-400 mb-8 font-medium">Agar aapka raabta ho gaya hai toh worker ko rate karein taaki dusron ka bhala ho.</p>
-            
-            <div class="flex justify-center gap-3 mb-10 text-5xl cursor-pointer" id="rating-stars">
-                <i class="fas fa-star text-slate-100 transition-all hover:scale-110" onclick="setRating(1)"></i>
-                <i class="fas fa-star text-slate-100 transition-all hover:scale-110" onclick="setRating(2)"></i>
-                <i class="fas fa-star text-slate-100 transition-all hover:scale-110" onclick="setRating(3)"></i>
-                <i class="fas fa-star text-slate-100 transition-all hover:scale-110" onclick="setRating(4)"></i>
-                <i class="fas fa-star text-slate-100 transition-all hover:scale-110" onclick="setRating(5)"></i>
-            </div>
-            
-            <textarea id="rating-comment" placeholder="Worker ka kaam kaisa tha?..." class="w-full p-6 bg-slate-50 border-none rounded-[2rem] h-32 mb-8 outline-none focus:ring-2 focus:ring-emerald-500 font-bold text-slate-600"></textarea>
-            
-            <div class="flex flex-col gap-3">
-                <button onclick="submitRating()" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-lg shadow-xl shadow-emerald-100 hover:bg-emerald-700 transition-all">Submit Feedback</button>
-                <button onclick="closeRatingModal()" class="w-full py-4 font-black text-slate-300 hover:text-slate-500">Not Now</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- REVIEWS MODAL -->
-    <div id="reviews-modal" class="fixed inset-0 bg-slate-900/60 flex items-center justify-center hidden z-[100] p-4">
-        <div class="bg-white w-full max-w-lg p-10 rounded-[3rem] shadow-2xl max-h-[85vh] flex flex-col">
-            <div class="flex justify-between items-center mb-8">
-                <div>
-                    <h3 class="text-3xl font-black text-slate-800">Reviews History</h3>
-                    <p class="text-slate-400 font-bold text-xs uppercase tracking-widest">Public Feedback</p>
-                </div>
-                <button onclick="closeReviewsModal()" class="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 hover:bg-slate-100 transition-colors"><i class="fas fa-times"></i></button>
-            </div>
-            <div id="reviews-list" class="space-y-4 overflow-y-auto pr-2 custom-scrollbar">
-                <!-- Reviews Dynamically Loaded -->
-            </div>
-        </div>
-    </div>
-
+    <!-- FIREBASE IMPORT + FULL LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, onSnapshot, query, updateDoc, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, onSnapshot, updateDoc, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCdBDI74RVW9cf1zOVk5ltBNZa-lqn2sHI",
-            authDomain: "kamm-kar.firebaseapp.com",
-            projectId: "kamm-kar",
-            storageBucket: "kamm-kar.firebasestorage.app",
-            messagingSenderId: "204169677354",
-            appId: "1:204169677354:web:3411a793504548bfcfd153"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyCdBDI74RVW9cf1zOVk5ltBNZa-lqn2sHI", authDomain: "kamm-kar.firebaseapp.com", projectId: "kamm-kar", storageBucket: "kamm-kar.firebasestorage.app", messagingSenderId: "204169677354", appId: "1:204169677354:web:3411a793504548bfcfd153" };
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const appId = "kamm-kar-pak-002";
+        const appIdConst = "kamm-kar-pak-002";
         const adminWhatsApp = "03455672710";
         
-        let currentWorkerId = null;
-        let selectedRating = 0;
+        // 170+ Pakistani Cities (major + all divisions + districts)
+        const pakCities = [
+            "Karachi", "Lahore", "Islamabad", "Rawalpindi", "Faisalabad", "Multan", "Gujranwala", "Sialkot", "Peshawar", "Quetta", "Bahawalpur", "Sargodha", "Sukkur", "Hyderabad", "Abbottabad", "Mardan", "Mingora", "Nawabshah", "Mirpur Khas", "Rahim Yar Khan", "Dera Ghazi Khan", "Dera Ismail Khan", "Chiniot", "Jhang", "Kasur", "Okara", "Sahiwal", "Sheikhupura", "Toba Tek Singh", "Vehari", "Gujrat", "Hafizabad", "Mandi Bahauddin", "Narowal", "Chakwal", "Jhelum", "Attock", "Kohat", "Bannu", "Swabi", "Charsadda", "Nowshera", "Swat", "Haripur", "Mansehra", "Batagram", "Kohistan", "Gilgit", "Skardu", "Hunza", "Ghanche", "Shigar", "Astore", "Diamer", "Ghizer", "Chitral", "Upper Dir", "Lower Dir", "Malakand", "Buner", "Shangla", "Torghar", "Lakki Marwat", "Tank", "Karak", "Hangu", "Orakzai", "Kurram", "North Waziristan", "South Waziristan", "Zhob", "Loralai", "Killa Abdullah", "Pishin", "Chaman", "Nushki", "Khuzdar", "Lasbela", "Hub", "Gwadar", "Turbat", "Panjgur", "Kech", "Awaran", "Kalat", "Mastung", "Sibi", "Jafarabad", "Nasirabad", "Barkhan", "Musakhel", "Sherani", "Kohlu", "Dera Bugti", "Sohbatpur", "Umerkot", "Tharparkar", "Badin", "Thatta", "Sujawal", "Tando Allahyar", "Tando Muhammad Khan", "Matiari", "Jamshoro", "Dadu", "Qambar Shahdadkot", "Larkana", "Shikarpur", "Jacobabad", "Kashmore", "Ghotki", "Khairpur", "Sanghar", "Naushahro Feroze", "Shaheed Benazirabad", "Karachi Central", "Karachi East", "Karachi South", "Karachi West", "Malir", "Korangi", "Bahawalnagar", "Pakpattan", "Lodhran", "Khanewal", "Muzaffargarh", "Layyah", "Bhakkar", "Khushab", "Mianwali", "Talagang", "Rawalpindi (Cantt)", "Murree", "Kahuta", "Taxila", "Wah Cantt", "Nankana Sahib", "Faisalabad (Jaranwala)", "Samundri", "Tandlianwala", "Kamalia", "Pattoki", "Renala Khurd", "Daska", "Pasrur", "Zafarwal", "Jalalpur Jattan", "Kharian", "Kunjah", "Lalamusa", "Wazirabad", "Gujrat (Jalalpur)", "Phalia", "Mailsi", "Dunyapur", "Kot Addu", "Alipur", "Jampur", "Rajanpur", "Rojhan", "Kashmir (Muzaffarabad)", "Bagh", "Rawalakot", "Kotli", "Mirpur (AJK)", "Bhimber", "Haveli", "Neelum", "Jhelum Valley", "Sudhnati"
+        ];
+        const uniqueCities = [...new Set(pakCities)].sort();
+        
         let allWorkers = [];
         let isAdminActive = false;
+        let currentWorkerId = null;
+        let selectedRating = 0;
 
-        // --- NAVIGATION & UI ---
-        window.showPage = (id) => {
-            document.querySelectorAll('.page-section').forEach(p => p.classList.add('hidden'));
-            document.getElementById(`page-${id}`).classList.remove('hidden');
-            window.scrollTo(0,0);
-        };
-
+        // DOM helpers
+        window.showPage = (id) => { document.querySelectorAll('.page-section').forEach(p => p.classList.add('hidden')); document.getElementById(`page-${id}`).classList.remove('hidden'); window.scrollTo(0,0); };
         window.toggleMobileMenu = () => document.getElementById('mobile-menu').classList.toggle('hidden');
-
-        // --- FEATURED POST LOGIC ---
-        window.openPromoModal = (workerId) => {
-            currentWorkerId = workerId;
-            document.getElementById('promo-modal').classList.remove('hidden');
-            document.getElementById('promo-action').classList.add('hidden');
-        };
-
-        window.closePromoModal = () => document.getElementById('promo-modal').classList.add('hidden');
-
-        window.selectPromoPlan = (plan, price) => {
-            const worker = allWorkers.find(w => w.id === currentWorkerId);
-            const msg = `Asalam o Alaikum! Mein apna Gig Featured karwana chahta hoon.\n\nWorker Name: ${worker.name}\nSkill: ${worker.skill}\nPlan: ${plan}\nPrice: Rs. ${price}\n\nAbhi mujhe details bhein payment ki.`;
-            
-            document.getElementById('promo-action').classList.remove('hidden');
-            const finalBtn = document.getElementById('promo-btn-final');
-            finalBtn.onclick = () => {
-                window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
-                closePromoModal();
-            };
-        };
-
-        // --- ADMIN CONTROLS ---
-        window.checkAdminCode = () => {
-            if(isAdminActive) showPage('admin');
-            else document.getElementById('admin-login-modal').classList.remove('hidden');
-        };
-
-        window.closeAdminLogin = () => {
-            document.getElementById('admin-login-modal').classList.add('hidden');
-            document.getElementById('admin-code-input').value = '';
-        };
-
-        window.verifyAdminCode = () => {
-            if(document.getElementById('admin-code-input').value === '626277') {
-                isAdminActive = true;
-                closeAdminLogin();
-                showPage('admin');
-            } else {
-                alert("Incorrect Code!");
-                document.getElementById('admin-code-input').value = '';
-            }
-        };
-
-        window.toggleVerification = async (id, currentStatus) => {
-            try {
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'workers', id), {
-                    isVerified: !currentStatus
-                });
-            } catch(e) { console.error(e); }
-        };
-
-        window.togglePinned = async (id, currentStatus) => {
-            try {
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'workers', id), {
-                    isPinned: !currentStatus
-                });
-            } catch(e) { console.error(e); }
-        };
-
-        // --- SEARCH & FILTERS ---
-        window.globalSearch = () => {
-            const val = document.getElementById('home-search').value.toLowerCase();
-            showPage('hire');
-            const filtered = allWorkers.filter(w => 
-                w.city.toLowerCase().includes(val) || 
-                w.skill.toLowerCase().includes(val) || 
-                w.name.toLowerCase().includes(val)
-            );
-            renderWorkers(filtered);
-        };
-
-        window.filterByCategory = (cat) => {
-            showPage('hire');
-            document.getElementById('skill-filter').value = cat;
-            applyFilters();
-        };
-
-        window.applyFilters = () => {
-            const city = document.getElementById('city-filter').value;
-            const skill = document.getElementById('skill-filter').value;
-            let filtered = allWorkers;
-            if(city !== 'All') filtered = filtered.filter(w => w.city === city);
-            if(skill !== 'All') filtered = filtered.filter(w => w.skill === skill);
-            renderWorkers(filtered);
-        };
-
-        // --- AUTH ---
-        let authMode = 'login';
-        window.toggleAuthMode = (mode) => {
-            authMode = mode;
-            document.getElementById('signup-fields').classList.toggle('hidden', mode === 'login');
-            document.getElementById('auth-submit-btn').innerText = mode === 'login' ? 'Login Abhi Karein' : 'Account Banayein';
-            document.getElementById('btn-login-mode').className = mode === 'login' ? 'flex-1 py-3 rounded-xl font-black transition bg-white text-emerald-600 shadow-sm' : 'flex-1 py-3 rounded-xl font-black transition text-slate-500';
-            document.getElementById('btn-signup-mode').className = mode === 'signup' ? 'flex-1 py-3 rounded-xl font-black transition bg-white text-emerald-600 shadow-sm' : 'flex-1 py-3 rounded-xl font-black transition text-slate-500';
-        };
-
-        window.handleAuth = async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('auth-email').value;
-            const pass = document.getElementById('auth-password').value;
-            const name = document.getElementById('auth-name').value;
-            try {
-                if(authMode === 'signup') {
-                    const res = await createUserWithEmailAndPassword(auth, email, pass);
-                    await updateProfile(res.user, { displayName: name });
-                } else {
-                    await signInWithEmailAndPassword(auth, email, pass);
-                }
-                showPage('home');
-            } catch(err) { alert(err.message); }
-        };
-
-        window.logout = () => signOut(auth);
-
-        // --- GIG LOGIC ---
+        window.checkAdminCode = () => { if(isAdminActive) showPage('admin'); else document.getElementById('admin-login-modal').classList.remove('hidden'); };
+        window.closeAdminLogin = () => document.getElementById('admin-login-modal').classList.add('hidden');
+        window.verifyAdminCode = () => { if(document.getElementById('admin-code-input').value === '626277') { isAdminActive=true; closeAdminLogin(); showPage('admin'); } else { alert("Wrong Code!"); } };
+        window.toggleVerification = async (id, cur) => { await updateDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id), { isVerified: !cur }); };
+        window.togglePinned = async (id, cur) => { await updateDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id), { isPinned: !cur }); };
+        window.deleteWorker = async (id) => { if(confirm("Delete worker?")) await deleteDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id)); };
+        
+        // Populate city dropdowns (filter + gig select + manual)
+        function populateCityDropdowns() {
+            const cityFilter = document.getElementById('city-filter');
+            const gigSelect = document.getElementById('gig-city-select');
+            cityFilter.innerHTML = '<option value="All">All Cities (170+)</option>';
+            gigSelect.innerHTML = '<option value="">-- Select City --</option>';
+            uniqueCities.forEach(city => {
+                cityFilter.innerHTML += `<option value="${city}">${city}</option>`;
+                gigSelect.innerHTML += `<option value="${city}">${city}</option>`;
+            });
+        }
+        
+        // Save Gig with manual city OR selected city
         window.saveGig = async () => {
             if(!auth.currentUser) return showPage('auth');
+            let finalCity = document.getElementById('manual-city-input').value.trim();
+            const selectedCityDropdown = document.getElementById('gig-city-select').value;
+            if(!finalCity && selectedCityDropdown) finalCity = selectedCityDropdown;
+            if(!finalCity) return alert("Please type or select a city from 170+ list!");
+            if(!uniqueCities.includes(finalCity) && !uniqueCities.some(c => c.toLowerCase() === finalCity.toLowerCase())) {
+                if(confirm(`"${finalCity}" naye shehar ki tarah add karna chahte ho? Ye list me included hoga.`)) {
+                    uniqueCities.push(finalCity);
+                    populateCityDropdowns();
+                } else return;
+            }
             const data = {
                 name: document.getElementById('gig-name').value,
                 skill: document.getElementById('gig-skill').value,
-                exp: document.getElementById('gig-exp').value,
-                price: document.getElementById('gig-price').value,
+                exp: document.getElementById('gig-exp').value || "1",
+                price: document.getElementById('gig-price').value || "500",
                 phone: document.getElementById('gig-phone').value,
-                city: document.getElementById('gig-city').value,
+                city: finalCity,
                 ratings: [],
                 avgRating: 0,
                 userId: auth.currentUser.uid,
@@ -499,193 +255,69 @@
                 isPinned: false,
                 createdAt: Date.now()
             };
-            if(!data.name || !data.phone || !data.city) return alert("Sari fields fill karein!");
-            try {
-                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'workers'), data);
-                alert("Gig Live Ho Gai!");
-                showPage('hire');
-            } catch(e) { alert(e.message); }
+            if(!data.name || !data.phone) return alert("Name aur WhatsApp number lazmi hai!");
+            await addDoc(collection(db, 'artifacts', appIdConst, 'public', 'data', 'workers'), data);
+            alert(`Gig Live! ${data.city} me aapka kaam dhoondha jayega.`);
+            showPage('hire');
+            document.getElementById('manual-city-input').value = '';
+            document.getElementById('gig-city-select').value = '';
         };
-
-        window.deleteWorker = async (id) => {
-            if(!confirm("Waqai delete karna chahte hain?")) return;
-            try {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'workers', id));
-            } catch(e) { alert(e.message); }
-        };
-
-        // --- RENDERING HELPERS ---
+        
+        window.globalSearch = () => { const val = document.getElementById('home-search').value.toLowerCase(); showPage('hire'); const filtered = allWorkers.filter(w => w.city?.toLowerCase().includes(val) || w.skill?.toLowerCase().includes(val) || w.name?.toLowerCase().includes(val)); renderWorkers(filtered); };
+        window.filterByCategory = (cat) => { showPage('hire'); document.getElementById('skill-filter').value = cat; applyFilters(); };
+        window.applyFilters = () => { const city = document.getElementById('city-filter').value; const skill = document.getElementById('skill-filter').value; let filtered = allWorkers; if(city !== 'All') filtered = filtered.filter(w => w.city === city); if(skill !== 'All') filtered = filtered.filter(w => w.skill === skill); renderWorkers(filtered); };
+        
         function renderWorkers(workers) {
-            const list = document.getElementById('worker-list');
-            document.getElementById('worker-count').innerText = workers.length;
-            list.innerHTML = workers.length ? '' : '<div class="col-span-full py-24 text-center text-slate-400 font-black uppercase tracking-widest">No experts found</div>';
-            
-            // Sort: Pinned First
-            const sorted = [...workers].sort((a, b) => (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0));
-
-            sorted.forEach(w => {
-                const isOwner = auth.currentUser && auth.currentUser.uid === w.userId;
-                list.innerHTML += `
-                    <div class="bg-white rounded-[3rem] shadow-sm hover:shadow-2xl transition-all border border-slate-100 overflow-hidden relative group">
-                        ${w.isPinned ? '<div class="absolute top-6 left-6 z-10"><span class="pinned-badge"><i class="fas fa-thumbtack mr-1"></i> Featured</span></div>' : ''}
-                        <div class="p-10">
-                            <div class="flex justify-between items-start mb-8">
-                                <div>
-                                    <h4 class="text-2xl font-black text-slate-800 flex items-center">
-                                        ${w.name}
-                                        ${w.isVerified ? '<i class="fas fa-check-circle blue-tick"></i>' : ''}
-                                    </h4>
-                                    <span class="bg-emerald-50 text-emerald-700 px-4 py-1.5 rounded-2xl text-[10px] font-black uppercase tracking-[0.15em] mt-2 inline-block">${w.skill}</span>
-                                </div>
-                                <div class="cursor-pointer text-center bg-slate-900 text-white px-5 py-3 rounded-[1.5rem] shadow-2xl" onclick="openReviewsModal('${w.id}')">
-                                    <p class="font-black text-xl leading-none">★ ${w.avgRating.toFixed(1)}</p>
-                                    <p class="text-[8px] font-black uppercase opacity-60 mt-1">${w.ratings?.length || 0} Reviews</p>
-                                </div>
-                            </div>
-                            
-                            <div class="space-y-4 mb-10 text-slate-500 font-bold text-sm">
-                                <p class="flex items-center"><i class="fas fa-award w-8 text-emerald-500 text-lg"></i> ${w.exp} Sal Experience</p>
-                                <p class="flex items-center"><i class="fas fa-map-marker-alt w-8 text-rose-500 text-lg"></i> ${w.city}</p>
-                            </div>
-
-                            <div class="flex items-center justify-between pt-8 border-t border-slate-50">
-                                <div>
-                                    <p class="text-[9px] uppercase text-slate-400 font-black tracking-widest mb-1">Standard Visit</p>
-                                    <p class="text-3xl font-black text-slate-800 tracking-tight">Rs. ${w.price}</p>
-                                </div>
-                                <div class="flex gap-2">
-                                    ${isOwner ? `
-                                        <button onclick="openPromoModal('${w.id}')" class="bg-amber-50 text-amber-600 w-14 h-14 rounded-2xl flex items-center justify-center hover:bg-amber-500 hover:text-white transition-all"><i class="fas fa-crown"></i></button>
-                                        <button onclick="deleteWorker('${w.id}')" class="bg-red-50 text-red-500 w-14 h-14 rounded-2xl flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"><i class="fas fa-trash-alt"></i></button>
-                                    ` : ''}
-                                    <button onclick="handleHire('${w.id}', '${w.phone}')" class="bg-emerald-600 text-white px-8 h-14 rounded-2xl font-black shadow-xl shadow-emerald-100 hover:scale-[1.05] transition-all flex items-center gap-3">
-                                        <i class="fab fa-whatsapp text-2xl"></i> <span class="hidden sm:inline">Raabta</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
+            const container = document.getElementById('worker-list'); document.getElementById('worker-count').innerText = workers.length;
+            if(!workers.length) { container.innerHTML = '<div class="col-span-full text-center py-24 text-slate-400 font-black">Koi expert nahi mila</div>'; return; }
+            const sorted = [...workers].sort((a,b)=> (b.isPinned?1:0)-(a.isPinned?1:0));
+            container.innerHTML = sorted.map(w => `
+                <div class="bg-white rounded-[3rem] shadow-lg border p-8 relative">
+                    ${w.isPinned ? '<div class="absolute top-4 left-4"><span class="pinned-badge">⭐ Featured</span></div>' : ''}
+                    <div class="flex justify-between items-start"><div><h4 class="text-2xl font-black">${w.name} ${w.isVerified ? '<i class="fas fa-check-circle blue-tick"></i>' : ''}</h4><span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-black">${w.skill}</span></div><div onclick="openReviewsModal('${w.id}')" class="bg-slate-900 text-white px-4 py-2 rounded-2xl text-center cursor-pointer"><span class="text-xl font-black">★ ${w.avgRating?.toFixed(1)||0}</span><div class="text-[9px]">${w.ratings?.length||0} reviews</div></div></div>
+                    <div class="my-4 space-y-2 text-sm"><p><i class="fas fa-calendar-alt w-6"></i> ${w.exp} years exp</p><p><i class="fas fa-map-marker-alt w-6 text-rose-500"></i> ${w.city}</p></div>
+                    <div class="flex justify-between items-center pt-4 border-t"><div><span class="text-xs uppercase">Visit fee</span><p class="text-2xl font-black">Rs.${w.price}</p></div><div class="flex gap-2">${auth.currentUser?.uid === w.userId ? `<button onclick="openPromoModal('${w.id}')" class="bg-amber-100 p-3 rounded-xl"><i class="fas fa-crown"></i></button><button onclick="deleteWorker('${w.id}')" class="bg-red-100 p-3 rounded-xl"><i class="fas fa-trash"></i></button>` : ''}<button onclick="handleHire('${w.id}','${w.phone}')" class="bg-emerald-600 text-white px-6 py-3 rounded-2xl font-black flex gap-2"><i class="fab fa-whatsapp"></i>Raabta</button></div></div>
+                </div>
+            `).join('');
         }
-
+        
         function renderAdminTable(workers) {
-            const table = document.getElementById('admin-worker-table');
-            table.innerHTML = '';
-            workers.forEach(w => {
-                table.innerHTML += `
-                    <tr class="hover:bg-slate-50/50 transition-colors">
-                        <td class="p-8">
-                            <p class="font-black text-slate-800 text-lg">${w.name}</p>
-                            <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest">${w.skill}</p>
-                        </td>
-                        <td class="p-8 font-black text-slate-600">${w.city}</td>
-                        <td class="p-8">
-                            <button onclick="toggleVerification('${w.id}', ${w.isVerified})" class="${w.isVerified ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'} px-4 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">
-                                ${w.isVerified ? 'Verified ✔' : 'Verify Now'}
-                            </button>
-                        </td>
-                        <td class="p-8">
-                            <button onclick="togglePinned('${w.id}', ${w.isPinned})" class="${w.isPinned ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-400'} px-4 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">
-                                ${w.isPinned ? 'Pinned 📌' : 'Pin to Top'}
-                            </button>
-                        </td>
-                        <td class="p-8 text-right">
-                            <button onclick="deleteWorker('${w.id}')" class="text-rose-400 hover:text-rose-600 p-3"><i class="fas fa-trash-alt text-xl"></i></button>
-                        </td>
-                    </tr>
-                `;
-            });
+            const tbody = document.getElementById('admin-worker-table');
+            tbody.innerHTML = workers.map(w => `
+                <tr class="border-b"><td class="p-6"><p class="font-black">${w.name}</p><p class="text-xs">${w.skill}</p></td><td class="p-6 font-bold">${w.city}</td><td><button onclick="toggleVerification('${w.id}',${w.isVerified})" class="px-4 py-1 rounded-full text-xs ${w.isVerified ? 'bg-green-100 text-green-700' : 'bg-gray-100'}">${w.isVerified ? 'Verified' : 'Verify'}</button></td><td><button onclick="togglePinned('${w.id}',${w.isPinned})" class="px-4 py-1 rounded-full text-xs ${w.isPinned ? 'bg-amber-100 text-amber-700' : 'bg-gray-100'}">${w.isPinned ? 'Pinned' : 'Pin'}</button></td><td class="text-right"><button onclick="deleteWorker('${w.id}')" class="text-red-500"><i class="fas fa-trash-alt"></i></button></td></tr>
+            `).join('');
         }
-
-        // --- HIRING & RATINGS ---
-        window.handleHire = (id, phone) => {
-            if(!auth.currentUser) return showPage('auth');
-            currentWorkerId = id;
-            const msg = `Asalam o Alaikum! Mein ne Kamm Kar app par aapki profile dekhi hai. Mujhe aapki services chahiye.`;
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
-            setTimeout(() => openRatingModal(id), 2000);
-        };
-
-        window.openRatingModal = (id) => {
-            currentWorkerId = id;
-            selectedRating = 0;
-            document.querySelectorAll('#rating-stars i').forEach(s => s.classList.replace('text-yellow-400', 'text-slate-100'));
-            document.getElementById('rating-comment').value = '';
-            document.getElementById('rating-modal').classList.remove('hidden');
-        };
-
-        window.setRating = (num) => {
-            selectedRating = num;
-            document.querySelectorAll('#rating-stars i').forEach((s, i) => {
-                if(i < num) s.classList.replace('text-slate-100', 'text-yellow-400');
-                else s.classList.replace('text-yellow-400', 'text-slate-100');
-            });
-        };
-
-        window.submitRating = async () => {
-            if(!selectedRating) return alert("Select Stars!");
-            const comment = document.getElementById('rating-comment').value;
-            try {
-                const worker = allWorkers.find(w => w.id === currentWorkerId);
-                const newRating = { userId: auth.currentUser.uid, userName: auth.currentUser.displayName || "Anonymous", stars: selectedRating, comment, date: Date.now() };
-                const updatedRatings = [...(worker.ratings || []), newRating];
-                const newAvg = updatedRatings.reduce((a, b) => a + b.stars, 0) / updatedRatings.length;
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'workers', currentWorkerId), {
-                    ratings: arrayUnion(newRating),
-                    avgRating: newAvg
-                });
-                closeRatingModal();
-                alert("Rating Saved!");
-            } catch(e) { console.error(e); }
-        };
-
-        window.closeRatingModal = () => document.getElementById('rating-modal').classList.add('hidden');
-
-        window.openReviewsModal = (id) => {
-            const worker = allWorkers.find(w => w.id === id);
-            const list = document.getElementById('reviews-list');
-            list.innerHTML = worker.ratings?.length ? '' : '<p class="text-center text-slate-300 py-16 font-black uppercase tracking-widest text-xs">No Reviews Yet</p>';
-            worker.ratings?.forEach(r => {
-                list.innerHTML += `
-                    <div class="bg-slate-50 p-6 rounded-[2rem] border border-slate-100">
-                        <div class="flex justify-between items-center mb-4">
-                            <p class="font-black text-slate-800 text-sm tracking-tight">${r.userName}</p>
-                            <span class="text-yellow-500 font-black">★ ${r.stars}</span>
-                        </div>
-                        <p class="text-slate-500 text-sm italic font-medium leading-relaxed">"${r.comment || 'Behtareen service!'}"</p>
-                    </div>
-                `;
-            });
-            document.getElementById('reviews-modal').classList.remove('hidden');
-        };
-
-        window.closeReviewsModal = () => document.getElementById('reviews-modal').classList.add('hidden');
-
-        // --- APP INITIALIZATION ---
-        onAuthStateChanged(auth, (user) => {
-            const desk = document.getElementById('auth-buttons-desktop');
-            const mob = document.getElementById('auth-buttons-mobile');
-            if(user) {
-                const nav = `<button onclick="showPage('post-gig')" class="bg-white text-emerald-600 px-6 py-2.5 rounded-2xl font-black shadow-sm text-sm hover:scale-105 transition-all">Post Gig</button>
-                             <button onclick="logout()" class="text-white opacity-60 hover:opacity-100 ml-2"><i class="fas fa-sign-out-alt"></i></button>`;
-                desk.innerHTML = nav;
-                mob.innerHTML = `<button onclick="showPage('post-gig'); toggleMobileMenu()" class="w-full bg-white text-emerald-600 py-5 rounded-[2rem] font-black">Post Service</button>
-                                <button onclick="logout(); toggleMobileMenu()" class="w-full bg-rose-500/20 text-rose-200 py-5 rounded-[2rem] font-black mt-3">Logout</button>`;
-            } else {
-                const btn = `<button onclick="showPage('auth')" class="bg-white text-emerald-600 px-10 py-2.5 rounded-2xl font-black text-sm">Login</button>`;
-                desk.innerHTML = btn;
-                mob.innerHTML = btn;
-            }
-
-            // Realtime Firebase Listener
-            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'workers'), (snap) => {
-                allWorkers = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                renderWorkers(allWorkers);
-                renderAdminTable(allWorkers);
-                document.getElementById('loading-overlay').classList.add('hidden');
-            }, (error) => console.error(error));
+        window.filterAdminTable = (val) => { const filtered = allWorkers.filter(w => w.name.toLowerCase().includes(val)||w.city.toLowerCase().includes(val)||w.skill.toLowerCase().includes(val)); renderAdminTable(filtered); };
+        
+        window.handleHire = (id, phone) => { if(!auth.currentUser) return showPage('auth'); currentWorkerId=id; window.open(`https://wa.me/${phone}?text=${encodeURIComponent("Assalam u Alaikum! Kamm Kar se aapki service chahiye.")}`,'_blank'); setTimeout(()=>openRatingModal(id),2500); };
+        window.openRatingModal = (id) => { currentWorkerId=id; selectedRating=0; document.querySelectorAll('#rating-stars-mod i').forEach(i=>i.className='far fa-star cursor-pointer'); document.getElementById('rating-modal').classList.remove('hidden'); };
+        window.setRating=(num)=>{ selectedRating=num; const stars=document.querySelectorAll('#rating-stars-mod i'); stars.forEach((s,i)=>{ if(i<num) s.className='fas fa-star text-yellow-500 cursor-pointer'; else s.className='far fa-star cursor-pointer'; }); };
+        window.submitRating=async()=>{ if(!selectedRating) return alert("Stars select karein"); const comment=document.getElementById('rating-comment').value; const worker=allWorkers.find(w=>w.id===currentWorkerId); const newRating={ userId:auth.currentUser?.uid, userName:auth.currentUser?.displayName||"Client", stars:selectedRating, comment, date:Date.now() }; const updated=[...(worker.ratings||[]), newRating]; const avg=updated.reduce((a,b)=>a+b.stars,0)/updated.length; await updateDoc(doc(db,'artifacts',appIdConst,'public','data','workers',currentWorkerId),{ ratings:arrayUnion(newRating), avgRating:avg }); closeRatingModal(); alert("Shukriya! feedback mil gaya"); };
+        window.closeRatingModal=()=>document.getElementById('rating-modal').classList.add('hidden');
+        window.openReviewsModal=(id)=>{ const w=allWorkers.find(w=>w.id===id); const listDiv=document.getElementById('reviews-list-modal'); if(!w.ratings?.length) listDiv.innerHTML='<p class="text-center text-slate-400">No reviews yet</p>'; else listDiv.innerHTML=w.ratings.map(r=>`<div class="bg-slate-50 p-4 rounded-2xl"><div class="flex justify-between"><span class="font-black">${r.userName}</span><span class="text-yellow-500">★ ${r.stars}</span></div><p class="text-sm italic">${r.comment||"Behtreen kaam"}</p></div>`).join(''); document.getElementById('reviews-modal').classList.remove('hidden'); };
+        window.closeReviewsModal=()=>document.getElementById('reviews-modal').classList.add('hidden');
+        window.openPromoModal=(id)=>{ currentWorkerId=id; document.getElementById('promo-modal').classList.remove('hidden'); };
+        window.closePromoModal=()=>document.getElementById('promo-modal').classList.add('hidden');
+        window.selectPromoPlan=(plan,price)=>{ const worker=allWorkers.find(w=>w.id===currentWorkerId); const msg=`Asalam o Alaikum! Featured plan: ${plan} for ${worker.name} (${worker.skill}). Price Rs.${price}`; window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(msg)}`,'_blank'); closePromoModal(); };
+        
+        // Auth handlers
+        let authMode='login';
+        window.toggleAuthMode=(mode)=>{ authMode=mode; document.getElementById('signup-fields').classList.toggle('hidden',mode==='login'); document.getElementById('auth-submit-btn').innerText=mode==='login'?'Login Karein':'Register Karein'; };
+        window.handleAuth=async(e)=>{ e.preventDefault(); const email=document.getElementById('auth-email').value; const pass=document.getElementById('auth-password').value; const name=document.getElementById('auth-name').value; try{ if(authMode==='signup'){ const res=await createUserWithEmailAndPassword(auth,email,pass); await updateProfile(res.user,{displayName:name}); } else await signInWithEmailAndPassword(auth,email,pass); showPage('home'); } catch(err){ alert(err.message); } };
+        window.logout=()=>signOut(auth);
+        
+        onAuthStateChanged(auth,(user)=>{
+            const deskDiv=document.getElementById('auth-buttons-desktop'); const mobDiv=document.getElementById('auth-buttons-mobile');
+            if(user){ deskDiv.innerHTML=`<button onclick="showPage('post-gig')" class="bg-white text-emerald-600 px-6 py-2.5 rounded-2xl font-black">Post Gig</button><button onclick="logout()" class="ml-3 text-white/80"><i class="fas fa-sign-out-alt"></i></button>`; mobDiv.innerHTML=`<button onclick="showPage('post-gig');toggleMobileMenu()" class="w-full bg-white text-emerald-600 py-4 rounded-2xl font-black">Post Gig</button><button onclick="logout();" class="w-full bg-rose-500/30 py-4 rounded-2xl font-black mt-2">Logout</button>`; }
+            else { deskDiv.innerHTML=`<button onclick="showPage('auth')" class="bg-white text-emerald-600 px-8 py-2.5 rounded-2xl font-black">Login</button>`; mobDiv.innerHTML=`<button onclick="showPage('auth')" class="w-full bg-white text-emerald-600 py-4 rounded-2xl font-black">Login</button>`; }
         });
+        
+        // Real-time listeners
+        onSnapshot(collection(db,'artifacts',appIdConst,'public','data','workers'),(snap)=>{ allWorkers=snap.docs.map(d=>({id:d.id,...d.data()})); renderWorkers(allWorkers); renderAdminTable(allWorkers); document.getElementById('loading-overlay')?.classList.add('hidden'); });
+        populateCityDropdowns();
+        
+        // Additional manual city sync on dropdown select
+        document.getElementById('gig-city-select')?.addEventListener('change',(e)=>{ if(e.target.value) document.getElementById('manual-city-input').value=e.target.value; });
     </script>
 </body>
 </html>
