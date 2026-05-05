@@ -17,6 +17,29 @@
         .city-tag { transition: all 0.2s ease; }
         .city-tag:hover { transform: translateY(-2px); background-color: #ecfdf5; border-color: #10b981; }
         #manual-city-input:focus, #city-filter:focus, #gig-city-manual:focus { ring: 2px solid #10b981; }
+        .floating-support {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            background: #25D366;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .floating-support:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        .profile-stats-card {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
     </style>
 </head>
 <body class="bg-slate-50 font-sans text-slate-900">
@@ -24,6 +47,11 @@
     <!-- LOADING OVERLAY -->
     <div id="loading-overlay" class="fixed inset-0 bg-white z-[100] flex items-center justify-center">
         <div class="loader w-12 h-12 border-4 border-slate-200 rounded-full"></div>
+    </div>
+
+    <!-- FLOATING SUPPORT BUTTON -->
+    <div class="floating-support" onclick="openSupportChat()">
+        <i class="fab fa-whatsapp text-white text-3xl"></i>
     </div>
 
     <!-- NAVIGATION -->
@@ -35,6 +63,9 @@
             <div class="hidden md:flex space-x-6 items-center font-bold">
                 <button onclick="showPage('home')" class="hover:text-emerald-200">Home</button>
                 <button onclick="showPage('hire')" class="hover:text-emerald-200">Find Workers</button>
+                <button onclick="showPage('profile')" class="hover:text-emerald-200">
+                    <i class="fas fa-user-circle mr-1"></i> My Gigs
+                </button>
                 <button onclick="checkAdminCode()" class="bg-red-500/20 px-3 py-1 rounded-lg text-red-100 hover:bg-red-500/40 border border-red-400/30">
                     <i class="fas fa-user-shield mr-1"></i> Admin
                 </button>
@@ -47,6 +78,7 @@
         <div id="mobile-menu" class="hidden md:hidden bg-emerald-800 p-4 mt-2 space-y-4 rounded-2xl shadow-inner">
             <button onclick="showPage('home'); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-emerald-600">Home</button>
             <button onclick="showPage('hire'); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-emerald-600">Hire Worker</button>
+            <button onclick="showPage('profile'); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-emerald-600">My Gigs</button>
             <button onclick="checkAdminCode(); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-red-400 text-red-200 font-bold">Admin Dashboard</button>
             <div id="auth-buttons-mobile" class="space-y-4 pt-2"></div>
         </div>
@@ -127,6 +159,51 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="worker-list"></div>
         </section>
 
+        <!-- PROFILE / MY GIGS SECTION -->
+        <section id="page-profile" class="page-section hidden">
+            <div class="max-w-6xl mx-auto">
+                <!-- Profile Header with Stats -->
+                <div class="profile-stats-card rounded-[2.5rem] p-8 text-white mb-10 shadow-2xl">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div class="flex items-center gap-5">
+                            <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center text-4xl">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-3xl font-black" id="profile-user-name">Loading...</h2>
+                                <p class="text-emerald-100"><i class="fas fa-envelope mr-2"></i><span id="profile-user-email">-</span></p>
+                            </div>
+                        </div>
+                        <div class="flex gap-8 text-center">
+                            <div>
+                                <p class="text-3xl font-black" id="profile-gig-count">0</p>
+                                <p class="text-sm opacity-80">Total Gigs</p>
+                            </div>
+                            <div>
+                                <p class="text-3xl font-black" id="profile-review-count">0</p>
+                                <p class="text-sm opacity-80">Total Reviews</p>
+                            </div>
+                            <div>
+                                <p class="text-3xl font-black" id="profile-avg-rating">0.0</p>
+                                <p class="text-sm opacity-80">★ Avg Rating</p>
+                            </div>
+                        </div>
+                        <button onclick="showPage('post-gig')" class="bg-white text-emerald-700 px-8 py-4 rounded-2xl font-black hover:bg-emerald-50 transition-all shadow-lg">
+                            <i class="fas fa-plus-circle mr-2"></i> New Gig
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- User's Gigs List -->
+                <h3 class="text-2xl font-black mb-6 text-slate-800 flex items-center gap-3">
+                    <i class="fas fa-briefcase text-emerald-600"></i> Meri Gigs
+                </h3>
+                <div id="my-gigs-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Dynamic gigs will appear here -->
+                </div>
+            </div>
+        </section>
+
         <!-- POST GIG (with manual city + auto-suggest) -->
         <section id="page-post-gig" class="page-section hidden">
             <div class="max-w-2xl mx-auto bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-50">
@@ -176,7 +253,7 @@
         </section>
     </main>
 
-    <!-- MODALS (Promo, Admin, Rating, Reviews) same as original but simplified -->
+    <!-- MODALS -->
     <div id="promo-modal" class="fixed inset-0 bg-black/60 hidden z-[200] flex items-center justify-center p-4"><div class="bg-white max-w-md p-8 rounded-3xl text-center"><h3 class="text-2xl font-black">Boost your Gig</h3><div class="grid grid-cols-2 gap-3 my-6"><button onclick="selectPromoPlan('Weekly',500)" class="bg-amber-50 p-4 rounded-2xl font-black">Weekly Rs.500</button><button onclick="selectPromoPlan('Monthly',5000)" class="bg-amber-50 p-4 rounded-2xl font-black">Monthly Rs.5000</button></div><button onclick="closePromoModal()" class="mt-3 text-sm text-slate-400">Cancel</button></div></div>
     <div id="admin-login-modal" class="fixed inset-0 bg-black/70 hidden z-[200] flex items-center justify-center"><div class="bg-white p-8 rounded-3xl text-center"><i class="fas fa-shield-alt text-5xl text-red-600 mb-4"></i><h3 class="font-black text-xl">Admin Code</h3><input type="password" id="admin-code-input" class="border p-3 rounded-xl my-4 text-center"><div><button onclick="closeAdminLogin()" class="px-4 py-2">Close</button><button onclick="verifyAdminCode()" class="bg-red-600 text-white px-6 py-2 rounded-xl ml-3">Unlock</button></div></div></div>
     <div id="rating-modal" class="fixed inset-0 bg-black/50 hidden z-[200] flex items-center justify-center"><div class="bg-white p-8 rounded-3xl max-w-md"><h3 class="font-black text-xl">Worker ko Rate karein</h3><div class="flex justify-center gap-2 text-4xl my-4" id="rating-stars-mod"><i class="far fa-star cursor-pointer" onclick="setRating(1)"></i><i class="far fa-star" onclick="setRating(2)"></i><i class="far fa-star" onclick="setRating(3)"></i><i class="far fa-star" onclick="setRating(4)"></i><i class="far fa-star" onclick="setRating(5)"></i></div><textarea id="rating-comment" placeholder="Kaisa tha kaam?" class="w-full border rounded-2xl p-3"></textarea><button onclick="submitRating()" class="bg-emerald-600 text-white w-full py-3 rounded-xl mt-4">Submit</button><button onclick="closeRatingModal()" class="w-full mt-2 text-slate-400">Skip</button></div></div>
@@ -186,7 +263,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, onSnapshot, updateDoc, deleteDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, onSnapshot, updateDoc, deleteDoc, arrayUnion, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyCdBDI74RVW9cf1zOVk5ltBNZa-lqn2sHI", authDomain: "kamm-kar.firebaseapp.com", projectId: "kamm-kar", storageBucket: "kamm-kar.firebasestorage.app", messagingSenderId: "204169677354", appId: "1:204169677354:web:3411a793504548bfcfd153" };
         const app = initializeApp(firebaseConfig);
@@ -194,8 +271,9 @@
         const db = getFirestore(app);
         const appIdConst = "kamm-kar-pak-002";
         const adminWhatsApp = "03455672710";
+        const supportNumber = "923455672710"; // Your support number
         
-        // 170+ Pakistani Cities (major + all divisions + districts)
+        // 170+ Pakistani Cities
         const pakCities = [
             "Karachi", "Lahore", "Islamabad", "Rawalpindi", "Faisalabad", "Multan", "Gujranwala", "Sialkot", "Peshawar", "Quetta", "Bahawalpur", "Sargodha", "Sukkur", "Hyderabad", "Abbottabad", "Mardan", "Mingora", "Nawabshah", "Mirpur Khas", "Rahim Yar Khan", "Dera Ghazi Khan", "Dera Ismail Khan", "Chiniot", "Jhang", "Kasur", "Okara", "Sahiwal", "Sheikhupura", "Toba Tek Singh", "Vehari", "Gujrat", "Hafizabad", "Mandi Bahauddin", "Narowal", "Chakwal", "Jhelum", "Attock", "Kohat", "Bannu", "Swabi", "Charsadda", "Nowshera", "Swat", "Haripur", "Mansehra", "Batagram", "Kohistan", "Gilgit", "Skardu", "Hunza", "Ghanche", "Shigar", "Astore", "Diamer", "Ghizer", "Chitral", "Upper Dir", "Lower Dir", "Malakand", "Buner", "Shangla", "Torghar", "Lakki Marwat", "Tank", "Karak", "Hangu", "Orakzai", "Kurram", "North Waziristan", "South Waziristan", "Zhob", "Loralai", "Killa Abdullah", "Pishin", "Chaman", "Nushki", "Khuzdar", "Lasbela", "Hub", "Gwadar", "Turbat", "Panjgur", "Kech", "Awaran", "Kalat", "Mastung", "Sibi", "Jafarabad", "Nasirabad", "Barkhan", "Musakhel", "Sherani", "Kohlu", "Dera Bugti", "Sohbatpur", "Umerkot", "Tharparkar", "Badin", "Thatta", "Sujawal", "Tando Allahyar", "Tando Muhammad Khan", "Matiari", "Jamshoro", "Dadu", "Qambar Shahdadkot", "Larkana", "Shikarpur", "Jacobabad", "Kashmore", "Ghotki", "Khairpur", "Sanghar", "Naushahro Feroze", "Shaheed Benazirabad", "Karachi Central", "Karachi East", "Karachi South", "Karachi West", "Malir", "Korangi", "Bahawalnagar", "Pakpattan", "Lodhran", "Khanewal", "Muzaffargarh", "Layyah", "Bhakkar", "Khushab", "Mianwali", "Talagang", "Rawalpindi (Cantt)", "Murree", "Kahuta", "Taxila", "Wah Cantt", "Nankana Sahib", "Faisalabad (Jaranwala)", "Samundri", "Tandlianwala", "Kamalia", "Pattoki", "Renala Khurd", "Daska", "Pasrur", "Zafarwal", "Jalalpur Jattan", "Kharian", "Kunjah", "Lalamusa", "Wazirabad", "Gujrat (Jalalpur)", "Phalia", "Mailsi", "Dunyapur", "Kot Addu", "Alipur", "Jampur", "Rajanpur", "Rojhan", "Kashmir (Muzaffarabad)", "Bagh", "Rawalakot", "Kotli", "Mirpur (AJK)", "Bhimber", "Haveli", "Neelum", "Jhelum Valley", "Sudhnati"
         ];
@@ -207,25 +285,128 @@
         let selectedRating = 0;
 
         // DOM helpers
-        window.showPage = (id) => { document.querySelectorAll('.page-section').forEach(p => p.classList.add('hidden')); document.getElementById(`page-${id}`).classList.remove('hidden'); window.scrollTo(0,0); };
+        window.showPage = (id) => { 
+            document.querySelectorAll('.page-section').forEach(p => p.classList.add('hidden')); 
+            document.getElementById(`page-${id}`).classList.remove('hidden'); 
+            window.scrollTo(0,0);
+            if(id === 'profile') {
+                loadUserProfile();
+            }
+        };
         window.toggleMobileMenu = () => document.getElementById('mobile-menu').classList.toggle('hidden');
         window.checkAdminCode = () => { if(isAdminActive) showPage('admin'); else document.getElementById('admin-login-modal').classList.remove('hidden'); };
         window.closeAdminLogin = () => document.getElementById('admin-login-modal').classList.add('hidden');
         window.verifyAdminCode = () => { if(document.getElementById('admin-code-input').value === '626277') { isAdminActive=true; closeAdminLogin(); showPage('admin'); } else { alert("Wrong Code!"); } };
         window.toggleVerification = async (id, cur) => { await updateDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id), { isVerified: !cur }); };
         window.togglePinned = async (id, cur) => { await updateDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id), { isPinned: !cur }); };
-        window.deleteWorker = async (id) => { if(confirm("Delete worker?")) await deleteDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id)); };
+        window.deleteWorker = async (id) => { 
+            if(confirm("Delete worker?")) {
+                await deleteDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id));
+                if(auth.currentUser && auth.currentUser.uid) loadUserProfile();
+            }
+        };
         
-        // Populate city dropdowns (filter + gig select + manual)
+        // Support Function
+        window.openSupportChat = () => {
+            window.open(`https://wa.me/${supportNumber}?text=${encodeURIComponent("Assalam u Alaikum! Kamm Kar Support Team, mujhe help chahiye.")}`, '_blank');
+        };
+        
+        // Load User Profile and their gigs
+        async function loadUserProfile() {
+            if(!auth.currentUser) {
+                showPage('auth');
+                return;
+            }
+            
+            // Update profile header
+            document.getElementById('profile-user-name').innerText = auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
+            document.getElementById('profile-user-email').innerText = auth.currentUser.email;
+            
+            // Get user's gigs
+            const userGigs = allWorkers.filter(w => w.userId === auth.currentUser.uid);
+            document.getElementById('profile-gig-count').innerText = userGigs.length;
+            
+            // Calculate total reviews and avg rating
+            let totalReviews = 0;
+            let totalStars = 0;
+            userGigs.forEach(gig => {
+                if(gig.ratings && gig.ratings.length) {
+                    totalReviews += gig.ratings.length;
+                    totalStars += gig.ratings.reduce((sum, r) => sum + r.stars, 0);
+                }
+            });
+            document.getElementById('profile-review-count').innerText = totalReviews;
+            document.getElementById('profile-avg-rating').innerText = totalReviews > 0 ? (totalStars / totalReviews).toFixed(1) : "0.0";
+            
+            // Render user's gigs
+            renderUserGigs(userGigs);
+        }
+        
+        function renderUserGigs(gigs) {
+            const container = document.getElementById('my-gigs-list');
+            if(!gigs.length) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-24">
+                        <div class="bg-white rounded-[3rem] p-12 shadow-sm border">
+                            <i class="fas fa-box-open text-6xl text-slate-300 mb-4"></i>
+                            <p class="text-slate-400 font-black text-xl">Koi gig nahi mili</p>
+                            <button onclick="showPage('post-gig')" class="mt-6 bg-emerald-600 text-white px-8 py-4 rounded-2xl font-black hover:bg-emerald-700 transition-all">
+                                <i class="fas fa-plus-circle mr-2"></i> Pehli Gig Banayein
+                            </button>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = gigs.map(gig => `
+                <div class="bg-white rounded-[2rem] shadow-lg border p-6 relative group hover:shadow-xl transition-all">
+                    ${gig.isPinned ? '<div class="absolute top-4 left-4"><span class="pinned-badge">⭐ Featured</span></div>' : ''}
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="text-xl font-black">${gig.name} ${gig.isVerified ? '<i class="fas fa-check-circle blue-tick"></i>' : ''}</h4>
+                            <span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-black inline-block mt-2">${gig.skill}</span>
+                        </div>
+                        <div class="bg-slate-900 text-white px-3 py-2 rounded-xl text-center">
+                            <span class="text-lg font-black">★ ${gig.avgRating?.toFixed(1)||0}</span>
+                            <div class="text-[9px]">${gig.ratings?.length||0} reviews</div>
+                        </div>
+                    </div>
+                    <div class="my-4 space-y-2 text-sm">
+                        <p><i class="fas fa-calendar-alt w-6 text-emerald-600"></i> ${gig.exp} years exp</p>
+                        <p><i class="fas fa-map-marker-alt w-6 text-rose-500"></i> ${gig.city}</p>
+                        <p><i class="fab fa-whatsapp w-6 text-green-500"></i> ${gig.phone}</p>
+                    </div>
+                    <div class="flex justify-between items-center pt-4 border-t mt-4">
+                        <div>
+                            <span class="text-xs uppercase text-slate-400">Visit fee</span>
+                            <p class="text-2xl font-black text-emerald-600">Rs.${gig.price}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="openPromoModal('${gig.id}')" class="bg-amber-100 hover:bg-amber-200 p-3 rounded-xl transition-all" title="Promote Gig">
+                                <i class="fas fa-crown text-amber-600"></i>
+                            </button>
+                            <button onclick="deleteWorker('${gig.id}')" class="bg-red-100 hover:bg-red-200 p-3 rounded-xl transition-all" title="Delete Gig">
+                                <i class="fas fa-trash text-red-600"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Populate city dropdowns
         function populateCityDropdowns() {
             const cityFilter = document.getElementById('city-filter');
             const gigSelect = document.getElementById('gig-city-select');
-            cityFilter.innerHTML = '<option value="All">All Cities (170+)</option>';
-            gigSelect.innerHTML = '<option value="">-- Select City --</option>';
-            uniqueCities.forEach(city => {
-                cityFilter.innerHTML += `<option value="${city}">${city}</option>`;
-                gigSelect.innerHTML += `<option value="${city}">${city}</option>`;
-            });
+            if(cityFilter) {
+                cityFilter.innerHTML = '<option value="All">All Cities (170+)</option>';
+                uniqueCities.forEach(city => { cityFilter.innerHTML += `<option value="${city}">${city}</option>`; });
+            }
+            if(gigSelect) {
+                gigSelect.innerHTML = '<option value="">-- Select City --</option>';
+                uniqueCities.forEach(city => { gigSelect.innerHTML += `<option value="${city}">${city}</option>`; });
+            }
         }
         
         // Save Gig with manual city OR selected city
@@ -261,6 +442,8 @@
             showPage('hire');
             document.getElementById('manual-city-input').value = '';
             document.getElementById('gig-city-select').value = '';
+            document.getElementById('gig-name').value = '';
+            document.getElementById('gig-phone').value = '';
         };
         
         window.globalSearch = () => { const val = document.getElementById('home-search').value.toLowerCase(); showPage('hire'); const filtered = allWorkers.filter(w => w.city?.toLowerCase().includes(val) || w.skill?.toLowerCase().includes(val) || w.name?.toLowerCase().includes(val)); renderWorkers(filtered); };
@@ -268,21 +451,23 @@
         window.applyFilters = () => { const city = document.getElementById('city-filter').value; const skill = document.getElementById('skill-filter').value; let filtered = allWorkers; if(city !== 'All') filtered = filtered.filter(w => w.city === city); if(skill !== 'All') filtered = filtered.filter(w => w.skill === skill); renderWorkers(filtered); };
         
         function renderWorkers(workers) {
-            const container = document.getElementById('worker-list'); document.getElementById('worker-count').innerText = workers.length;
+            const container = document.getElementById('worker-list'); 
+            document.getElementById('worker-count').innerText = workers.length;
             if(!workers.length) { container.innerHTML = '<div class="col-span-full text-center py-24 text-slate-400 font-black">Koi expert nahi mila</div>'; return; }
             const sorted = [...workers].sort((a,b)=> (b.isPinned?1:0)-(a.isPinned?1:0));
             container.innerHTML = sorted.map(w => `
                 <div class="bg-white rounded-[3rem] shadow-lg border p-8 relative">
                     ${w.isPinned ? '<div class="absolute top-4 left-4"><span class="pinned-badge">⭐ Featured</span></div>' : ''}
-                    <div class="flex justify-between items-start"><div><h4 class="text-2xl font-black">${w.name} ${w.isVerified ? '<i class="fas fa-check-circle blue-tick"></i>' : ''}</h4><span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-black">${w.skill}</span></div><div onclick="openReviewsModal('${w.id}')" class="bg-slate-900 text-white px-4 py-2 rounded-2xl text-center cursor-pointer"><span class="text-xl font-black">★ ${w.avgRating?.toFixed(1)||0}</span><div class="text-[9px]">${w.ratings?.length||0} reviews</div></div></div>
-                    <div class="my-4 space-y-2 text-sm"><p><i class="fas fa-calendar-alt w-6"></i> ${w.exp} years exp</p><p><i class="fas fa-map-marker-alt w-6 text-rose-500"></i> ${w.city}</p></div>
-                    <div class="flex justify-between items-center pt-4 border-t"><div><span class="text-xs uppercase">Visit fee</span><p class="text-2xl font-black">Rs.${w.price}</p></div><div class="flex gap-2">${auth.currentUser?.uid === w.userId ? `<button onclick="openPromoModal('${w.id}')" class="bg-amber-100 p-3 rounded-xl"><i class="fas fa-crown"></i></button><button onclick="deleteWorker('${w.id}')" class="bg-red-100 p-3 rounded-xl"><i class="fas fa-trash"></i></button>` : ''}<button onclick="handleHire('${w.id}','${w.phone}')" class="bg-emerald-600 text-white px-6 py-3 rounded-2xl font-black flex gap-2"><i class="fab fa-whatsapp"></i>Raabta</button></div></div>
+                    <div class="flex justify-between items-start"><div><h4 class="text-2xl font-black">${w.name} ${w.isVerified ? '<i class="fas fa-check-circle blue-tick"></i>' : ''}</h4><span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-black inline-block mt-2">${w.skill}</span></div><div onclick="openReviewsModal('${w.id}')" class="bg-slate-900 text-white px-4 py-2 rounded-2xl text-center cursor-pointer"><span class="text-xl font-black">★ ${w.avgRating?.toFixed(1)||0}</span><div class="text-[9px]">${w.ratings?.length||0} reviews</div></div></div>
+                    <div class="my-4 space-y-2 text-sm"><p><i class="fas fa-calendar-alt w-6 text-emerald-600"></i> ${w.exp} years exp</p><p><i class="fas fa-map-marker-alt w-6 text-rose-500"></i> ${w.city}</p></div>
+                    <div class="flex justify-between items-center pt-4 border-t"><div><span class="text-xs uppercase text-slate-400">Visit fee</span><p class="text-2xl font-black text-emerald-600">Rs.${w.price}</p></div><div class="flex gap-2">${auth.currentUser?.uid === w.userId ? `<button onclick="openPromoModal('${w.id}')" class="bg-amber-100 p-3 rounded-xl"><i class="fas fa-crown text-amber-600"></i></button><button onclick="deleteWorker('${w.id}')" class="bg-red-100 p-3 rounded-xl"><i class="fas fa-trash text-red-600"></i></button>` : ''}<button onclick="handleHire('${w.id}','${w.phone}')" class="bg-emerald-600 text-white px-6 py-3 rounded-2xl font-black flex gap-2"><i class="fab fa-whatsapp"></i>Raabta</button></div></div>
                 </div>
             `).join('');
         }
         
         function renderAdminTable(workers) {
             const tbody = document.getElementById('admin-worker-table');
+            if(!tbody) return;
             tbody.innerHTML = workers.map(w => `
                 <tr class="border-b"><td class="p-6"><p class="font-black">${w.name}</p><p class="text-xs">${w.skill}</p></td><td class="p-6 font-bold">${w.city}</td><td><button onclick="toggleVerification('${w.id}',${w.isVerified})" class="px-4 py-1 rounded-full text-xs ${w.isVerified ? 'bg-green-100 text-green-700' : 'bg-gray-100'}">${w.isVerified ? 'Verified' : 'Verify'}</button></td><td><button onclick="togglePinned('${w.id}',${w.isPinned})" class="px-4 py-1 rounded-full text-xs ${w.isPinned ? 'bg-amber-100 text-amber-700' : 'bg-gray-100'}">${w.isPinned ? 'Pinned' : 'Pin'}</button></td><td class="text-right"><button onclick="deleteWorker('${w.id}')" class="text-red-500"><i class="fas fa-trash-alt"></i></button></td></tr>
             `).join('');
@@ -305,18 +490,37 @@
         window.toggleAuthMode=(mode)=>{ authMode=mode; document.getElementById('signup-fields').classList.toggle('hidden',mode==='login'); document.getElementById('auth-submit-btn').innerText=mode==='login'?'Login Karein':'Register Karein'; };
         window.handleAuth=async(e)=>{ e.preventDefault(); const email=document.getElementById('auth-email').value; const pass=document.getElementById('auth-password').value; const name=document.getElementById('auth-name').value; try{ if(authMode==='signup'){ const res=await createUserWithEmailAndPassword(auth,email,pass); await updateProfile(res.user,{displayName:name}); } else await signInWithEmailAndPassword(auth,email,pass); showPage('home'); } catch(err){ alert(err.message); } };
         window.logout=()=>signOut(auth);
+        window.openSupportChat = () => { window.open(`https://wa.me/${supportNumber}?text=${encodeURIComponent("Assalam u Alaikum! Kamm Kar Support Team, mujhe help chahiye.")}`, '_blank'); };
         
         onAuthStateChanged(auth,(user)=>{
-            const deskDiv=document.getElementById('auth-buttons-desktop'); const mobDiv=document.getElementById('auth-buttons-mobile');
-            if(user){ deskDiv.innerHTML=`<button onclick="showPage('post-gig')" class="bg-white text-emerald-600 px-6 py-2.5 rounded-2xl font-black">Post Gig</button><button onclick="logout()" class="ml-3 text-white/80"><i class="fas fa-sign-out-alt"></i></button>`; mobDiv.innerHTML=`<button onclick="showPage('post-gig');toggleMobileMenu()" class="w-full bg-white text-emerald-600 py-4 rounded-2xl font-black">Post Gig</button><button onclick="logout();" class="w-full bg-rose-500/30 py-4 rounded-2xl font-black mt-2">Logout</button>`; }
-            else { deskDiv.innerHTML=`<button onclick="showPage('auth')" class="bg-white text-emerald-600 px-8 py-2.5 rounded-2xl font-black">Login</button>`; mobDiv.innerHTML=`<button onclick="showPage('auth')" class="w-full bg-white text-emerald-600 py-4 rounded-2xl font-black">Login</button>`; }
+            const deskDiv=document.getElementById('auth-buttons-desktop'); 
+            const mobDiv=document.getElementById('auth-buttons-mobile');
+            if(user){ 
+                deskDiv.innerHTML=`<button onclick="showPage('post-gig')" class="bg-white text-emerald-600 px-6 py-2.5 rounded-2xl font-black">Post Gig</button><button onclick="logout()" class="ml-3 text-white/80"><i class="fas fa-sign-out-alt"></i></button>`; 
+                mobDiv.innerHTML=`<button onclick="showPage('post-gig');toggleMobileMenu()" class="w-full bg-white text-emerald-600 py-4 rounded-2xl font-black">Post Gig</button><button onclick="logout();" class="w-full bg-rose-500/30 py-4 rounded-2xl font-black mt-2">Logout</button>`;
+                if(document.getElementById('page-profile') && !document.getElementById('page-profile').classList.contains('hidden')) {
+                    loadUserProfile();
+                }
+            }
+            else { 
+                deskDiv.innerHTML=`<button onclick="showPage('auth')" class="bg-white text-emerald-600 px-8 py-2.5 rounded-2xl font-black">Login</button>`; 
+                mobDiv.innerHTML=`<button onclick="showPage('auth')" class="w-full bg-white text-emerald-600 py-4 rounded-2xl font-black">Login</button>`;
+            }
         });
         
         // Real-time listeners
-        onSnapshot(collection(db,'artifacts',appIdConst,'public','data','workers'),(snap)=>{ allWorkers=snap.docs.map(d=>({id:d.id,...d.data()})); renderWorkers(allWorkers); renderAdminTable(allWorkers); document.getElementById('loading-overlay')?.classList.add('hidden'); });
+        onSnapshot(collection(db,'artifacts',appIdConst,'public','data','workers'),(snap)=>{ 
+            allWorkers=snap.docs.map(d=>({id:d.id,...d.data()})); 
+            renderWorkers(allWorkers); 
+            renderAdminTable(allWorkers); 
+            document.getElementById('loading-overlay')?.classList.add('hidden');
+            if(auth.currentUser && document.getElementById('page-profile') && !document.getElementById('page-profile').classList.contains('hidden')) {
+                loadUserProfile();
+            }
+        });
         populateCityDropdowns();
         
-        // Additional manual city sync on dropdown select
+        // Manual city sync
         document.getElementById('gig-city-select')?.addEventListener('change',(e)=>{ if(e.target.value) document.getElementById('manual-city-input').value=e.target.value; });
     </script>
 </body>
