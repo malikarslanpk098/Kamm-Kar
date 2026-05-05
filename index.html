@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Kamm Kar - Pakistan's Local Services Experts</title>
+    <title>Kamm Kar - Pakistan's #1 Local Services Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <style>
@@ -12,31 +12,33 @@
         .page-section { min-height: 80vh; }
         .blue-tick { color: #1d9bf0; margin-left: 4px; font-size: 0.9em; }
         .pinned-badge { background: #fef3c7; color: #92400e; padding: 2px 12px; border-radius: 99px; font-size: 10px; font-weight: 800; border: 1px solid #f59e0b; }
-        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 20px; }
-        .city-tag { transition: all 0.2s ease; }
-        .city-tag:hover { transform: translateY(-2px); background-color: #ecfdf5; border-color: #10b981; }
+        .verified-badge { background: #d1fae5; color: #065f46; padding: 2px 12px; border-radius: 99px; font-size: 10px; font-weight: 800; }
         .floating-support {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 1000;
-            background: #25D366;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            cursor: pointer;
+            position: fixed; bottom: 30px; right: 30px; z-index: 1000; background: #25D366;
+            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer;
             transition: all 0.3s ease;
         }
         .floating-support:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
         .profile-stats-card { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
-        .referral-card { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .referral-card { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
         .copy-btn { transition: all 0.2s ease; }
         .copy-btn:active { transform: scale(0.95); }
+        .scroll-to-top {
+            position: fixed; bottom: 30px; left: 30px; z-index: 1000;
+            background: #059669; width: 50px; height: 50px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .scroll-to-top:hover { transform: translateY(-3px); background: #047857; }
+        .category-card { transition: all 0.3s ease; }
+        .category-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .worker-card { transition: all 0.3s ease; }
+        .worker-card:hover { transform: translateY(-5px); }
+        .animate-pulse-slow { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .gradient-text { background: linear-gradient(135deg, #059669, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-pattern { background-image: radial-gradient(#10b981 1px, transparent 1px); background-size: 30px 30px; }
     </style>
 </head>
 <body class="bg-slate-50 font-sans text-slate-900">
@@ -51,6 +53,11 @@
         <i class="fab fa-whatsapp text-white text-3xl"></i>
     </div>
 
+    <!-- SCROLL TO TOP BUTTON -->
+    <div class="scroll-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <i class="fas fa-arrow-up text-white text-xl"></i>
+    </div>
+
     <!-- NAVIGATION -->
     <nav class="sticky top-0 z-50 bg-emerald-700 text-white shadow-xl p-4">
         <div class="container mx-auto flex justify-between items-center">
@@ -58,13 +65,16 @@
                 <i class="fas fa-tools mr-2 text-emerald-300"></i>KAMM KAR
             </h1>
             <div class="hidden md:flex space-x-6 items-center font-bold">
-                <button onclick="showPage('home')" class="hover:text-emerald-200">Home</button>
-                <button onclick="showPage('hire')" class="hover:text-emerald-200">Find Workers</button>
-                <button onclick="showPage('profile')" class="hover:text-emerald-200">
+                <button onclick="showPage('home')" class="hover:text-emerald-200 transition px-3 py-2 rounded-lg hover:bg-emerald-600/30">Home</button>
+                <button onclick="showPage('hire')" class="hover:text-emerald-200 transition px-3 py-2 rounded-lg hover:bg-emerald-600/30">Find Workers</button>
+                <button onclick="showPage('profile')" class="hover:text-emerald-200 transition px-3 py-2 rounded-lg hover:bg-emerald-600/30">
                     <i class="fas fa-user-circle mr-1"></i> My Gigs
                 </button>
-                <button onclick="showPage('referral')" class="hover:text-emerald-200">
-                    <i class="fas fa-share-alt mr-1"></i> Refer & Earn
+                <button onclick="showPage('referral')" class="hover:text-emerald-200 transition px-3 py-2 rounded-lg hover:bg-emerald-600/30">
+                    <i class="fas fa-share-alt mr-1"></i> Refer & Invite
+                </button>
+                <button onclick="showPage('blog')" class="hover:text-emerald-200 transition px-3 py-2 rounded-lg hover:bg-emerald-600/30">
+                    <i class="fas fa-newspaper mr-1"></i> Tips
                 </button>
                 <button onclick="checkAdminCode()" class="bg-red-500/20 px-3 py-1 rounded-lg text-red-100 hover:bg-red-500/40 border border-red-400/30">
                     <i class="fas fa-user-shield mr-1"></i> Admin
@@ -75,262 +85,304 @@
                 <i class="fas fa-bars"></i>
             </button>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-emerald-800 p-4 mt-2 space-y-4 rounded-2xl shadow-inner">
-            <button onclick="showPage('home'); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-emerald-600">Home</button>
-            <button onclick="showPage('hire'); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-emerald-600">Hire Worker</button>
-            <button onclick="showPage('profile'); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-emerald-600">My Gigs</button>
-            <button onclick="showPage('referral'); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-emerald-600">Refer & Earn</button>
-            <button onclick="checkAdminCode(); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-red-400 text-red-200 font-bold">Admin Dashboard</button>
-            <div id="auth-buttons-mobile" class="space-y-4 pt-2"></div>
+        <div id="mobile-menu" class="hidden md:hidden bg-emerald-800 p-4 mt-2 space-y-3 rounded-2xl shadow-inner">
+            <button onclick="showPage('home'); toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded-xl hover:bg-emerald-700 transition">🏠 Home</button>
+            <button onclick="showPage('hire'); toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded-xl hover:bg-emerald-700 transition">🔧 Find Workers</button>
+            <button onclick="showPage('profile'); toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded-xl hover:bg-emerald-700 transition">👤 My Gigs</button>
+            <button onclick="showPage('referral'); toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded-xl hover:bg-emerald-700 transition">📤 Refer & Invite</button>
+            <button onclick="showPage('blog'); toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded-xl hover:bg-emerald-700 transition">💡 Tips</button>
+            <button onclick="checkAdminCode(); toggleMobileMenu()" class="block w-full text-left py-3 px-4 rounded-xl bg-red-600/30 text-red-200 font-bold">🛡️ Admin</button>
+            <div id="auth-buttons-mobile" class="space-y-3 pt-3"></div>
         </div>
     </nav>
 
     <main id="main-content" class="container mx-auto p-4 md:p-6">
 
-        <!-- AUTH PAGE (with referral code support) -->
+        <!-- AUTH PAGE -->
         <section id="page-auth" class="page-section hidden">
-            <div class="max-w-md mx-auto bg-white p-10 rounded-[2.5rem] shadow-2xl mt-10 border border-slate-100">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-3xl shadow-2xl mt-10 border border-slate-100">
+                <div class="text-center mb-8">
+                    <i class="fas fa-tools text-5xl text-emerald-600 mb-3"></i>
+                    <h2 class="text-2xl font-black">Welcome to Kamm Kar</h2>
+                    <p class="text-slate-400 text-sm">Pakistan's trusted local services platform</p>
+                </div>
                 <div class="flex justify-center mb-8 bg-slate-100 p-1.5 rounded-2xl">
                     <button onclick="toggleAuthMode('login')" id="btn-login-mode" class="flex-1 py-3 rounded-xl font-black transition bg-white text-emerald-600 shadow-sm">Login</button>
                     <button onclick="toggleAuthMode('signup')" id="btn-signup-mode" class="flex-1 py-3 rounded-xl font-black transition text-slate-500">Register</button>
                 </div>
-                <form onsubmit="handleAuth(event)" class="space-y-5">
-                    <div id="signup-fields" class="hidden">
-                        <label class="block text-xs font-black text-slate-400 uppercase ml-1 mb-1">Apna Naam</label>
-                        <input type="text" id="auth-name" class="w-full border-2 border-slate-50 rounded-2xl p-4 focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
-                        <label class="block text-xs font-black text-slate-400 uppercase ml-1 mb-1 mt-3">Referral Code (Optional)</label>
-                        <input type="text" id="referral-code-input" placeholder="Friend ka referral code" class="w-full border-2 border-slate-50 rounded-2xl p-4 focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
-                        <p class="text-[10px] text-slate-400 mt-1"><i class="fas fa-gift"></i> Kisi ne invite kiya? Unka code yahan daalein!</p>
+                <form onsubmit="handleAuth(event)" class="space-y-4">
+                    <div id="signup-fields" class="hidden space-y-4">
+                        <div>
+                            <label class="block text-xs font-black text-slate-400 uppercase ml-1 mb-1">Full Name</label>
+                            <input type="text" id="auth-name" class="w-full border-2 border-slate-100 rounded-xl p-4 focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50" placeholder="Ahmed Raza">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-slate-400 uppercase ml-1 mb-1">WhatsApp Number</label>
+                            <input type="tel" id="auth-phone" class="w-full border-2 border-slate-100 rounded-xl p-4 focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50" placeholder="03XXXXXXXXX">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-slate-400 uppercase ml-1 mb-1">Referral Code (Optional)</label>
+                            <input type="text" id="referral-code-input" placeholder="Friend ka referral code" class="w-full border-2 border-slate-100 rounded-xl p-4 focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
+                            <p class="text-[10px] text-slate-400 mt-1"><i class="fas fa-gift"></i> Kisi ne invite kiya? Unka code yahan daalein!</p>
+                        </div>
                     </div>
                     <div>
                         <label class="block text-xs font-black text-slate-400 uppercase ml-1 mb-1">Email</label>
-                        <input type="email" id="auth-email" required class="w-full border-2 border-slate-50 rounded-2xl p-4 focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
+                        <input type="email" id="auth-email" required class="w-full border-2 border-slate-100 rounded-xl p-4 focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50" placeholder="you@example.com">
                     </div>
                     <div>
                         <label class="block text-xs font-black text-slate-400 uppercase ml-1 mb-1">Password</label>
-                        <input type="password" id="auth-password" required class="w-full border-2 border-slate-50 rounded-2xl p-4 focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
+                        <input type="password" id="auth-password" required class="w-full border-2 border-slate-100 rounded-xl p-4 focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50" placeholder="••••••••">
                     </div>
-                    <button type="submit" id="auth-submit-btn" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-emerald-700 shadow-xl transition-all active:scale-95">Login / Register</button>
+                    <button type="submit" id="auth-submit-btn" class="w-full bg-emerald-600 text-white py-4 rounded-xl font-black text-lg hover:bg-emerald-700 shadow-xl transition-all active:scale-95">Continue</button>
                 </form>
+                <div class="mt-6 text-center">
+                    <p class="text-xs text-slate-400">By continuing, you agree to Kamm Kar's Terms & Privacy Policy</p>
+                </div>
             </div>
         </section>
 
         <!-- HOME SECTION -->
         <section id="page-home" class="page-section">
-            <div class="text-center py-20 bg-white rounded-[3rem] shadow-sm mb-12 px-6 border border-slate-100 relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none" style="background-image: radial-gradient(#10b981 1px, transparent 1px); background-size: 20px 20px;"></div>
-                <h2 class="text-5xl md:text-7xl font-black text-slate-800 mb-6 tracking-tight">Har Shehar,<br><span class="text-emerald-600">Har Kaam Asaan!</span></h2>
-                <p class="text-slate-400 text-lg md:text-2xl max-w-2xl mx-auto mb-12 font-medium">170+ cities | Verified Experts | Local service at your doorstep</p>
-                <div class="max-w-3xl mx-auto flex flex-col md:flex-row gap-4 p-2 bg-slate-50 rounded-[2rem] shadow-inner border border-slate-100">
-                    <input type="text" id="home-search" placeholder="City, Skill ya Expert naam (e.g: Karachi Plumber)" class="flex-grow bg-transparent px-8 py-5 outline-none font-bold text-xl">
-                    <button onclick="globalSearch()" class="bg-emerald-600 text-white px-12 py-5 rounded-2xl font-black text-xl shadow-2xl hover:bg-emerald-700 transition-all">Search Now</button>
+            <div class="text-center py-16 md:py-20 bg-white rounded-3xl shadow-sm mb-12 px-6 border border-slate-100 relative overflow-hidden">
+                <div class="absolute inset-0 hero-pattern opacity-5 pointer-events-none"></div>
+                <div class="relative z-10">
+                    <span class="inline-block bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-full text-sm font-black mb-4 shadow-sm">🇵🇰 Pakistan's Most Trusted Platform</span>
+                    <h2 class="text-4xl md:text-6xl lg:text-7xl font-black text-slate-800 mb-6 tracking-tight">Har Shehar,<br><span class="gradient-text">Har Kaam Asaan!</span></h2>
+                    <p class="text-slate-400 text-base md:text-xl max-w-2xl mx-auto mb-8 font-medium">Connect with 5000+ verified local service experts across 170+ cities</p>
+                    <div class="max-w-2xl mx-auto flex flex-col md:flex-row gap-3 p-2 bg-slate-50 rounded-2xl shadow-inner border border-slate-100">
+                        <input type="text" id="home-search" placeholder="Search by city, skill, or expert name..." class="flex-grow bg-transparent px-6 py-4 outline-none font-medium text-base">
+                        <button onclick="globalSearch()" class="bg-emerald-600 text-white px-8 py-4 rounded-xl font-black shadow-lg hover:bg-emerald-700 transition-all">Search Now</button>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-6 md:gap-12 mt-10 text-center">
+                        <div><span class="text-2xl md:text-3xl font-black text-emerald-600">5000+</span><p class="text-xs text-slate-400 mt-1">Verified Experts</p></div>
+                        <div><span class="text-2xl md:text-3xl font-black text-emerald-600">170+</span><p class="text-xs text-slate-400 mt-1">Cities Covered</p></div>
+                        <div><span class="text-2xl md:text-3xl font-black text-emerald-600">10k+</span><p class="text-xs text-slate-400 mt-1">Happy Customers</p></div>
+                        <div><span class="text-2xl md:text-3xl font-black text-emerald-600">4.8★</span><p class="text-xs text-slate-400 mt-1">Customer Rating</p></div>
+                    </div>
                 </div>
             </div>
-            <h3 class="text-2xl font-black mb-8 text-slate-800 px-2 flex items-center">
-                <span class="w-8 h-1 bg-emerald-500 mr-3 rounded-full"></span> Popular Services
+            
+            <h3 class="text-xl md:text-2xl font-black mb-6 text-slate-800 flex items-center gap-2">
+                <span class="w-8 h-1 bg-emerald-500 rounded-full"></span> Popular Services
+                <span class="text-xs font-normal text-slate-400">Trending this week</span>
             </h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
-                <div class="bg-white p-6 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border" onclick="filterByCategory('Electrician')"><div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-emerald-600 text-xl"><i class="fas fa-bolt"></i></div><h4 class="font-black text-xs uppercase">Electrician</h4></div>
-                <div class="bg-white p-6 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border" onclick="filterByCategory('Plumber')"><div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-blue-600 text-xl"><i class="fas fa-faucet"></i></div><h4 class="font-black text-xs uppercase">Plumber</h4></div>
-                <div class="bg-white p-6 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border" onclick="filterByCategory('Welder')"><div class="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-orange-600 text-xl"><i class="fas fa-fire"></i></div><h4 class="font-black text-xs uppercase">Welder</h4></div>
-                <div class="bg-white p-6 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border" onclick="filterByCategory('Cleaner')"><div class="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-purple-600 text-xl"><i class="fas fa-broom"></i></div><h4 class="font-black text-xs uppercase">Cleaner</h4></div>
-                <div class="bg-white p-6 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border" onclick="filterByCategory('Gardner')"><div class="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-green-600 text-xl"><i class="fas fa-leaf"></i></div><h4 class="font-black text-xs uppercase">Gardener</h4></div>
-                <div class="bg-white p-6 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border" onclick="filterByCategory('Painter')"><div class="w-12 h-12 bg-pink-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-pink-600 text-xl"><i class="fas fa-paint-roller"></i></div><h4 class="font-black text-xs uppercase">Painter</h4></div>
-                <div class="bg-white p-6 rounded-[2rem] text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border" onclick="filterByCategory('Carpenter')"><div class="w-12 h-12 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-amber-600 text-xl"><i class="fas fa-hammer"></i></div><h4 class="font-black text-xs uppercase">Carpenter</h4></div>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 md:gap-4">
+                <div class="category-card bg-white p-4 md:p-5 rounded-2xl text-center shadow-sm hover:shadow-xl transition-all cursor-pointer border" onclick="filterByCategory('Electrician')"><div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mx-auto mb-2 text-emerald-600 text-xl"><i class="fas fa-bolt"></i></div><h4 class="font-black text-xs">Electrician</h4><p class="text-[9px] text-slate-400 mt-1">1.2k experts</p></div>
+                <div class="category-card bg-white p-4 md:p-5 rounded-2xl text-center shadow-sm hover:shadow-xl transition-all cursor-pointer border" onclick="filterByCategory('Plumber')"><div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mx-auto mb-2 text-blue-600 text-xl"><i class="fas fa-faucet"></i></div><h4 class="font-black text-xs">Plumber</h4><p class="text-[9px] text-slate-400 mt-1">900+ experts</p></div>
+                <div class="category-card bg-white p-4 md:p-5 rounded-2xl text-center shadow-sm hover:shadow-xl transition-all cursor-pointer border" onclick="filterByCategory('Welder')"><div class="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center mx-auto mb-2 text-orange-600 text-xl"><i class="fas fa-fire"></i></div><h4 class="font-black text-xs">Welder</h4><p class="text-[9px] text-slate-400 mt-1">600+ experts</p></div>
+                <div class="category-card bg-white p-4 md:p-5 rounded-2xl text-center shadow-sm hover:shadow-xl transition-all cursor-pointer border" onclick="filterByCategory('Cleaner')"><div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center mx-auto mb-2 text-purple-600 text-xl"><i class="fas fa-broom"></i></div><h4 class="font-black text-xs">Cleaner</h4><p class="text-[9px] text-slate-400 mt-1">800+ experts</p></div>
+                <div class="category-card bg-white p-4 md:p-5 rounded-2xl text-center shadow-sm hover:shadow-xl transition-all cursor-pointer border" onclick="filterByCategory('Gardner')"><div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center mx-auto mb-2 text-green-600 text-xl"><i class="fas fa-leaf"></i></div><h4 class="font-black text-xs">Gardener</h4><p class="text-[9px] text-slate-400 mt-1">400+ experts</p></div>
+                <div class="category-card bg-white p-4 md:p-5 rounded-2xl text-center shadow-sm hover:shadow-xl transition-all cursor-pointer border" onclick="filterByCategory('Painter')"><div class="w-12 h-12 bg-pink-50 rounded-xl flex items-center justify-center mx-auto mb-2 text-pink-600 text-xl"><i class="fas fa-paint-roller"></i></div><h4 class="font-black text-xs">Painter</h4><p class="text-[9px] text-slate-400 mt-1">700+ experts</p></div>
+                <div class="category-card bg-white p-4 md:p-5 rounded-2xl text-center shadow-sm hover:shadow-xl transition-all cursor-pointer border" onclick="filterByCategory('Carpenter')"><div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center mx-auto mb-2 text-amber-600 text-xl"><i class="fas fa-hammer"></i></div><h4 class="font-black text-xs">Carpenter</h4><p class="text-[9px] text-slate-400 mt-1">500+ experts</p></div>
+                <div class="category-card bg-white p-4 md:p-5 rounded-2xl text-center shadow-sm hover:shadow-xl transition-all cursor-pointer border" onclick="filterByCategory('AC Technician')"><div class="w-12 h-12 bg-cyan-50 rounded-xl flex items-center justify-center mx-auto mb-2 text-cyan-600 text-xl"><i class="fas fa-snowflake"></i></div><h4 class="font-black text-xs">AC Tech</h4><p class="text-[9px] text-slate-400 mt-1">300+ experts</p></div>
+            </div>
+
+            <!-- Featured Workers -->
+            <div class="mt-16">
+                <h3 class="text-xl md:text-2xl font-black mb-6 text-slate-800 flex items-center gap-2">
+                    <span class="w-8 h-1 bg-emerald-500 rounded-full"></span> ⭐ Featured Experts
+                    <span class="text-xs font-normal text-slate-400">Top rated professionals</span>
+                </h3>
+                <div id="featured-workers-list" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
             </div>
         </section>
 
-        <!-- HIRE / WORKERS SECTION -->
+        <!-- HIRE SECTION -->
         <section id="page-hire" class="page-section hidden">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
-                <div><h2 class="text-4xl font-black text-slate-800">Available Experts</h2><p class="text-slate-400 font-bold">Total <span id="worker-count" class="text-emerald-600">0</span> Experts Pakistan-wide</p></div>
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-800">Available Experts</h2>
+                    <p class="text-slate-400 font-medium mt-1">Total <span id="worker-count" class="text-emerald-600 font-black">0</span> professionals ready to serve you</p>
+                </div>
                 <div class="flex flex-wrap gap-3">
-                    <div class="bg-white px-5 py-3 rounded-2xl shadow-sm border flex items-center gap-2">
-                        <i class="fas fa-city text-emerald-500"></i>
-                        <select id="city-filter" onchange="applyFilters()" class="outline-none font-black text-slate-700 bg-transparent text-sm min-w-[140px]">
+                    <div class="bg-white px-4 py-2 rounded-xl shadow-sm border flex items-center gap-2">
+                        <i class="fas fa-city text-emerald-500 text-sm"></i>
+                        <select id="city-filter" onchange="applyFilters()" class="outline-none font-medium text-slate-700 bg-transparent text-sm min-w-[130px]">
                             <option value="All">All Cities (170+)</option>
                         </select>
                     </div>
-                    <div class="bg-white px-5 py-3 rounded-2xl shadow-sm border flex items-center gap-2">
-                        <i class="fas fa-cog text-emerald-500"></i>
-                        <select id="skill-filter" onchange="applyFilters()" class="outline-none font-black text-slate-700 bg-transparent text-sm">
+                    <div class="bg-white px-4 py-2 rounded-xl shadow-sm border flex items-center gap-2">
+                        <i class="fas fa-cog text-emerald-500 text-sm"></i>
+                        <select id="skill-filter" onchange="applyFilters()" class="outline-none font-medium text-slate-700 bg-transparent text-sm">
                             <option value="All">All Skills</option>
-                            <option>Electrician</option><option>Plumber</option><option>Welder</option><option>Cleaner</option><option>Gardner</option><option>Painter</option><option>Carpenter</option><option>Other</option>
+                            <option>Electrician</option><option>Plumber</option><option>Welder</option><option>Cleaner</option><option>Gardner</option><option>Painter</option><option>Carpenter</option><option>AC Technician</option><option>Other</option>
+                        </select>
+                    </div>
+                    <div class="bg-white px-4 py-2 rounded-xl shadow-sm border flex items-center gap-2">
+                        <i class="fas fa-sort-amount-down text-emerald-500 text-sm"></i>
+                        <select id="sort-filter" onchange="applyFilters()" class="outline-none font-medium text-slate-700 bg-transparent text-sm">
+                            <option value="default">Default</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="rating">Top Rated</option>
                         </select>
                     </div>
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="worker-list"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="worker-list"></div>
         </section>
 
-        <!-- PROFILE / MY GIGS SECTION -->
+        <!-- PROFILE PAGE -->
         <section id="page-profile" class="page-section hidden">
             <div class="max-w-6xl mx-auto">
-                <div class="profile-stats-card rounded-[2.5rem] p-8 text-white mb-10 shadow-2xl">
+                <div class="profile-stats-card rounded-2xl p-6 md:p-8 text-white mb-8 shadow-xl">
                     <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                         <div class="flex items-center gap-5">
-                            <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center text-4xl">
+                            <div class="w-16 h-16 md:w-20 md:h-20 bg-white/20 rounded-full flex items-center justify-center text-3xl md:text-4xl">
                                 <i class="fas fa-user-tie"></i>
                             </div>
                             <div>
-                                <h2 class="text-3xl font-black" id="profile-user-name">Loading...</h2>
-                                <p class="text-emerald-100"><i class="fas fa-envelope mr-2"></i><span id="profile-user-email">-</span></p>
+                                <h2 class="text-2xl md:text-3xl font-black" id="profile-user-name">Loading...</h2>
+                                <p class="text-emerald-100 text-sm"><i class="fas fa-envelope mr-2"></i><span id="profile-user-email">-</span></p>
+                                <p class="text-emerald-100 text-sm mt-1"><i class="fab fa-whatsapp mr-2"></i><span id="profile-user-phone">Not added</span></p>
                             </div>
                         </div>
-                        <div class="flex gap-8 text-center">
-                            <div><p class="text-3xl font-black" id="profile-gig-count">0</p><p class="text-sm opacity-80">Total Gigs</p></div>
-                            <div><p class="text-3xl font-black" id="profile-review-count">0</p><p class="text-sm opacity-80">Total Reviews</p></div>
-                            <div><p class="text-3xl font-black" id="profile-avg-rating">0.0</p><p class="text-sm opacity-80">★ Avg Rating</p></div>
+                        <div class="flex gap-6 md:gap-8 text-center">
+                            <div><p class="text-2xl md:text-3xl font-black" id="profile-gig-count">0</p><p class="text-xs opacity-80">Total Gigs</p></div>
+                            <div><p class="text-2xl md:text-3xl font-black" id="profile-review-count">0</p><p class="text-xs opacity-80">Reviews</p></div>
+                            <div><p class="text-2xl md:text-3xl font-black" id="profile-avg-rating">0.0</p><p class="text-xs opacity-80">★ Rating</p></div>
+                            <div><p class="text-2xl md:text-3xl font-black" id="profile-views-count">0</p><p class="text-xs opacity-80">Profile Views</p></div>
                         </div>
-                        <button onclick="showPage('post-gig')" class="bg-white text-emerald-700 px-8 py-4 rounded-2xl font-black hover:bg-emerald-50 transition-all shadow-lg">
+                        <button onclick="showPage('post-gig')" class="bg-white text-emerald-700 px-6 py-3 rounded-xl font-black hover:bg-emerald-50 transition-all shadow-md text-sm md:text-base">
                             <i class="fas fa-plus-circle mr-2"></i> New Gig
                         </button>
                     </div>
                 </div>
-                <h3 class="text-2xl font-black mb-6 text-slate-800 flex items-center gap-3">
-                    <i class="fas fa-briefcase text-emerald-600"></i> Meri Gigs
+                <h3 class="text-xl md:text-2xl font-black mb-5 text-slate-800 flex items-center gap-3">
+                    <i class="fas fa-briefcase text-emerald-600"></i> My Service Listings
                 </h3>
-                <div id="my-gigs-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+                <div id="my-gigs-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
         </section>
 
-        <!-- REFERRAL SECTION -->
+        <!-- REFERRAL SECTION (No earning mentions) -->
         <section id="page-referral" class="page-section hidden">
             <div class="max-w-4xl mx-auto">
-                <!-- Referral Header Card -->
-                <div class="referral-card rounded-[2.5rem] p-8 text-white mb-8 shadow-2xl text-center">
-                    <i class="fas fa-gift text-5xl mb-4 opacity-90"></i>
-                    <h2 class="text-3xl md:text-5xl font-black mb-3">Refer & Earn! 🎁</h2>
-                    <p class="text-lg opacity-90">Apne dosto ko invite karein aur jab wo register karein to dono ko milega reward!</p>
+                <div class="referral-card rounded-2xl p-6 md:p-8 text-white mb-8 shadow-xl text-center">
+                    <i class="fas fa-users text-4xl md:text-5xl mb-4 opacity-90"></i>
+                    <h2 class="text-2xl md:text-4xl font-black mb-3">Invite Friends! 🤝</h2>
+                    <p class="text-base md:text-lg opacity-90">Share Kamm Kar with your friends and help them find trusted local services</p>
                 </div>
-
-                <!-- User's Referral Stats -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white rounded-2xl p-6 text-center shadow-md border">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white rounded-xl p-6 text-center shadow-md border">
                         <i class="fas fa-link text-3xl text-emerald-600 mb-2"></i>
-                        <p class="text-slate-400 text-sm uppercase font-bold">Your Referral Code</p>
-                        <p class="text-3xl font-black font-mono tracking-wider mt-2" id="user-referral-code">------</p>
+                        <p class="text-slate-400 text-xs uppercase font-bold tracking-wide">Your Invite Code</p>
+                        <p class="text-2xl font-black font-mono tracking-wider mt-2" id="user-referral-code">------</p>
                     </div>
-                    <div class="bg-white rounded-2xl p-6 text-center shadow-md border">
-                        <i class="fas fa-users text-3xl text-blue-600 mb-2"></i>
-                        <p class="text-slate-400 text-sm uppercase font-bold">Total Referrals</p>
-                        <p class="text-4xl font-black text-blue-600 mt-2" id="total-referrals">0</p>
-                    </div>
-                    <div class="bg-white rounded-2xl p-6 text-center shadow-md border">
-                        <i class="fas fa-coins text-3xl text-yellow-600 mb-2"></i>
-                        <p class="text-slate-400 text-sm uppercase font-bold">Rewards Earned</p>
-                        <p class="text-4xl font-black text-yellow-600 mt-2" id="rewards-earned">0</p>
+                    <div class="bg-white rounded-xl p-6 text-center shadow-md border">
+                        <i class="fas fa-user-friends text-3xl text-blue-600 mb-2"></i>
+                        <p class="text-slate-400 text-xs uppercase font-bold tracking-wide">Friends Joined</p>
+                        <p class="text-3xl font-black text-blue-600 mt-2" id="total-referrals">0</p>
                     </div>
                 </div>
-
-                <!-- Share Your Link Card -->
-                <div class="bg-white rounded-[2rem] shadow-xl border p-8 mb-8">
-                    <h3 class="text-2xl font-black mb-4 flex items-center gap-2">
-                        <i class="fas fa-share-alt text-emerald-600"></i> Apna Link Share Karein
+                <div class="bg-white rounded-2xl shadow-xl border p-6 md:p-8 mb-8">
+                    <h3 class="text-xl md:text-2xl font-black mb-4 flex items-center gap-2">
+                        <i class="fas fa-share-alt text-emerald-600"></i> Share Your Invite Link
                     </h3>
-                    <p class="text-slate-500 mb-4">Jab bhi koi aapke link se register karega, aapko milega <span class="font-black text-emerald-600">50% commission</span> on their first gig!</p>
                     <div class="flex flex-col md:flex-row gap-4">
-                        <div class="flex-1 bg-slate-50 rounded-2xl p-4 border-2 border-dashed border-emerald-300">
-                            <code id="referral-full-link" class="text-sm break-all text-emerald-700 font-mono">Loading...</code>
+                        <div class="flex-1 bg-slate-50 rounded-xl p-3 border-2 border-dashed border-emerald-300">
+                            <code id="referral-full-link" class="text-xs md:text-sm break-all text-emerald-700 font-mono">Loading...</code>
                         </div>
-                        <button onclick="copyReferralLink()" class="copy-btn bg-emerald-600 text-white px-8 py-4 rounded-2xl font-black hover:bg-emerald-700 transition-all flex items-center gap-2 justify-center">
+                        <button onclick="copyReferralLink()" class="copy-btn bg-emerald-600 text-white px-6 py-3 rounded-xl font-black hover:bg-emerald-700 transition-all flex items-center gap-2 justify-center text-sm">
                             <i class="fas fa-copy"></i> Copy Link
                         </button>
                     </div>
+                    <div class="flex flex-wrap gap-3 mt-5 justify-center">
+                        <button onclick="shareOnWhatsApp()" class="bg-green-500 text-white px-5 py-2.5 rounded-xl font-black text-sm"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+                        <button onclick="shareOnFacebook()" class="bg-blue-600 text-white px-5 py-2.5 rounded-xl font-black text-sm"><i class="fab fa-facebook"></i> Facebook</button>
+                        <button onclick="shareOnTwitter()" class="bg-sky-500 text-white px-5 py-2.5 rounded-xl font-black text-sm"><i class="fab fa-twitter"></i> Twitter</button>
+                    </div>
                 </div>
-
-                <!-- How it Works -->
-                <div class="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-[2rem] p-8">
-                    <h3 class="text-xl font-black mb-6 flex items-center gap-2">
-                        <i class="fas fa-question-circle text-emerald-600"></i> Kaam Karta Hai?
+                <div class="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-6 md:p-8">
+                    <h3 class="text-lg md:text-xl font-black mb-5 flex items-center gap-2">
+                        <i class="fas fa-question-circle text-emerald-600"></i> How it Works?
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="text-center">
-                            <div class="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center text-white text-2xl font-black mx-auto mb-3">1</div>
-                            <p class="font-black">Copy apna referral link</p>
-                            <p class="text-sm text-slate-500">Link copy karein share karne ke liye</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center text-white text-2xl font-black mx-auto mb-3">2</div>
-                            <p class="font-black">Dosto ko bhejein</p>
-                            <p class="text-sm text-slate-500">WhatsApp, Facebook, Instagram par share karein</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center text-white text-2xl font-black mx-auto mb-3">3</div>
-                            <p class="font-black">Reward paayein</p>
-                            <p class="text-sm text-slate-500">Har registration par commission milega!</p>
-                        </div>
+                        <div class="text-center"><div class="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center text-white text-xl font-black mx-auto mb-2">1</div><p class="font-black text-sm">Copy Invite Link</p><p class="text-xs text-slate-500">Apna unique invite link copy karein</p></div>
+                        <div class="text-center"><div class="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center text-white text-xl font-black mx-auto mb-2">2</div><p class="font-black text-sm">Share with Friends</p><p class="text-xs text-slate-500">WhatsApp, Facebook, Instagram par share karein</p></div>
+                        <div class="text-center"><div class="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center text-white text-xl font-black mx-auto mb-2">3</div><p class="font-black text-sm">Friends Join</p><p class="text-xs text-slate-500">Jab wo register karein to aapko credit milega</p></div>
                     </div>
                 </div>
+                <div class="mt-8 bg-white rounded-2xl shadow-sm border p-6">
+                    <h3 class="text-lg md:text-xl font-black mb-4 flex items-center gap-2"><i class="fas fa-history text-emerald-600"></i> Invite History</h3>
+                    <div id="referral-history-list" class="space-y-3 max-h-64 overflow-y-auto"></div>
+                </div>
+            </div>
+        </section>
 
-                <!-- Referral History -->
-                <div class="mt-8 bg-white rounded-[2rem] shadow-sm border p-6">
-                    <h3 class="text-xl font-black mb-4 flex items-center gap-2">
-                        <i class="fas fa-history text-emerald-600"></i> Referral History
-                    </h3>
-                    <div id="referral-history-list" class="space-y-3 max-h-64 overflow-y-auto">
-                        <p class="text-slate-400 text-center py-8">Koi referral nahi hai abhi tak</p>
-                    </div>
+        <!-- BLOG / TIPS SECTION -->
+        <section id="page-blog" class="page-section hidden">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-black text-slate-800 mb-3">💡 Pro Tips for Success</h2>
+                <p class="text-slate-400 mb-8">Expert advice to grow your service business in Pakistan</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border hover:shadow-xl transition"><div class="bg-emerald-600 h-1.5"></div><div class="p-5"><div class="flex items-center gap-2 mb-3"><i class="fas fa-star text-yellow-500"></i><span class="text-xs font-black text-emerald-600 uppercase tracking-wide">PRO TIP</span></div><h3 class="font-black text-lg mb-2">Get Verified Badge</h3><p class="text-slate-500 text-sm mb-3">Verified experts get more customer trust. Submit your details for verification today!</p><button onclick="showPage('profile')" class="text-emerald-600 font-bold text-sm">Learn More →</button></div></div>
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border"><div class="bg-emerald-600 h-1.5"></div><div class="p-5"><div class="flex items-center gap-2 mb-3"><i class="fas fa-camera text-blue-500"></i><span class="text-xs font-black text-emerald-600 uppercase tracking-wide">PRO TIP</span></div><h3 class="font-black text-lg mb-2">Add Photos of Your Work</h3><p class="text-slate-500 text-sm mb-3">Gigs with portfolio photos get more engagement. Show your best work!</p><button onclick="showPage('post-gig')" class="text-emerald-600 font-bold text-sm">Learn More →</button></div></div>
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border"><div class="bg-emerald-600 h-1.5"></div><div class="p-5"><div class="flex items-center gap-2 mb-3"><i class="fas fa-clock text-orange-500"></i><span class="text-xs font-black text-emerald-600 uppercase tracking-wide">PRO TIP</span></div><h3 class="font-black text-lg mb-2">Quick Response Times</h3><p class="text-slate-500 text-sm mb-3">Respond to customer inquiries quickly to build trust and get more work!</p><button class="text-emerald-600 font-bold text-sm">Learn More →</button></div></div>
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border"><div class="bg-emerald-600 h-1.5"></div><div class="p-5"><div class="flex items-center gap-2 mb-3"><i class="fas fa-tag text-green-500"></i><span class="text-xs font-black text-emerald-600 uppercase tracking-wide">PRO TIP</span></div><h3 class="font-black text-lg mb-2">Competitive Pricing</h3><p class="text-slate-500 text-sm mb-3">Check local market rates and price your services competitively.</p><button class="text-emerald-600 font-bold text-sm">Learn More →</button></div></div>
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border"><div class="bg-emerald-600 h-1.5"></div><div class="p-5"><div class="flex items-center gap-2 mb-3"><i class="fas fa-star text-yellow-500"></i><span class="text-xs font-black text-emerald-600 uppercase tracking-wide">PRO TIP</span></div><h3 class="font-black text-lg mb-2">Collect Customer Reviews</h3><p class="text-slate-500 text-sm mb-3">After each job, politely ask customers to leave a review for your service!</p><button class="text-emerald-600 font-bold text-sm">Learn More →</button></div></div>
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border"><div class="bg-emerald-600 h-1.5"></div><div class="p-5"><div class="flex items-center gap-2 mb-3"><i class="fas fa-chart-line text-purple-500"></i><span class="text-xs font-black text-emerald-600 uppercase tracking-wide">PRO TIP</span></div><h3 class="font-black text-lg mb-2">Promote Your Service</h3><p class="text-slate-500 text-sm mb-3">Use featured promotion to appear at the top of search results!</p><button class="text-emerald-600 font-bold text-sm">Learn More →</button></div></div>
                 </div>
             </div>
         </section>
 
         <!-- POST GIG SECTION -->
         <section id="page-post-gig" class="page-section hidden">
-            <div class="max-w-2xl mx-auto bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-50">
-                <h2 class="text-4xl font-black text-center mb-8 text-slate-800">Apni Gig Banayein</h2>
-                <div class="space-y-5">
-                    <div class="grid md:grid-cols-2 gap-5">
-                        <div><label class="block text-xs font-black text-slate-400 uppercase">Pura Naam</label><input type="text" id="gig-name" placeholder="Ahmad Raza" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 font-bold"></div>
-                        <div><label class="block text-xs font-black text-slate-400 uppercase">Hunar (Skill)</label><select id="gig-skill" class="w-full p-4 bg-slate-50 rounded-2xl"><option>Electrician</option><option>Plumber</option><option>Welder</option><option>Cleaner</option><option>Gardner</option><option>Painter</option><option>Carpenter</option><option>Other</option></select></div>
+            <div class="max-w-2xl mx-auto bg-white p-6 md:p-10 rounded-2xl md:rounded-3xl shadow-xl border border-slate-100">
+                <h2 class="text-2xl md:text-4xl font-black text-center mb-6 md:mb-8 text-slate-800">Post Your Service</h2>
+                <div class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div><label class="block text-xs font-black text-slate-400 uppercase mb-1">Full Name</label><input type="text" id="gig-name" placeholder="Ahmed Raza" class="w-full p-3 md:p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 font-medium"></div>
+                        <div><label class="block text-xs font-black text-slate-400 uppercase mb-1">Service Type</label><select id="gig-skill" class="w-full p-3 md:p-4 bg-slate-50 rounded-xl"><option>Electrician</option><option>Plumber</option><option>Welder</option><option>Cleaner</option><option>Gardner</option><option>Painter</option><option>Carpenter</option><option>AC Technician</option><option>Other</option></select></div>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-5">
-                        <div><label class="block text-xs font-black text-slate-400 uppercase">Experience (Years)</label><input type="number" id="gig-exp" placeholder="5" class="w-full p-4 bg-slate-50 rounded-2xl"></div>
-                        <div><label class="block text-xs font-black text-slate-400 uppercase">Visit Fee (Rs.)</label><input type="number" id="gig-price" placeholder="800" class="w-full p-4 bg-slate-50 rounded-2xl"></div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div><label class="block text-xs font-black text-slate-400 uppercase mb-1">Experience (Years)</label><input type="number" id="gig-exp" placeholder="5" class="w-full p-3 md:p-4 bg-slate-50 rounded-xl"></div>
+                        <div><label class="block text-xs font-black text-slate-400 uppercase mb-1">Service Fee (Rs.)</label><input type="number" id="gig-price" placeholder="800" class="w-full p-3 md:p-4 bg-slate-50 rounded-xl"></div>
                     </div>
-                    <div><label class="block text-xs font-black text-slate-400 uppercase">WhatsApp Number</label><input type="text" id="gig-phone" placeholder="03XXXXXXXXX" class="w-full p-4 bg-slate-50 rounded-2xl"></div>
-                    <div class="relative">
-                        <label class="block text-xs font-black text-slate-400 uppercase">Apna Shehar (City)</label>
+                    <div><label class="block text-xs font-black text-slate-400 uppercase mb-1">WhatsApp Number</label><input type="text" id="gig-phone" placeholder="03XXXXXXXXX" class="w-full p-3 md:p-4 bg-slate-50 rounded-xl"></div>
+                    <div><label class="block text-xs font-black text-slate-400 uppercase mb-1">About Your Service</label><textarea id="gig-bio" rows="3" placeholder="Tell customers about your experience and expertise..." class="w-full p-3 md:p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500"></textarea></div>
+                    <div>
+                        <label class="block text-xs font-black text-slate-400 uppercase mb-1">Your City</label>
                         <div class="flex flex-col gap-2">
-                            <input type="text" id="manual-city-input" placeholder="Type city name (eg: Gilgit, Turbat, or select from list)" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 font-medium" autocomplete="off">
-                            <div class="relative">
-                                <select id="gig-city-select" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2">
-                                    <option value="">-- OR Select from 170+ cities --</option>
-                                </select>
-                            </div>
+                            <input type="text" id="manual-city-input" placeholder="Type your city name" class="w-full p-3 md:p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 font-medium" autocomplete="off">
+                            <select id="gig-city-select" class="w-full p-3 md:p-4 bg-slate-50 rounded-xl outline-none focus:ring-2">
+                                <option value="">-- OR Select from list --</option>
+                            </select>
                         </div>
                     </div>
-                    <button onclick="saveGig()" class="w-full bg-emerald-600 text-white py-6 rounded-[2rem] font-black text-xl hover:bg-emerald-700 shadow-xl transition-all active:scale-95 mt-4">Gig Live Karein <i class="fas fa-arrow-right"></i></button>
+                    <button onclick="saveGig()" class="w-full bg-emerald-600 text-white py-4 md:py-5 rounded-xl font-black text-lg hover:bg-emerald-700 shadow-lg transition-all active:scale-95 mt-4">Post Service <i class="fas fa-arrow-right ml-2"></i></button>
                 </div>
             </div>
         </section>
 
         <!-- ADMIN PANEL -->
         <section id="page-admin" class="page-section hidden">
-            <div class="flex flex-col gap-8">
-                <div class="bg-gradient-to-r from-red-600 to-rose-700 p-10 rounded-[3rem] text-white flex justify-between items-center shadow-2xl">
-                    <div><h2 class="text-4xl font-black italic">Kamm Kar Control</h2><p class="opacity-80 font-bold tracking-widest text-xs">OFFICIAL ADMIN</p></div>
-                    <i class="fas fa-fingerprint text-5xl opacity-70"></i>
+            <div class="flex flex-col gap-6">
+                <div class="bg-gradient-to-r from-red-600 to-rose-700 p-6 md:p-10 rounded-2xl text-white flex justify-between items-center shadow-xl">
+                    <div><h2 class="text-2xl md:text-4xl font-black italic">Kamm Kar Control</h2><p class="opacity-80 font-bold tracking-widest text-xs mt-1">OFFICIAL ADMIN PANEL</p></div>
+                    <i class="fas fa-fingerprint text-4xl md:text-5xl opacity-70"></i>
                 </div>
-                <div class="bg-white rounded-[2.5rem] shadow-sm border">
-                    <div class="p-8 border-b flex flex-wrap justify-between items-center gap-4"><h3 class="font-black text-2xl">Workers Management</h3><input type="text" id="admin-search" onkeyup="filterAdminTable(this.value)" placeholder="Search name/skill/city" class="bg-slate-50 px-6 py-3 rounded-2xl outline-none focus:ring-2 focus:ring-red-200"></div>
-                    <div class="overflow-x-auto"><table class="w-full text-left"><thead class="bg-slate-50 text-slate-400 text-[10px] font-black uppercase"><tr><th class="p-6">Expert</th><th>City</th><th>Verify</th><th>Promote</th><th class="text-right">Delete</th></tr></thead><tbody id="admin-worker-table"></tbody></table></div>
+                <div class="bg-white rounded-2xl shadow-sm border">
+                    <div class="p-5 border-b flex flex-wrap justify-between items-center gap-3"><h3 class="font-black text-xl">Service Providers Management</h3><input type="text" id="admin-search" onkeyup="filterAdminTable(this.value)" placeholder="Search..." class="bg-slate-50 px-5 py-2.5 rounded-xl outline-none focus:ring-2 focus:ring-red-200 text-sm"></div>
+                    <div class="overflow-x-auto p-4"><table class="w-full text-left"><thead class="bg-slate-50 text-slate-400 text-[10px] font-black uppercase"><tr><th class="p-4">Provider</th><th>City</th><th>Verify</th><th>Promote</th><th class="text-right">Action</th></tr></thead><tbody id="admin-worker-table"></tbody></table></div>
                 </div>
+                <div class="bg-white rounded-2xl shadow-sm border p-5"><h3 class="font-black text-lg mb-3">Platform Stats</h3><div class="grid grid-cols-2 md:grid-cols-4 gap-4"><div class="text-center p-3 bg-slate-50 rounded-xl"><p class="text-2xl font-black text-emerald-600" id="stat-total-users">0</p><p class="text-xs text-slate-400">Total Users</p></div><div class="text-center p-3 bg-slate-50 rounded-xl"><p class="text-2xl font-black text-emerald-600" id="stat-total-gigs">0</p><p class="text-xs text-slate-400">Total Listings</p></div><div class="text-center p-3 bg-slate-50 rounded-xl"><p class="text-2xl font-black text-emerald-600" id="stat-verified">0</p><p class="text-xs text-slate-400">Verified</p></div><div class="text-center p-3 bg-slate-50 rounded-xl"><p class="text-2xl font-black text-emerald-600" id="stat-referrals">0</p><p class="text-xs text-slate-400">Referrals</p></div></div></div>
             </div>
         </section>
     </main>
 
     <!-- MODALS -->
-    <div id="promo-modal" class="fixed inset-0 bg-black/60 hidden z-[200] flex items-center justify-center p-4"><div class="bg-white max-w-md p-8 rounded-3xl text-center"><h3 class="text-2xl font-black">Boost your Gig</h3><div class="grid grid-cols-2 gap-3 my-6"><button onclick="selectPromoPlan('Weekly',500)" class="bg-amber-50 p-4 rounded-2xl font-black">Weekly Rs.500</button><button onclick="selectPromoPlan('Monthly',5000)" class="bg-amber-50 p-4 rounded-2xl font-black">Monthly Rs.5000</button></div><button onclick="closePromoModal()" class="mt-3 text-sm text-slate-400">Cancel</button></div></div>
-    <div id="admin-login-modal" class="fixed inset-0 bg-black/70 hidden z-[200] flex items-center justify-center"><div class="bg-white p-8 rounded-3xl text-center"><i class="fas fa-shield-alt text-5xl text-red-600 mb-4"></i><h3 class="font-black text-xl">Admin Code</h3><input type="password" id="admin-code-input" class="border p-3 rounded-xl my-4 text-center"><div><button onclick="closeAdminLogin()" class="px-4 py-2">Close</button><button onclick="verifyAdminCode()" class="bg-red-600 text-white px-6 py-2 rounded-xl ml-3">Unlock</button></div></div></div>
-    <div id="rating-modal" class="fixed inset-0 bg-black/50 hidden z-[200] flex items-center justify-center"><div class="bg-white p-8 rounded-3xl max-w-md"><h3 class="font-black text-xl">Worker ko Rate karein</h3><div class="flex justify-center gap-2 text-4xl my-4" id="rating-stars-mod"><i class="far fa-star cursor-pointer" onclick="setRating(1)"></i><i class="far fa-star" onclick="setRating(2)"></i><i class="far fa-star" onclick="setRating(3)"></i><i class="far fa-star" onclick="setRating(4)"></i><i class="far fa-star" onclick="setRating(5)"></i></div><textarea id="rating-comment" placeholder="Kaisa tha kaam?" class="w-full border rounded-2xl p-3"></textarea><button onclick="submitRating()" class="bg-emerald-600 text-white w-full py-3 rounded-xl mt-4">Submit</button><button onclick="closeRatingModal()" class="w-full mt-2 text-slate-400">Skip</button></div></div>
-    <div id="reviews-modal" class="fixed inset-0 bg-black/50 hidden z-[200] flex items-center justify-center p-4"><div class="bg-white rounded-3xl max-w-lg w-full p-6 max-h-[80vh] overflow-auto"><div class="flex justify-between"><h3 class="font-black text-2xl">Reviews</h3><button onclick="closeReviewsModal()" class="text-2xl">&times;</button></div><div id="reviews-list-modal" class="mt-4 space-y-4"></div></div></div>
+    <div id="promo-modal" class="fixed inset-0 bg-black/60 hidden z-[200] flex items-center justify-center p-4"><div class="bg-white max-w-md p-6 rounded-2xl text-center"><i class="fas fa-rocket text-4xl text-amber-500 mb-3"></i><h3 class="text-xl font-black">Promote Your Service</h3><p class="text-sm text-slate-500 mb-4">Get featured at the top of search results</p><div class="grid grid-cols-2 gap-3 my-4"><button onclick="selectPromoPlan('Weekly',500)" class="bg-amber-50 p-3 rounded-xl font-black text-sm">Weekly Plan</button><button onclick="selectPromoPlan('Monthly',2000)" class="bg-amber-50 p-3 rounded-xl font-black text-sm">Monthly Plan</button></div><button onclick="closePromoModal()" class="mt-2 text-sm text-slate-400">Cancel</button></div></div>
+    <div id="admin-login-modal" class="fixed inset-0 bg-black/70 hidden z-[200] flex items-center justify-center"><div class="bg-white p-6 rounded-2xl text-center"><i class="fas fa-shield-alt text-4xl text-red-600 mb-3"></i><h3 class="font-black text-lg">Admin Access</h3><input type="password" id="admin-code-input" class="border p-3 rounded-xl my-3 text-center"><div><button onclick="closeAdminLogin()" class="px-4 py-2 text-sm">Close</button><button onclick="verifyAdminCode()" class="bg-red-600 text-white px-5 py-2 rounded-xl ml-2 text-sm">Unlock</button></div></div></div>
+    <div id="rating-modal" class="fixed inset-0 bg-black/50 hidden z-[200] flex items-center justify-center p-4"><div class="bg-white p-6 rounded-2xl max-w-md"><h3 class="font-black text-lg">Rate This Professional</h3><div class="flex justify-center gap-2 text-3xl my-4" id="rating-stars-mod"><i class="far fa-star cursor-pointer" onclick="setRating(1)"></i><i class="far fa-star" onclick="setRating(2)"></i><i class="far fa-star" onclick="setRating(3)"></i><i class="far fa-star" onclick="setRating(4)"></i><i class="far fa-star" onclick="setRating(5)"></i></div><textarea id="rating-comment" rows="2" placeholder="Share your experience..." class="w-full border rounded-xl p-3 text-sm"></textarea><button onclick="submitRating()" class="bg-emerald-600 text-white w-full py-2.5 rounded-xl font-black mt-3">Submit</button><button onclick="closeRatingModal()" class="w-full mt-2 text-slate-400 text-sm">Skip</button></div></div>
+    <div id="reviews-modal" class="fixed inset-0 bg-black/50 hidden z-[200] flex items-center justify-center p-4"><div class="bg-white rounded-2xl max-w-lg w-full p-5 max-h-[80vh] overflow-auto"><div class="flex justify-between items-center mb-3"><h3 class="font-black text-lg">Customer Reviews</h3><button onclick="closeReviewsModal()" class="text-2xl">&times;</button></div><div id="reviews-list-modal" class="space-y-3"></div></div></div>
 
-    <!-- FIREBASE IMPORT + FULL LOGIC -->
+    <!-- FIREBASE IMPORT + LOGIC (Compact & Optimized) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, onSnapshot, updateDoc, deleteDoc, arrayUnion, setDoc, getDoc, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, doc, onSnapshot, updateDoc, deleteDoc, arrayUnion, setDoc, getDoc, query, where, increment } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyCdBDI74RVW9cf1zOVk5ltBNZa-lqn2sHI", authDomain: "kamm-kar.firebaseapp.com", projectId: "kamm-kar", storageBucket: "kamm-kar.firebasestorage.app", messagingSenderId: "204169677354", appId: "1:204169677354:web:3411a793504548bfcfd153" };
         const app = initializeApp(firebaseConfig);
@@ -340,143 +392,52 @@
         const adminWhatsApp = "03455672710";
         const supportNumber = "923455672710";
         
-        // Generate random referral code
-        function generateReferralCode(uid) {
-            return uid.substring(0, 8).toUpperCase();
-        }
-        
-        // Cities list
-        const pakCities = [
-            "Karachi", "Lahore", "Islamabad", "Rawalpindi", "Faisalabad", "Multan", "Gujranwala", "Sialkot", "Peshawar", "Quetta", "Bahawalpur", "Sargodha", "Sukkur", "Hyderabad", "Abbottabad", "Mardan", "Mingora", "Nawabshah", "Mirpur Khas", "Rahim Yar Khan", "Dera Ghazi Khan", "Dera Ismail Khan", "Chiniot", "Jhang", "Kasur", "Okara", "Sahiwal", "Sheikhupura", "Toba Tek Singh", "Vehari", "Gujrat", "Hafizabad", "Mandi Bahauddin", "Narowal", "Chakwal", "Jhelum", "Attock", "Kohat", "Bannu", "Swabi", "Charsadda", "Nowshera", "Swat", "Haripur", "Mansehra", "Batagram", "Kohistan", "Gilgit", "Skardu", "Hunza", "Ghanche", "Shigar", "Astore", "Diamer", "Ghizer", "Chitral", "Upper Dir", "Lower Dir", "Malakand", "Buner", "Shangla", "Torghar", "Lakki Marwat", "Tank", "Karak", "Hangu", "Orakzai", "Kurram", "North Waziristan", "South Waziristan", "Zhob", "Loralai", "Killa Abdullah", "Pishin", "Chaman", "Nushki", "Khuzdar", "Lasbela", "Hub", "Gwadar", "Turbat", "Panjgur", "Kech", "Awaran", "Kalat", "Mastung", "Sibi", "Jafarabad", "Nasirabad", "Barkhan", "Musakhel", "Sherani", "Kohlu", "Dera Bugti", "Sohbatpur", "Umerkot", "Tharparkar", "Badin", "Thatta", "Sujawal", "Tando Allahyar", "Tando Muhammad Khan", "Matiari", "Jamshoro", "Dadu", "Qambar Shahdadkot", "Larkana", "Shikarpur", "Jacobabad", "Kashmore", "Ghotki", "Khairpur", "Sanghar", "Naushahro Feroze", "Shaheed Benazirabad", "Karachi Central", "Karachi East", "Karachi South", "Karachi West", "Malir", "Korangi", "Bahawalnagar", "Pakpattan", "Lodhran", "Khanewal", "Muzaffargarh", "Layyah", "Bhakkar", "Khushab", "Mianwali", "Talagang", "Rawalpindi (Cantt)", "Murree", "Kahuta", "Taxila", "Wah Cantt", "Nankana Sahib", "Faisalabad (Jaranwala)", "Samundri", "Tandlianwala", "Kamalia", "Pattoki", "Renala Khurd", "Daska", "Pasrur", "Zafarwal", "Jalalpur Jattan", "Kharian", "Kunjah", "Lalamusa", "Wazirabad", "Gujrat (Jalalpur)", "Phalia", "Mailsi", "Dunyapur", "Kot Addu", "Alipur", "Jampur", "Rajanpur", "Rojhan", "Kashmir (Muzaffarabad)", "Bagh", "Rawalakot", "Kotli", "Mirpur (AJK)", "Bhimber", "Haveli", "Neelum", "Jhelum Valley", "Sudhnati"
-        ];
+        let allWorkers = [], isAdminActive = false, currentWorkerId = null, selectedRating = 0;
+        const pakCities = ["Karachi","Lahore","Islamabad","Rawalpindi","Faisalabad","Multan","Gujranwala","Sialkot","Peshawar","Quetta","Bahawalpur","Sargodha","Sukkur","Hyderabad","Abbottabad","Mardan","Mingora","Nawabshah","Mirpur Khas","Rahim Yar Khan","Dera Ghazi Khan","Dera Ismail Khan","Chiniot","Jhang","Kasur","Okara","Sahiwal","Sheikhupura","Toba Tek Singh","Vehari","Gujrat","Hafizabad","Mandi Bahauddin","Narowal","Chakwal","Jhelum","Attock","Kohat","Bannu","Swabi","Charsadda","Nowshera","Swat","Haripur","Mansehra","Batagram","Kohistan","Gilgit","Skardu","Hunza","Ghanche","Shigar","Astore","Diamer","Ghizer","Chitral","Upper Dir","Lower Dir","Malakand","Buner","Shangla","Torghar","Lakki Marwat","Tank","Karak","Hangu","Orakzai","Kurram","North Waziristan","South Waziristan","Zhob","Loralai","Killa Abdullah","Pishin","Chaman","Nushki","Khuzdar","Lasbela","Hub","Gwadar","Turbat","Panjgur","Kech","Awaran","Kalat","Mastung","Sibi","Jafarabad","Nasirabad","Barkhan","Musakhel","Sherani","Kohlu","Dera Bugti","Sohbatpur","Umerkot","Tharparkar","Badin","Thatta","Sujawal","Tando Allahyar","Tando Muhammad Khan","Matiari","Jamshoro","Dadu","Qambar Shahdadkot","Larkana","Shikarpur","Jacobabad","Kashmore","Ghotki","Khairpur","Sanghar","Naushahro Feroze","Shaheed Benazirabad","Karachi Central","Karachi East","Karachi South","Karachi West","Malir","Korangi","Bahawalnagar","Pakpattan","Lodhran","Khanewal","Muzaffargarh","Layyah","Bhakkar","Khushab","Mianwali","Talagang","Rawalpindi Cantt","Murree","Kahuta","Taxila","Wah Cantt","Nankana Sahib","Faisalabad Jaranwala","Samundri","Tandlianwala","Kamalia","Pattoki","Renala Khurd","Daska","Pasrur","Zafarwal","Jalalpur Jattan","Kharian","Kunjah","Lalamusa","Wazirabad","Gujrat Jalalpur","Phalia","Mailsi","Dunyapur","Kot Addu","Alipur","Jampur","Rajanpur","Rojhan","Muzaffarabad AJK","Bagh","Rawalakot","Kotli","Mirpur AJK","Bhimber","Haveli","Neelum","Jhelum Valley","Sudhnati"];
         const uniqueCities = [...new Set(pakCities)].sort();
-        
-        let allWorkers = [];
-        let isAdminActive = false;
-        let currentWorkerId = null;
-        let selectedRating = 0;
-        let currentUserData = null;
 
-        // Referral Functions
-        async function createUserReferralDoc(userId, userName, referredBy = null) {
+        function generateReferralCode(uid) { return uid.substring(0, 8).toUpperCase(); }
+        
+        async function createUserReferralDoc(userId, userName, userPhone, referredBy = null) {
             const referralCode = generateReferralCode(userId);
-            const userRef = doc(db, 'referrals', userId);
-            await setDoc(userRef, {
-                userId: userId,
-                name: userName,
-                referralCode: referralCode,
-                referredBy: referredBy,
-                totalReferrals: 0,
-                rewardsEarned: 0,
-                referredUsers: [],
-                createdAt: Date.now()
-            });
-            
-            // If user was referred by someone, update the referrer's data
+            await setDoc(doc(db, 'referrals', userId), { userId, name: userName, phone: userPhone, referralCode, referredBy, totalReferrals: 0, referredUsers: [], createdAt: Date.now() });
             if (referredBy) {
                 const referrerRef = doc(db, 'referrals', referredBy);
                 const referrerSnap = await getDoc(referrerRef);
-                if (referrerSnap.exists()) {
-                    const referrerData = referrerSnap.data();
-                    await updateDoc(referrerRef, {
-                        totalReferrals: (referrerData.totalReferrals || 0) + 1,
-                        rewardsEarned: (referrerData.rewardsEarned || 0) + 50,
-                        referredUsers: arrayUnion(userId)
-                    });
-                }
+                if (referrerSnap.exists()) await updateDoc(referrerRef, { totalReferrals: increment(1), referredUsers: arrayUnion(userId) });
             }
-            return referralCode;
         }
         
-        async function loadUserReferralData(userId) {
-            const userRef = doc(db, 'referrals', userId);
-            const userSnap = await getDoc(userRef);
-            if (userSnap.exists()) {
-                currentUserData = userSnap.data();
-                return currentUserData;
-            }
-            return null;
-        }
-        
-        async function checkAndUpdateReferral(referredCode, newUserId, newUserName) {
-            if (!referredCode) return false;
-            
-            // Find user by referral code
-            const referralsRef = collection(db, 'referrals');
-            const q = query(referralsRef, where('referralCode', '==', referredCode.toUpperCase()));
+        async function checkAndUpdateReferral(referredCode, newUserId, newUserName, newUserPhone) {
+            if (!referredCode) { await createUserReferralDoc(newUserId, newUserName, newUserPhone, null); return false; }
+            const q = query(collection(db, 'referrals'), where('referralCode', '==', referredCode.toUpperCase()));
             const querySnap = await getDocs(q);
-            
-            if (!querySnap.empty) {
-                const referrerDoc = querySnap.docs[0];
-                const referrerId = referrerDoc.id;
-                await createUserReferralDoc(newUserId, newUserName, referrerId);
-                return true;
-            }
-            await createUserReferralDoc(newUserId, newUserName, null);
+            if (!querySnap.empty) { await createUserReferralDoc(newUserId, newUserName, newUserPhone, querySnap.docs[0].id); return true; }
+            await createUserReferralDoc(newUserId, newUserName, newUserPhone, null);
             return false;
         }
-        
-        // Load referral history
-        async function loadReferralHistory(userId) {
-            const historyDiv = document.getElementById('referral-history-list');
-            if (!historyDiv) return;
-            
-            const userRef = doc(db, 'referrals', userId);
-            const userSnap = await getDoc(userRef);
-            
-            if (userSnap.exists() && userSnap.data().referredUsers && userSnap.data().referredUsers.length > 0) {
-                const referredUsers = userSnap.data().referredUsers;
-                historyDiv.innerHTML = referredUsers.map(uid => `
-                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
-                        <div>
-                            <p class="font-bold text-sm">User ID: ${uid.substring(0, 10)}...</p>
-                            <p class="text-xs text-emerald-600"><i class="fas fa-check-circle"></i> Registered</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="font-black text-emerald-600">+ Rs. 50</p>
-                        </div>
-                    </div>
-                `).join('');
-            } else {
-                historyDiv.innerHTML = '<p class="text-slate-400 text-center py-8"><i class="fas fa-users fa-2x mb-2 block"></i>Koi referral nahi hai abhi tak<br><span class="text-xs">Apna link share karein!</span></p>';
-            }
-        }
-        
-        window.copyReferralLink = () => {
-            const link = document.getElementById('referral-full-link')?.innerText;
-            if (link) {
-                navigator.clipboard.writeText(link);
-                alert("✅ Link copied! Ab dosto ko share karein.");
-            }
-        };
 
-        window.showPage = (id) => { 
-            document.querySelectorAll('.page-section').forEach(p => p.classList.add('hidden')); 
-            document.getElementById(`page-${id}`).classList.remove('hidden'); 
-            window.scrollTo(0,0);
-            if(id === 'profile') loadUserProfile();
-            if(id === 'referral' && auth.currentUser) loadReferralPage();
-        };
+        window.showPage = (id) => { document.querySelectorAll('.page-section').forEach(p => p.classList.add('hidden')); document.getElementById(`page-${id}`).classList.remove('hidden'); window.scrollTo(0,0); if(id === 'profile' && auth.currentUser) loadUserProfile(); if(id === 'referral' && auth.currentUser) loadReferralPage(); };
         
         async function loadReferralPage() {
-            if (!auth.currentUser) {
-                showPage('auth');
-                return;
-            }
-            const userId = auth.currentUser.uid;
-            const data = await loadUserReferralData(userId);
-            if (data) {
-                document.getElementById('user-referral-code').innerText = data.referralCode;
-                document.getElementById('total-referrals').innerText = data.totalReferrals || 0;
-                document.getElementById('rewards-earned').innerText = data.rewardsEarned || 0;
-                const fullLink = `${window.location.origin}${window.location.pathname}?ref=${data.referralCode}`;
+            if (!auth.currentUser) { showPage('auth'); return; }
+            const data = await getDoc(doc(db, 'referrals', auth.currentUser.uid));
+            if (data.exists()) {
+                document.getElementById('user-referral-code').innerText = data.data().referralCode;
+                document.getElementById('total-referrals').innerText = data.data().totalReferrals || 0;
+                const fullLink = `${window.location.origin}${window.location.pathname}?ref=${data.data().referralCode}`;
                 document.getElementById('referral-full-link').innerHTML = fullLink;
-                await loadReferralHistory(userId);
-            } else {
-                await createUserReferralDoc(userId, auth.currentUser.displayName || auth.currentUser.email);
-                loadReferralPage();
-            }
+                const historyDiv = document.getElementById('referral-history-list');
+                if (data.data().referredUsers?.length) {
+                    historyDiv.innerHTML = data.data().referredUsers.map(uid => `<div class="flex justify-between items-center p-3 bg-slate-50 rounded-xl"><div><p class="font-bold text-sm">User joined</p><p class="text-xs text-emerald-600"><i class="fas fa-check-circle"></i> Registered via your invite</p></div></div>`).join('');
+                } else { historyDiv.innerHTML = '<p class="text-slate-400 text-center py-6"><i class="fas fa-users fa-2x mb-2 block"></i>No invites yet<br><span class="text-xs">Share your invite link!</span></p>'; }
+            } else { await createUserReferralDoc(auth.currentUser.uid, auth.currentUser.displayName || auth.currentUser.email, ''); loadReferralPage(); }
         }
+        
+        window.copyReferralLink = () => { const link = document.getElementById('referral-full-link')?.innerText; if(link) { navigator.clipboard.writeText(link); alert("✓ Link copied!"); } };
+        window.shareOnWhatsApp = () => { const link = document.getElementById('referral-full-link')?.innerText; window.open(`https://wa.me/?text=${encodeURIComponent("Join me on Kamm Kar! Pakistan's best local services platform: " + link)}`, '_blank'); };
+        window.shareOnFacebook = () => { const link = document.getElementById('referral-full-link')?.innerText; window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`, '_blank'); };
+        window.shareOnTwitter = () => { const link = document.getElementById('referral-full-link')?.innerText; window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent("Join me on Kamm Kar! " + link)}`, '_blank'); };
         
         window.toggleMobileMenu = () => document.getElementById('mobile-menu').classList.toggle('hidden');
         window.checkAdminCode = () => { if(isAdminActive) showPage('admin'); else document.getElementById('admin-login-modal').classList.remove('hidden'); };
@@ -484,7 +445,7 @@
         window.verifyAdminCode = () => { if(document.getElementById('admin-code-input').value === '626277') { isAdminActive=true; closeAdminLogin(); showPage('admin'); } else { alert("Wrong Code!"); } };
         window.toggleVerification = async (id, cur) => { await updateDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id), { isVerified: !cur }); };
         window.togglePinned = async (id, cur) => { await updateDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id), { isPinned: !cur }); };
-        window.deleteWorker = async (id) => { if(confirm("Delete worker?")) await deleteDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id)); };
+        window.deleteWorker = async (id) => { if(confirm("Delete this listing?")) await deleteDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id)); };
         
         function populateCityDropdowns() {
             const cityFilter = document.getElementById('city-filter');
@@ -495,153 +456,175 @@
         
         window.saveGig = async () => {
             if(!auth.currentUser) return showPage('auth');
-            let finalCity = document.getElementById('manual-city-input').value.trim();
-            const selectedCityDropdown = document.getElementById('gig-city-select').value;
-            if(!finalCity && selectedCityDropdown) finalCity = selectedCityDropdown;
-            if(!finalCity) return alert("Please type or select a city from 170+ list!");
+            let finalCity = document.getElementById('manual-city-input').value.trim() || document.getElementById('gig-city-select').value;
+            if(!finalCity) return alert("Please select your city!");
             const data = {
                 name: document.getElementById('gig-name').value,
                 skill: document.getElementById('gig-skill').value,
                 exp: document.getElementById('gig-exp').value || "1",
                 price: document.getElementById('gig-price').value || "500",
                 phone: document.getElementById('gig-phone').value,
+                bio: document.getElementById('gig-bio').value || "",
                 city: finalCity,
-                ratings: [],
-                avgRating: 0,
-                userId: auth.currentUser.uid,
-                isVerified: false,
-                isPinned: false,
-                createdAt: Date.now()
+                ratings: [], avgRating: 0, userId: auth.currentUser.uid,
+                isVerified: false, isPinned: false, createdAt: Date.now(), views: 0
             };
-            if(!data.name || !data.phone) return alert("Name aur WhatsApp number lazmi hai!");
+            if(!data.name || !data.phone) return alert("Name and WhatsApp number required!");
             await addDoc(collection(db, 'artifacts', appIdConst, 'public', 'data', 'workers'), data);
-            alert(`Gig Live! ${data.city} me aapka kaam dhoondha jayega.`);
+            alert(`Service posted successfully in ${data.city}!`);
             showPage('hire');
             document.getElementById('manual-city-input').value = '';
-            document.getElementById('gig-city-select').value = '';
+            document.getElementById('gig-bio').value = '';
         };
         
-        window.globalSearch = () => { const val = document.getElementById('home-search').value.toLowerCase(); showPage('hire'); const filtered = allWorkers.filter(w => w.city?.toLowerCase().includes(val) || w.skill?.toLowerCase().includes(val) || w.name?.toLowerCase().includes(val)); renderWorkers(filtered); };
+        window.globalSearch = () => { const val = document.getElementById('home-search').value.toLowerCase(); showPage('hire'); applyFilters(); };
         window.filterByCategory = (cat) => { showPage('hire'); document.getElementById('skill-filter').value = cat; applyFilters(); };
-        window.applyFilters = () => { const city = document.getElementById('city-filter').value; const skill = document.getElementById('skill-filter').value; let filtered = allWorkers; if(city !== 'All') filtered = filtered.filter(w => w.city === city); if(skill !== 'All') filtered = filtered.filter(w => w.skill === skill); renderWorkers(filtered); };
+        
+        function sortWorkers(workers, sortType) {
+            const sorted = [...workers];
+            if(sortType === 'price-low') return sorted.sort((a,b) => parseInt(a.price) - parseInt(b.price));
+            if(sortType === 'price-high') return sorted.sort((a,b) => parseInt(b.price) - parseInt(a.price));
+            if(sortType === 'rating') return sorted.sort((a,b) => (b.avgRating||0) - (a.avgRating||0));
+            return sorted.sort((a,b)=> (b.isPinned?1:0)-(a.isPinned?1:0));
+        }
+        
+        window.applyFilters = () => {
+            const city = document.getElementById('city-filter').value;
+            const skill = document.getElementById('skill-filter').value;
+            const sort = document.getElementById('sort-filter').value;
+            let filtered = allWorkers;
+            if(city !== 'All') filtered = filtered.filter(w => w.city === city);
+            if(skill !== 'All') filtered = filtered.filter(w => w.skill === skill);
+            filtered = sortWorkers(filtered, sort);
+            renderWorkers(filtered);
+            document.getElementById('worker-count').innerText = filtered.length;
+        };
         
         function renderWorkers(workers) {
-            const container = document.getElementById('worker-list'); 
-            document.getElementById('worker-count').innerText = workers.length;
-            if(!workers.length) { container.innerHTML = '<div class="col-span-full text-center py-24 text-slate-400 font-black">Koi expert nahi mila</div>'; return; }
-            const sorted = [...workers].sort((a,b)=> (b.isPinned?1:0)-(a.isPinned?1:0));
-            container.innerHTML = sorted.map(w => `
-                <div class="bg-white rounded-[3rem] shadow-lg border p-8 relative">
-                    ${w.isPinned ? '<div class="absolute top-4 left-4"><span class="pinned-badge">⭐ Featured</span></div>' : ''}
-                    <div class="flex justify-between items-start"><div><h4 class="text-2xl font-black">${w.name} ${w.isVerified ? '<i class="fas fa-check-circle blue-tick"></i>' : ''}</h4><span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-black inline-block mt-2">${w.skill}</span></div><div onclick="openReviewsModal('${w.id}')" class="bg-slate-900 text-white px-4 py-2 rounded-2xl text-center cursor-pointer"><span class="text-xl font-black">★ ${w.avgRating?.toFixed(1)||0}</span><div class="text-[9px]">${w.ratings?.length||0} reviews</div></div></div>
-                    <div class="my-4 space-y-2 text-sm"><p><i class="fas fa-calendar-alt w-6 text-emerald-600"></i> ${w.exp} years exp</p><p><i class="fas fa-map-marker-alt w-6 text-rose-500"></i> ${w.city}</p></div>
-                    <div class="flex justify-between items-center pt-4 border-t"><div><span class="text-xs uppercase text-slate-400">Visit fee</span><p class="text-2xl font-black text-emerald-600">Rs.${w.price}</p></div><div class="flex gap-2">${auth.currentUser?.uid === w.userId ? `<button onclick="openPromoModal('${w.id}')" class="bg-amber-100 p-3 rounded-xl"><i class="fas fa-crown text-amber-600"></i></button><button onclick="deleteWorker('${w.id}')" class="bg-red-100 p-3 rounded-xl"><i class="fas fa-trash text-red-600"></i></button>` : ''}<button onclick="handleHire('${w.id}','${w.phone}')" class="bg-emerald-600 text-white px-6 py-3 rounded-2xl font-black flex gap-2"><i class="fab fa-whatsapp"></i>Raabta</button></div></div>
+            const container = document.getElementById('worker-list');
+            if(!workers.length) { container.innerHTML = '<div class="col-span-full text-center py-16 text-slate-400 font-medium">No professionals found</div>'; return; }
+            container.innerHTML = workers.map(w => `
+                <div class="worker-card bg-white rounded-2xl shadow-lg border p-5 relative">
+                    ${w.isPinned ? '<div class="absolute -top-2 left-4"><span class="pinned-badge text-xs">⭐ Featured</span></div>' : ''}
+                    <div class="flex justify-between items-start"><div><h4 class="text-xl font-black">${w.name} ${w.isVerified ? '<i class="fas fa-check-circle blue-tick text-sm"></i>' : ''}</h4><span class="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-black inline-block mt-1">${w.skill}</span></div><div onclick="openReviewsModal('${w.id}')" class="bg-slate-800 text-white px-3 py-1.5 rounded-xl text-center cursor-pointer"><span class="font-black">★ ${w.avgRating?.toFixed(1)||0}</span><div class="text-[9px]">${w.ratings?.length||0} reviews</div></div></div>
+                    <div class="my-3 space-y-1 text-sm"><p><i class="fas fa-calendar-alt w-5 text-emerald-600 text-xs"></i> ${w.exp} years exp</p><p><i class="fas fa-map-marker-alt w-5 text-rose-500 text-xs"></i> ${w.city}</p>${w.bio ? `<p class="text-slate-500 text-xs italic">"${w.bio.substring(0,60)}${w.bio.length>60?'...':''}"</p>` : ''}</div>
+                    <div class="flex justify-between items-center pt-3 border-t"><div><span class="text-[10px] uppercase text-slate-400">Service fee</span><p class="text-xl font-black text-emerald-600">Rs.${w.price}</p></div><div class="flex gap-2">${auth.currentUser?.uid === w.userId ? `<button onclick="openPromoModal('${w.id}')" class="bg-amber-100 p-2 rounded-lg"><i class="fas fa-crown text-amber-600 text-sm"></i></button><button onclick="deleteWorker('${w.id}')" class="bg-red-100 p-2 rounded-lg"><i class="fas fa-trash text-red-600 text-sm"></i></button>` : ''}<button onclick="handleHire('${w.id}','${w.phone}')" class="bg-emerald-600 text-white px-4 py-2 rounded-xl font-black text-sm flex gap-1 items-center"><i class="fab fa-whatsapp"></i>Contact</button></div></div>
                 </div>
             `).join('');
+        }
+        
+        function renderFeaturedWorkers() {
+            const container = document.getElementById('featured-workers-list');
+            if(!container) return;
+            const featured = allWorkers.filter(w => w.isPinned).slice(0,3);
+            if(featured.length) {
+                container.innerHTML = featured.map(w => `<div class="bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl p-4 border-2 border-amber-200"><div class="flex items-center gap-3 mb-2"><i class="fas fa-crown text-amber-500 text-xl"></i><span class="font-black text-amber-800">${w.name}</span></div><p class="text-sm">${w.skill} • ${w.city}</p><p class="text-emerald-600 font-black mt-2">Rs.${w.price}/service</p><button onclick="filterByCategory('${w.skill}')" class="mt-2 text-sm bg-emerald-600 text-white px-4 py-1.5 rounded-lg">Contact Now</button></div>`).join('');
+            } else { container.innerHTML = '<p class="text-slate-400 col-span-full text-center py-6">No featured professionals yet</p>'; }
         }
         
         function renderAdminTable(workers) {
             const tbody = document.getElementById('admin-worker-table');
             if(!tbody) return;
-            tbody.innerHTML = workers.map(w => `
-                <tr class="border-b"><td class="p-6"><p class="font-black">${w.name}</p><p class="text-xs">${w.skill}</p></td><td class="p-6 font-bold">${w.city}</td><td><button onclick="toggleVerification('${w.id}',${w.isVerified})" class="px-4 py-1 rounded-full text-xs ${w.isVerified ? 'bg-green-100 text-green-700' : 'bg-gray-100'}">${w.isVerified ? 'Verified' : 'Verify'}</button></td><td><button onclick="togglePinned('${w.id}',${w.isPinned})" class="px-4 py-1 rounded-full text-xs ${w.isPinned ? 'bg-amber-100 text-amber-700' : 'bg-gray-100'}">${w.isPinned ? 'Pinned' : 'Pin'}</button></td><td class="text-right"><button onclick="deleteWorker('${w.id}')" class="text-red-500"><i class="fas fa-trash-alt"></i></button></td></tr>
-            `).join('');
+            tbody.innerHTML = workers.map(w => `<tr class="border-b"><td class="p-4"><p class="font-black text-sm">${w.name}</p><p class="text-[10px] text-slate-400">${w.skill}</p></td><td class="p-4 text-sm">${w.city}</td><td><button onclick="toggleVerification('${w.id}',${w.isVerified})" class="px-3 py-1 rounded-full text-xs ${w.isVerified ? 'bg-green-100 text-green-700' : 'bg-gray-100'}">${w.isVerified ? 'Verified' : 'Verify'}</button></td><td><button onclick="togglePinned('${w.id}',${w.isPinned})" class="px-3 py-1 rounded-full text-xs ${w.isPinned ? 'bg-amber-100 text-amber-700' : 'bg-gray-100'}">${w.isPinned ? 'Featured' : 'Pin'}</button></td><td class="text-right"><button onclick="deleteWorker('${w.id}')" class="text-red-500 text-sm"><i class="fas fa-trash-alt"></i></button></td></tr>`).join('');
+            document.getElementById('stat-total-gigs') && (document.getElementById('stat-total-gigs').innerText = allWorkers.length);
+            document.getElementById('stat-verified') && (document.getElementById('stat-verified').innerText = allWorkers.filter(w=>w.isVerified).length);
         }
+        
         window.filterAdminTable = (val) => { const filtered = allWorkers.filter(w => w.name.toLowerCase().includes(val)||w.city.toLowerCase().includes(val)||w.skill.toLowerCase().includes(val)); renderAdminTable(filtered); };
         
-        window.handleHire = (id, phone) => { if(!auth.currentUser) return showPage('auth'); currentWorkerId=id; window.open(`https://wa.me/${phone}?text=${encodeURIComponent("Assalam u Alaikum! Kamm Kar se aapki service chahiye.")}`,'_blank'); setTimeout(()=>openRatingModal(id),2500); };
+        window.handleHire = async (id, phone) => { 
+            if(!auth.currentUser) return showPage('auth'); 
+            currentWorkerId=id;
+            await updateDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id), { views: increment(1) });
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent("Assalam u Alaikum! I found you on Kamm Kar. I need your service.")}`,'_blank'); 
+            setTimeout(()=>openRatingModal(id),3000); 
+        };
+        
         window.openRatingModal = (id) => { currentWorkerId=id; selectedRating=0; document.querySelectorAll('#rating-stars-mod i').forEach(i=>i.className='far fa-star cursor-pointer'); document.getElementById('rating-modal').classList.remove('hidden'); };
         window.setRating=(num)=>{ selectedRating=num; const stars=document.querySelectorAll('#rating-stars-mod i'); stars.forEach((s,i)=>{ if(i<num) s.className='fas fa-star text-yellow-500 cursor-pointer'; else s.className='far fa-star cursor-pointer'; }); };
-        window.submitRating=async()=>{ if(!selectedRating) return alert("Stars select karein"); const comment=document.getElementById('rating-comment').value; const worker=allWorkers.find(w=>w.id===currentWorkerId); const newRating={ userId:auth.currentUser?.uid, userName:auth.currentUser?.displayName||"Client", stars:selectedRating, comment, date:Date.now() }; const updated=[...(worker.ratings||[]), newRating]; const avg=updated.reduce((a,b)=>a+b.stars,0)/updated.length; await updateDoc(doc(db,'artifacts',appIdConst,'public','data','workers',currentWorkerId),{ ratings:arrayUnion(newRating), avgRating:avg }); closeRatingModal(); alert("Shukriya! feedback mil gaya"); };
+        window.submitRating=async()=>{ if(!selectedRating) return alert("Please select a rating"); const comment=document.getElementById('rating-comment').value; const worker=allWorkers.find(w=>w.id===currentWorkerId); const newRating={ userId:auth.currentUser?.uid, userName:auth.currentUser?.displayName||"Client", stars:selectedRating, comment, date:Date.now() }; const updated=[...(worker.ratings||[]), newRating]; const avg=updated.reduce((a,b)=>a+b.stars,0)/updated.length; await updateDoc(doc(db,'artifacts',appIdConst,'public','data','workers',currentWorkerId),{ ratings:arrayUnion(newRating), avgRating:avg }); closeRatingModal(); alert("Thank you for your feedback!"); };
         window.closeRatingModal=()=>document.getElementById('rating-modal').classList.add('hidden');
-        window.openReviewsModal=(id)=>{ const w=allWorkers.find(w=>w.id===id); const listDiv=document.getElementById('reviews-list-modal'); if(!w.ratings?.length) listDiv.innerHTML='<p class="text-center text-slate-400">No reviews yet</p>'; else listDiv.innerHTML=w.ratings.map(r=>`<div class="bg-slate-50 p-4 rounded-2xl"><div class="flex justify-between"><span class="font-black">${r.userName}</span><span class="text-yellow-500">★ ${r.stars}</span></div><p class="text-sm italic">${r.comment||"Behtreen kaam"}</p></div>`).join(''); document.getElementById('reviews-modal').classList.remove('hidden'); };
+        window.openReviewsModal=(id)=>{ const w=allWorkers.find(w=>w.id===id); const listDiv=document.getElementById('reviews-list-modal'); if(!w.ratings?.length) listDiv.innerHTML='<p class="text-center text-slate-400 py-6">No reviews yet</p>'; else listDiv.innerHTML=w.ratings.map(r=>`<div class="bg-slate-50 p-3 rounded-xl"><div class="flex justify-between"><span class="font-black text-sm">${r.userName}</span><span class="text-yellow-500 text-sm">★ ${r.stars}</span></div><p class="text-xs text-slate-600 mt-1">${r.comment||"Great service!"}</p></div>`).join(''); document.getElementById('reviews-modal').classList.remove('hidden'); };
         window.closeReviewsModal=()=>document.getElementById('reviews-modal').classList.add('hidden');
         window.openPromoModal=(id)=>{ currentWorkerId=id; document.getElementById('promo-modal').classList.remove('hidden'); };
         window.closePromoModal=()=>document.getElementById('promo-modal').classList.add('hidden');
-        window.selectPromoPlan=(plan,price)=>{ const worker=allWorkers.find(w=>w.id===currentWorkerId); const msg=`Asalam o Alaikum! Featured plan: ${plan} for ${worker.name} (${worker.skill}). Price Rs.${price}`; window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(msg)}`,'_blank'); closePromoModal(); };
-        window.openSupportChat = () => { window.open(`https://wa.me/${supportNumber}?text=${encodeURIComponent("Assalam u Alaikum! Kamm Kar Support Team, mujhe help chahiye.")}`, '_blank'); };
+        window.selectPromoPlan=(plan,price)=>{ const worker=allWorkers.find(w=>w.id===currentWorkerId); const msg=`Asalam o Alaikum! Promotion request for ${worker.name} (${worker.skill}). Plan: ${plan} - Rs.${price}`; window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(msg)}`,'_blank'); closePromoModal(); };
+        window.openSupportChat = () => { window.open(`https://wa.me/${supportNumber}?text=${encodeURIComponent("Assalam u Alaikum! Need help with Kamm Kar platform.")}`, '_blank'); };
         
-        // Load User Profile
         async function loadUserProfile() {
             if(!auth.currentUser) { showPage('auth'); return; }
             document.getElementById('profile-user-name').innerText = auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
             document.getElementById('profile-user-email').innerText = auth.currentUser.email;
             const userGigs = allWorkers.filter(w => w.userId === auth.currentUser.uid);
             document.getElementById('profile-gig-count').innerText = userGigs.length;
-            let totalReviews = 0, totalStars = 0;
-            userGigs.forEach(gig => { if(gig.ratings && gig.ratings.length) { totalReviews += gig.ratings.length; totalStars += gig.ratings.reduce((sum, r) => sum + r.stars, 0); } });
+            let totalReviews = 0, totalStars = 0, totalViews = 0;
+            userGigs.forEach(gig => { if(gig.ratings?.length) { totalReviews += gig.ratings.length; totalStars += gig.ratings.reduce((sum, r) => sum + r.stars, 0); } totalViews += gig.views || 0; });
             document.getElementById('profile-review-count').innerText = totalReviews;
             document.getElementById('profile-avg-rating').innerText = totalReviews > 0 ? (totalStars / totalReviews).toFixed(1) : "0.0";
+            document.getElementById('profile-views-count').innerText = totalViews;
+            const userRef = doc(db, 'referrals', auth.currentUser.uid);
+            const userSnap = await getDoc(userRef);
+            if(userSnap.exists() && userSnap.data().phone) document.getElementById('profile-user-phone').innerText = userSnap.data().phone;
             renderUserGigs(userGigs);
         }
         
         function renderUserGigs(gigs) {
             const container = document.getElementById('my-gigs-list');
-            if(!gigs.length) { container.innerHTML = `<div class="col-span-full text-center py-24"><div class="bg-white rounded-[3rem] p-12 shadow-sm border"><i class="fas fa-box-open text-6xl text-slate-300 mb-4"></i><p class="text-slate-400 font-black text-xl">Koi gig nahi mili</p><button onclick="showPage('post-gig')" class="mt-6 bg-emerald-600 text-white px-8 py-4 rounded-2xl font-black">Pehli Gig Banayein</button></div></div>`; return; }
-            container.innerHTML = gigs.map(gig => `<div class="bg-white rounded-[2rem] shadow-lg border p-6 relative group hover:shadow-xl transition-all">${gig.isPinned ? '<div class="absolute top-4 left-4"><span class="pinned-badge">⭐ Featured</span></div>' : ''}<div class="flex justify-between items-start"><div><h4 class="text-xl font-black">${gig.name} ${gig.isVerified ? '<i class="fas fa-check-circle blue-tick"></i>' : ''}</h4><span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-black inline-block mt-2">${gig.skill}</span></div><div class="bg-slate-900 text-white px-3 py-2 rounded-xl text-center"><span class="text-lg font-black">★ ${gig.avgRating?.toFixed(1)||0}</span><div class="text-[9px]">${gig.ratings?.length||0} reviews</div></div></div><div class="my-4 space-y-2 text-sm"><p><i class="fas fa-calendar-alt w-6 text-emerald-600"></i> ${gig.exp} years exp</p><p><i class="fas fa-map-marker-alt w-6 text-rose-500"></i> ${gig.city}</p><p><i class="fab fa-whatsapp w-6 text-green-500"></i> ${gig.phone}</p></div><div class="flex justify-between items-center pt-4 border-t mt-4"><div><span class="text-xs uppercase text-slate-400">Visit fee</span><p class="text-2xl font-black text-emerald-600">Rs.${gig.price}</p></div><div class="flex gap-2"><button onclick="openPromoModal('${gig.id}')" class="bg-amber-100 hover:bg-amber-200 p-3 rounded-xl transition-all"><i class="fas fa-crown text-amber-600"></i></button><button onclick="deleteWorker('${gig.id}')" class="bg-red-100 hover:bg-red-200 p-3 rounded-xl transition-all"><i class="fas fa-trash text-red-600"></i></button></div></div></div>`).join('');
+            if(!gigs.length) { container.innerHTML = `<div class="col-span-full text-center py-12"><div class="bg-white rounded-2xl p-8 shadow-sm border"><i class="fas fa-box-open text-4xl text-slate-300 mb-3"></i><p class="text-slate-400 font-medium">No service listings yet</p><button onclick="showPage('post-gig')" class="mt-4 bg-emerald-600 text-white px-6 py-2 rounded-xl font-black text-sm">Create Your First Listing</button></div></div>`; return; }
+            container.innerHTML = gigs.map(gig => `<div class="bg-white rounded-xl shadow-lg border p-4 relative">${gig.isPinned ? '<div class="absolute -top-2 left-3"><span class="pinned-badge text-[9px]">⭐ Featured</span></div>' : ''}<div class="flex justify-between items-start"><div><h4 class="text-lg font-black">${gig.name} ${gig.isVerified ? '<i class="fas fa-check-circle blue-tick text-xs"></i>' : ''}</h4><span class="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full text-[9px] font-black inline-block mt-1">${gig.skill}</span></div><div class="bg-slate-800 text-white px-2 py-1 rounded-lg text-center"><span class="text-sm font-black">★ ${gig.avgRating?.toFixed(1)||0}</span><div class="text-[8px]">${gig.ratings?.length||0} reviews</div></div></div><div class="my-2 space-y-1 text-xs"><p><i class="fas fa-calendar-alt w-4 text-emerald-600"></i> ${gig.exp} years exp</p><p><i class="fas fa-map-marker-alt w-4 text-rose-500"></i> ${gig.city}</p><p><i class="fas fa-eye w-4 text-blue-500"></i> ${gig.views || 0} views</p></div><div class="flex justify-between items-center pt-3 border-t mt-2"><div><span class="text-[9px] uppercase text-slate-400">Service fee</span><p class="text-lg font-black text-emerald-600">Rs.${gig.price}</p></div><div class="flex gap-2"><button onclick="openPromoModal('${gig.id}')" class="bg-amber-100 p-1.5 rounded-lg"><i class="fas fa-crown text-amber-600 text-xs"></i></button><button onclick="deleteWorker('${gig.id}')" class="bg-red-100 p-1.5 rounded-lg"><i class="fas fa-trash text-red-600 text-xs"></i></button></div></div></div>`).join('');
         }
         
-        // Auth handlers
         let authMode='login';
-        window.toggleAuthMode=(mode)=>{ authMode=mode; document.getElementById('signup-fields').classList.toggle('hidden',mode==='login'); document.getElementById('auth-submit-btn').innerText=mode==='login'?'Login Karein':'Register Karein'; };
+        window.toggleAuthMode=(mode)=>{ authMode=mode; document.getElementById('signup-fields').classList.toggle('hidden',mode==='login'); document.getElementById('auth-submit-btn').innerText=mode==='login'?'Login':'Register'; };
         
         window.handleAuth=async(e)=>{ 
             e.preventDefault(); 
             const email=document.getElementById('auth-email').value; 
             const pass=document.getElementById('auth-password').value; 
-            const name=document.getElementById('auth-name').value;
-            const referralCode = document.getElementById('referral-code-input')?.value || null;
+            const name=document.getElementById('auth-name')?.value;
+            const phone=document.getElementById('auth-phone')?.value;
+            const referralCode = document.getElementById('referral-code-input')?.value;
             try{ 
                 if(authMode==='signup'){ 
                     const res=await createUserWithEmailAndPassword(auth,email,pass); 
                     await updateProfile(res.user,{displayName:name});
-                    await checkAndUpdateReferral(referralCode, res.user.uid, name);
-                } else { 
-                    await signInWithEmailAndPassword(auth,email,pass); 
-                }
+                    await checkAndUpdateReferral(referralCode, res.user.uid, name, phone);
+                } else { await signInWithEmailAndPassword(auth,email,pass); }
                 showPage('home'); 
             } catch(err){ alert(err.message); } 
         };
         window.logout=()=>signOut(auth);
         
-        // Check URL for referral code on page load
         const urlParams = new URLSearchParams(window.location.search);
         const refCode = urlParams.get('ref');
-        if (refCode) {
-            sessionStorage.setItem('pendingReferral', refCode);
-        }
+        if (refCode) sessionStorage.setItem('pendingReferral', refCode);
         const pendingRef = sessionStorage.getItem('pendingReferral');
-        if (pendingRef && document.getElementById('referral-code-input')) {
-            document.getElementById('referral-code-input').value = pendingRef;
-        }
+        if (pendingRef && document.getElementById('referral-code-input')) document.getElementById('referral-code-input').value = pendingRef;
         
         onAuthStateChanged(auth,(user)=>{
             const deskDiv=document.getElementById('auth-buttons-desktop'); 
             const mobDiv=document.getElementById('auth-buttons-mobile');
             if(user){ 
-                deskDiv.innerHTML=`<button onclick="showPage('post-gig')" class="bg-white text-emerald-600 px-6 py-2.5 rounded-2xl font-black">Post Gig</button><button onclick="logout()" class="ml-3 text-white/80"><i class="fas fa-sign-out-alt"></i></button>`; 
-                mobDiv.innerHTML=`<button onclick="showPage('post-gig');toggleMobileMenu()" class="w-full bg-white text-emerald-600 py-4 rounded-2xl font-black">Post Gig</button><button onclick="logout();" class="w-full bg-rose-500/30 py-4 rounded-2xl font-black mt-2">Logout</button>`;
-                if(!currentUserData) loadUserReferralData(user.uid);
+                deskDiv.innerHTML=`<button onclick="showPage('post-gig')" class="bg-white text-emerald-700 px-5 py-2 rounded-xl font-black text-sm shadow-md hover:bg-emerald-50 transition">Post Service</button><button onclick="logout()" class="ml-2 text-white/80 hover:text-white"><i class="fas fa-sign-out-alt"></i></button>`; 
+                mobDiv.innerHTML=`<button onclick="showPage('post-gig');toggleMobileMenu()" class="w-full bg-white text-emerald-700 py-3 rounded-xl font-black text-sm">📝 Post Service</button><button onclick="logout();toggleMobileMenu()" class="w-full bg-rose-500/30 py-3 rounded-xl font-black text-sm mt-2">🚪 Logout</button>`;
             } else { 
-                deskDiv.innerHTML=`<button onclick="showPage('auth')" class="bg-white text-emerald-600 px-8 py-2.5 rounded-2xl font-black">Login</button>`; 
-                mobDiv.innerHTML=`<button onclick="showPage('auth')" class="w-full bg-white text-emerald-600 py-4 rounded-2xl font-black">Login</button>`;
+                deskDiv.innerHTML=`<button onclick="showPage('auth')" class="bg-white text-emerald-700 px-6 py-2 rounded-xl font-black text-sm shadow-md">Login</button>`; 
+                mobDiv.innerHTML=`<button onclick="showPage('auth')" class="w-full bg-white text-emerald-700 py-3 rounded-xl font-black text-sm">🔐 Login</button>`;
             }
         });
         
         onSnapshot(collection(db,'artifacts',appIdConst,'public','data','workers'),(snap)=>{ 
             allWorkers=snap.docs.map(d=>({id:d.id,...d.data()})); 
-            renderWorkers(allWorkers); 
+            applyFilters(); 
+            renderFeaturedWorkers();
             renderAdminTable(allWorkers); 
             document.getElementById('loading-overlay')?.classList.add('hidden');
             if(auth.currentUser && document.getElementById('page-profile') && !document.getElementById('page-profile').classList.contains('hidden')) loadUserProfile();
         });
+        
         populateCityDropdowns();
         document.getElementById('gig-city-select')?.addEventListener('change',(e)=>{ if(e.target.value) document.getElementById('manual-city-input').value=e.target.value; });
-        
-        // Clear pending referral after use
-        if (sessionStorage.getItem('pendingReferral')) {
-            setTimeout(() => sessionStorage.removeItem('pendingReferral'), 5000);
-        }
+        setTimeout(() => sessionStorage.removeItem('pendingReferral'), 5000);
     </script>
 </body>
 </html>
