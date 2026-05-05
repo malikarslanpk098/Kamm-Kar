@@ -16,7 +16,6 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 20px; }
         .city-tag { transition: all 0.2s ease; }
         .city-tag:hover { transform: translateY(-2px); background-color: #ecfdf5; border-color: #10b981; }
-        #manual-city-input:focus, #city-filter:focus, #gig-city-manual:focus { ring: 2px solid #10b981; }
         .floating-support {
             position: fixed;
             bottom: 30px;
@@ -33,13 +32,11 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .floating-support:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-        .profile-stats-card {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-        }
+        .floating-support:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        .profile-stats-card { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
+        .referral-card { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .copy-btn { transition: all 0.2s ease; }
+        .copy-btn:active { transform: scale(0.95); }
     </style>
 </head>
 <body class="bg-slate-50 font-sans text-slate-900">
@@ -66,6 +63,9 @@
                 <button onclick="showPage('profile')" class="hover:text-emerald-200">
                     <i class="fas fa-user-circle mr-1"></i> My Gigs
                 </button>
+                <button onclick="showPage('referral')" class="hover:text-emerald-200">
+                    <i class="fas fa-share-alt mr-1"></i> Refer & Earn
+                </button>
                 <button onclick="checkAdminCode()" class="bg-red-500/20 px-3 py-1 rounded-lg text-red-100 hover:bg-red-500/40 border border-red-400/30">
                     <i class="fas fa-user-shield mr-1"></i> Admin
                 </button>
@@ -79,6 +79,7 @@
             <button onclick="showPage('home'); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-emerald-600">Home</button>
             <button onclick="showPage('hire'); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-emerald-600">Hire Worker</button>
             <button onclick="showPage('profile'); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-emerald-600">My Gigs</button>
+            <button onclick="showPage('referral'); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-emerald-600">Refer & Earn</button>
             <button onclick="checkAdminCode(); toggleMobileMenu()" class="block w-full text-left py-2 border-b border-red-400 text-red-200 font-bold">Admin Dashboard</button>
             <div id="auth-buttons-mobile" class="space-y-4 pt-2"></div>
         </div>
@@ -86,7 +87,7 @@
 
     <main id="main-content" class="container mx-auto p-4 md:p-6">
 
-        <!-- AUTH PAGE -->
+        <!-- AUTH PAGE (with referral code support) -->
         <section id="page-auth" class="page-section hidden">
             <div class="max-w-md mx-auto bg-white p-10 rounded-[2.5rem] shadow-2xl mt-10 border border-slate-100">
                 <div class="flex justify-center mb-8 bg-slate-100 p-1.5 rounded-2xl">
@@ -97,6 +98,9 @@
                     <div id="signup-fields" class="hidden">
                         <label class="block text-xs font-black text-slate-400 uppercase ml-1 mb-1">Apna Naam</label>
                         <input type="text" id="auth-name" class="w-full border-2 border-slate-50 rounded-2xl p-4 focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
+                        <label class="block text-xs font-black text-slate-400 uppercase ml-1 mb-1 mt-3">Referral Code (Optional)</label>
+                        <input type="text" id="referral-code-input" placeholder="Friend ka referral code" class="w-full border-2 border-slate-50 rounded-2xl p-4 focus:ring-2 focus:ring-emerald-500 outline-none bg-slate-50">
+                        <p class="text-[10px] text-slate-400 mt-1"><i class="fas fa-gift"></i> Kisi ne invite kiya? Unka code yahan daalein!</p>
                     </div>
                     <div>
                         <label class="block text-xs font-black text-slate-400 uppercase ml-1 mb-1">Email</label>
@@ -162,7 +166,6 @@
         <!-- PROFILE / MY GIGS SECTION -->
         <section id="page-profile" class="page-section hidden">
             <div class="max-w-6xl mx-auto">
-                <!-- Profile Header with Stats -->
                 <div class="profile-stats-card rounded-[2.5rem] p-8 text-white mb-10 shadow-2xl">
                     <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                         <div class="flex items-center gap-5">
@@ -175,36 +178,104 @@
                             </div>
                         </div>
                         <div class="flex gap-8 text-center">
-                            <div>
-                                <p class="text-3xl font-black" id="profile-gig-count">0</p>
-                                <p class="text-sm opacity-80">Total Gigs</p>
-                            </div>
-                            <div>
-                                <p class="text-3xl font-black" id="profile-review-count">0</p>
-                                <p class="text-sm opacity-80">Total Reviews</p>
-                            </div>
-                            <div>
-                                <p class="text-3xl font-black" id="profile-avg-rating">0.0</p>
-                                <p class="text-sm opacity-80">★ Avg Rating</p>
-                            </div>
+                            <div><p class="text-3xl font-black" id="profile-gig-count">0</p><p class="text-sm opacity-80">Total Gigs</p></div>
+                            <div><p class="text-3xl font-black" id="profile-review-count">0</p><p class="text-sm opacity-80">Total Reviews</p></div>
+                            <div><p class="text-3xl font-black" id="profile-avg-rating">0.0</p><p class="text-sm opacity-80">★ Avg Rating</p></div>
                         </div>
                         <button onclick="showPage('post-gig')" class="bg-white text-emerald-700 px-8 py-4 rounded-2xl font-black hover:bg-emerald-50 transition-all shadow-lg">
                             <i class="fas fa-plus-circle mr-2"></i> New Gig
                         </button>
                     </div>
                 </div>
-                
-                <!-- User's Gigs List -->
                 <h3 class="text-2xl font-black mb-6 text-slate-800 flex items-center gap-3">
                     <i class="fas fa-briefcase text-emerald-600"></i> Meri Gigs
                 </h3>
-                <div id="my-gigs-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Dynamic gigs will appear here -->
+                <div id="my-gigs-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </div>
+        </section>
+
+        <!-- REFERRAL SECTION -->
+        <section id="page-referral" class="page-section hidden">
+            <div class="max-w-4xl mx-auto">
+                <!-- Referral Header Card -->
+                <div class="referral-card rounded-[2.5rem] p-8 text-white mb-8 shadow-2xl text-center">
+                    <i class="fas fa-gift text-5xl mb-4 opacity-90"></i>
+                    <h2 class="text-3xl md:text-5xl font-black mb-3">Refer & Earn! 🎁</h2>
+                    <p class="text-lg opacity-90">Apne dosto ko invite karein aur jab wo register karein to dono ko milega reward!</p>
+                </div>
+
+                <!-- User's Referral Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white rounded-2xl p-6 text-center shadow-md border">
+                        <i class="fas fa-link text-3xl text-emerald-600 mb-2"></i>
+                        <p class="text-slate-400 text-sm uppercase font-bold">Your Referral Code</p>
+                        <p class="text-3xl font-black font-mono tracking-wider mt-2" id="user-referral-code">------</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 text-center shadow-md border">
+                        <i class="fas fa-users text-3xl text-blue-600 mb-2"></i>
+                        <p class="text-slate-400 text-sm uppercase font-bold">Total Referrals</p>
+                        <p class="text-4xl font-black text-blue-600 mt-2" id="total-referrals">0</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 text-center shadow-md border">
+                        <i class="fas fa-coins text-3xl text-yellow-600 mb-2"></i>
+                        <p class="text-slate-400 text-sm uppercase font-bold">Rewards Earned</p>
+                        <p class="text-4xl font-black text-yellow-600 mt-2" id="rewards-earned">0</p>
+                    </div>
+                </div>
+
+                <!-- Share Your Link Card -->
+                <div class="bg-white rounded-[2rem] shadow-xl border p-8 mb-8">
+                    <h3 class="text-2xl font-black mb-4 flex items-center gap-2">
+                        <i class="fas fa-share-alt text-emerald-600"></i> Apna Link Share Karein
+                    </h3>
+                    <p class="text-slate-500 mb-4">Jab bhi koi aapke link se register karega, aapko milega <span class="font-black text-emerald-600">50% commission</span> on their first gig!</p>
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1 bg-slate-50 rounded-2xl p-4 border-2 border-dashed border-emerald-300">
+                            <code id="referral-full-link" class="text-sm break-all text-emerald-700 font-mono">Loading...</code>
+                        </div>
+                        <button onclick="copyReferralLink()" class="copy-btn bg-emerald-600 text-white px-8 py-4 rounded-2xl font-black hover:bg-emerald-700 transition-all flex items-center gap-2 justify-center">
+                            <i class="fas fa-copy"></i> Copy Link
+                        </button>
+                    </div>
+                </div>
+
+                <!-- How it Works -->
+                <div class="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-[2rem] p-8">
+                    <h3 class="text-xl font-black mb-6 flex items-center gap-2">
+                        <i class="fas fa-question-circle text-emerald-600"></i> Kaam Karta Hai?
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center text-white text-2xl font-black mx-auto mb-3">1</div>
+                            <p class="font-black">Copy apna referral link</p>
+                            <p class="text-sm text-slate-500">Link copy karein share karne ke liye</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center text-white text-2xl font-black mx-auto mb-3">2</div>
+                            <p class="font-black">Dosto ko bhejein</p>
+                            <p class="text-sm text-slate-500">WhatsApp, Facebook, Instagram par share karein</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center text-white text-2xl font-black mx-auto mb-3">3</div>
+                            <p class="font-black">Reward paayein</p>
+                            <p class="text-sm text-slate-500">Har registration par commission milega!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Referral History -->
+                <div class="mt-8 bg-white rounded-[2rem] shadow-sm border p-6">
+                    <h3 class="text-xl font-black mb-4 flex items-center gap-2">
+                        <i class="fas fa-history text-emerald-600"></i> Referral History
+                    </h3>
+                    <div id="referral-history-list" class="space-y-3 max-h-64 overflow-y-auto">
+                        <p class="text-slate-400 text-center py-8">Koi referral nahi hai abhi tak</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- POST GIG (with manual city + auto-suggest) -->
+        <!-- POST GIG SECTION -->
         <section id="page-post-gig" class="page-section hidden">
             <div class="max-w-2xl mx-auto bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-50">
                 <h2 class="text-4xl font-black text-center mb-8 text-slate-800">Apni Gig Banayein</h2>
@@ -218,8 +289,6 @@
                         <div><label class="block text-xs font-black text-slate-400 uppercase">Visit Fee (Rs.)</label><input type="number" id="gig-price" placeholder="800" class="w-full p-4 bg-slate-50 rounded-2xl"></div>
                     </div>
                     <div><label class="block text-xs font-black text-slate-400 uppercase">WhatsApp Number</label><input type="text" id="gig-phone" placeholder="03XXXXXXXXX" class="w-full p-4 bg-slate-50 rounded-2xl"></div>
-                    
-                    <!-- CITY SELECTOR WITH MANUAL INPUT + 170+ cities dropdown -->
                     <div class="relative">
                         <label class="block text-xs font-black text-slate-400 uppercase">Apna Shehar (City)</label>
                         <div class="flex flex-col gap-2">
@@ -229,11 +298,9 @@
                                     <option value="">-- OR Select from 170+ cities --</option>
                                 </select>
                             </div>
-                            <p class="text-[10px] text-slate-400 mt-1"><i class="fas fa-map-marker-alt"></i> Manual likh sakte hain ya select karein, dono me se koi bhi valid city add hoga.</p>
                         </div>
                     </div>
-                    
-                    <button onclick="saveGig()" class="w-full bg-emerald-600 text-white py-6 rounded-[2rem] font-black text-xl hover:bg-emerald-700 shadow-xl transition-all active:scale-95 mt-4">Giyg Live Karein <i class="fas fa-arrow-right"></i></button>
+                    <button onclick="saveGig()" class="w-full bg-emerald-600 text-white py-6 rounded-[2rem] font-black text-xl hover:bg-emerald-700 shadow-xl transition-all active:scale-95 mt-4">Gig Live Karein <i class="fas fa-arrow-right"></i></button>
                 </div>
             </div>
         </section>
@@ -263,7 +330,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, onSnapshot, updateDoc, deleteDoc, arrayUnion, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, onSnapshot, updateDoc, deleteDoc, arrayUnion, setDoc, getDoc, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyCdBDI74RVW9cf1zOVk5ltBNZa-lqn2sHI", authDomain: "kamm-kar.firebaseapp.com", projectId: "kamm-kar", storageBucket: "kamm-kar.firebasestorage.app", messagingSenderId: "204169677354", appId: "1:204169677354:web:3411a793504548bfcfd153" };
         const app = initializeApp(firebaseConfig);
@@ -271,9 +338,14 @@
         const db = getFirestore(app);
         const appIdConst = "kamm-kar-pak-002";
         const adminWhatsApp = "03455672710";
-        const supportNumber = "923455672710"; // Your support number
+        const supportNumber = "923455672710";
         
-        // 170+ Pakistani Cities
+        // Generate random referral code
+        function generateReferralCode(uid) {
+            return uid.substring(0, 8).toUpperCase();
+        }
+        
+        // Cities list
         const pakCities = [
             "Karachi", "Lahore", "Islamabad", "Rawalpindi", "Faisalabad", "Multan", "Gujranwala", "Sialkot", "Peshawar", "Quetta", "Bahawalpur", "Sargodha", "Sukkur", "Hyderabad", "Abbottabad", "Mardan", "Mingora", "Nawabshah", "Mirpur Khas", "Rahim Yar Khan", "Dera Ghazi Khan", "Dera Ismail Khan", "Chiniot", "Jhang", "Kasur", "Okara", "Sahiwal", "Sheikhupura", "Toba Tek Singh", "Vehari", "Gujrat", "Hafizabad", "Mandi Bahauddin", "Narowal", "Chakwal", "Jhelum", "Attock", "Kohat", "Bannu", "Swabi", "Charsadda", "Nowshera", "Swat", "Haripur", "Mansehra", "Batagram", "Kohistan", "Gilgit", "Skardu", "Hunza", "Ghanche", "Shigar", "Astore", "Diamer", "Ghizer", "Chitral", "Upper Dir", "Lower Dir", "Malakand", "Buner", "Shangla", "Torghar", "Lakki Marwat", "Tank", "Karak", "Hangu", "Orakzai", "Kurram", "North Waziristan", "South Waziristan", "Zhob", "Loralai", "Killa Abdullah", "Pishin", "Chaman", "Nushki", "Khuzdar", "Lasbela", "Hub", "Gwadar", "Turbat", "Panjgur", "Kech", "Awaran", "Kalat", "Mastung", "Sibi", "Jafarabad", "Nasirabad", "Barkhan", "Musakhel", "Sherani", "Kohlu", "Dera Bugti", "Sohbatpur", "Umerkot", "Tharparkar", "Badin", "Thatta", "Sujawal", "Tando Allahyar", "Tando Muhammad Khan", "Matiari", "Jamshoro", "Dadu", "Qambar Shahdadkot", "Larkana", "Shikarpur", "Jacobabad", "Kashmore", "Ghotki", "Khairpur", "Sanghar", "Naushahro Feroze", "Shaheed Benazirabad", "Karachi Central", "Karachi East", "Karachi South", "Karachi West", "Malir", "Korangi", "Bahawalnagar", "Pakpattan", "Lodhran", "Khanewal", "Muzaffargarh", "Layyah", "Bhakkar", "Khushab", "Mianwali", "Talagang", "Rawalpindi (Cantt)", "Murree", "Kahuta", "Taxila", "Wah Cantt", "Nankana Sahib", "Faisalabad (Jaranwala)", "Samundri", "Tandlianwala", "Kamalia", "Pattoki", "Renala Khurd", "Daska", "Pasrur", "Zafarwal", "Jalalpur Jattan", "Kharian", "Kunjah", "Lalamusa", "Wazirabad", "Gujrat (Jalalpur)", "Phalia", "Mailsi", "Dunyapur", "Kot Addu", "Alipur", "Jampur", "Rajanpur", "Rojhan", "Kashmir (Muzaffarabad)", "Bagh", "Rawalakot", "Kotli", "Mirpur (AJK)", "Bhimber", "Haveli", "Neelum", "Jhelum Valley", "Sudhnati"
         ];
@@ -283,145 +355,150 @@
         let isAdminActive = false;
         let currentWorkerId = null;
         let selectedRating = 0;
+        let currentUserData = null;
 
-        // DOM helpers
+        // Referral Functions
+        async function createUserReferralDoc(userId, userName, referredBy = null) {
+            const referralCode = generateReferralCode(userId);
+            const userRef = doc(db, 'referrals', userId);
+            await setDoc(userRef, {
+                userId: userId,
+                name: userName,
+                referralCode: referralCode,
+                referredBy: referredBy,
+                totalReferrals: 0,
+                rewardsEarned: 0,
+                referredUsers: [],
+                createdAt: Date.now()
+            });
+            
+            // If user was referred by someone, update the referrer's data
+            if (referredBy) {
+                const referrerRef = doc(db, 'referrals', referredBy);
+                const referrerSnap = await getDoc(referrerRef);
+                if (referrerSnap.exists()) {
+                    const referrerData = referrerSnap.data();
+                    await updateDoc(referrerRef, {
+                        totalReferrals: (referrerData.totalReferrals || 0) + 1,
+                        rewardsEarned: (referrerData.rewardsEarned || 0) + 50,
+                        referredUsers: arrayUnion(userId)
+                    });
+                }
+            }
+            return referralCode;
+        }
+        
+        async function loadUserReferralData(userId) {
+            const userRef = doc(db, 'referrals', userId);
+            const userSnap = await getDoc(userRef);
+            if (userSnap.exists()) {
+                currentUserData = userSnap.data();
+                return currentUserData;
+            }
+            return null;
+        }
+        
+        async function checkAndUpdateReferral(referredCode, newUserId, newUserName) {
+            if (!referredCode) return false;
+            
+            // Find user by referral code
+            const referralsRef = collection(db, 'referrals');
+            const q = query(referralsRef, where('referralCode', '==', referredCode.toUpperCase()));
+            const querySnap = await getDocs(q);
+            
+            if (!querySnap.empty) {
+                const referrerDoc = querySnap.docs[0];
+                const referrerId = referrerDoc.id;
+                await createUserReferralDoc(newUserId, newUserName, referrerId);
+                return true;
+            }
+            await createUserReferralDoc(newUserId, newUserName, null);
+            return false;
+        }
+        
+        // Load referral history
+        async function loadReferralHistory(userId) {
+            const historyDiv = document.getElementById('referral-history-list');
+            if (!historyDiv) return;
+            
+            const userRef = doc(db, 'referrals', userId);
+            const userSnap = await getDoc(userRef);
+            
+            if (userSnap.exists() && userSnap.data().referredUsers && userSnap.data().referredUsers.length > 0) {
+                const referredUsers = userSnap.data().referredUsers;
+                historyDiv.innerHTML = referredUsers.map(uid => `
+                    <div class="flex justify-between items-center p-3 bg-slate-50 rounded-xl">
+                        <div>
+                            <p class="font-bold text-sm">User ID: ${uid.substring(0, 10)}...</p>
+                            <p class="text-xs text-emerald-600"><i class="fas fa-check-circle"></i> Registered</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-black text-emerald-600">+ Rs. 50</p>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                historyDiv.innerHTML = '<p class="text-slate-400 text-center py-8"><i class="fas fa-users fa-2x mb-2 block"></i>Koi referral nahi hai abhi tak<br><span class="text-xs">Apna link share karein!</span></p>';
+            }
+        }
+        
+        window.copyReferralLink = () => {
+            const link = document.getElementById('referral-full-link')?.innerText;
+            if (link) {
+                navigator.clipboard.writeText(link);
+                alert("✅ Link copied! Ab dosto ko share karein.");
+            }
+        };
+
         window.showPage = (id) => { 
             document.querySelectorAll('.page-section').forEach(p => p.classList.add('hidden')); 
             document.getElementById(`page-${id}`).classList.remove('hidden'); 
             window.scrollTo(0,0);
-            if(id === 'profile') {
-                loadUserProfile();
-            }
+            if(id === 'profile') loadUserProfile();
+            if(id === 'referral' && auth.currentUser) loadReferralPage();
         };
+        
+        async function loadReferralPage() {
+            if (!auth.currentUser) {
+                showPage('auth');
+                return;
+            }
+            const userId = auth.currentUser.uid;
+            const data = await loadUserReferralData(userId);
+            if (data) {
+                document.getElementById('user-referral-code').innerText = data.referralCode;
+                document.getElementById('total-referrals').innerText = data.totalReferrals || 0;
+                document.getElementById('rewards-earned').innerText = data.rewardsEarned || 0;
+                const fullLink = `${window.location.origin}${window.location.pathname}?ref=${data.referralCode}`;
+                document.getElementById('referral-full-link').innerHTML = fullLink;
+                await loadReferralHistory(userId);
+            } else {
+                await createUserReferralDoc(userId, auth.currentUser.displayName || auth.currentUser.email);
+                loadReferralPage();
+            }
+        }
+        
         window.toggleMobileMenu = () => document.getElementById('mobile-menu').classList.toggle('hidden');
         window.checkAdminCode = () => { if(isAdminActive) showPage('admin'); else document.getElementById('admin-login-modal').classList.remove('hidden'); };
         window.closeAdminLogin = () => document.getElementById('admin-login-modal').classList.add('hidden');
         window.verifyAdminCode = () => { if(document.getElementById('admin-code-input').value === '626277') { isAdminActive=true; closeAdminLogin(); showPage('admin'); } else { alert("Wrong Code!"); } };
         window.toggleVerification = async (id, cur) => { await updateDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id), { isVerified: !cur }); };
         window.togglePinned = async (id, cur) => { await updateDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id), { isPinned: !cur }); };
-        window.deleteWorker = async (id) => { 
-            if(confirm("Delete worker?")) {
-                await deleteDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id));
-                if(auth.currentUser && auth.currentUser.uid) loadUserProfile();
-            }
-        };
+        window.deleteWorker = async (id) => { if(confirm("Delete worker?")) await deleteDoc(doc(db, 'artifacts', appIdConst, 'public', 'data', 'workers', id)); };
         
-        // Support Function
-        window.openSupportChat = () => {
-            window.open(`https://wa.me/${supportNumber}?text=${encodeURIComponent("Assalam u Alaikum! Kamm Kar Support Team, mujhe help chahiye.")}`, '_blank');
-        };
-        
-        // Load User Profile and their gigs
-        async function loadUserProfile() {
-            if(!auth.currentUser) {
-                showPage('auth');
-                return;
-            }
-            
-            // Update profile header
-            document.getElementById('profile-user-name').innerText = auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
-            document.getElementById('profile-user-email').innerText = auth.currentUser.email;
-            
-            // Get user's gigs
-            const userGigs = allWorkers.filter(w => w.userId === auth.currentUser.uid);
-            document.getElementById('profile-gig-count').innerText = userGigs.length;
-            
-            // Calculate total reviews and avg rating
-            let totalReviews = 0;
-            let totalStars = 0;
-            userGigs.forEach(gig => {
-                if(gig.ratings && gig.ratings.length) {
-                    totalReviews += gig.ratings.length;
-                    totalStars += gig.ratings.reduce((sum, r) => sum + r.stars, 0);
-                }
-            });
-            document.getElementById('profile-review-count').innerText = totalReviews;
-            document.getElementById('profile-avg-rating').innerText = totalReviews > 0 ? (totalStars / totalReviews).toFixed(1) : "0.0";
-            
-            // Render user's gigs
-            renderUserGigs(userGigs);
-        }
-        
-        function renderUserGigs(gigs) {
-            const container = document.getElementById('my-gigs-list');
-            if(!gigs.length) {
-                container.innerHTML = `
-                    <div class="col-span-full text-center py-24">
-                        <div class="bg-white rounded-[3rem] p-12 shadow-sm border">
-                            <i class="fas fa-box-open text-6xl text-slate-300 mb-4"></i>
-                            <p class="text-slate-400 font-black text-xl">Koi gig nahi mili</p>
-                            <button onclick="showPage('post-gig')" class="mt-6 bg-emerald-600 text-white px-8 py-4 rounded-2xl font-black hover:bg-emerald-700 transition-all">
-                                <i class="fas fa-plus-circle mr-2"></i> Pehli Gig Banayein
-                            </button>
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = gigs.map(gig => `
-                <div class="bg-white rounded-[2rem] shadow-lg border p-6 relative group hover:shadow-xl transition-all">
-                    ${gig.isPinned ? '<div class="absolute top-4 left-4"><span class="pinned-badge">⭐ Featured</span></div>' : ''}
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h4 class="text-xl font-black">${gig.name} ${gig.isVerified ? '<i class="fas fa-check-circle blue-tick"></i>' : ''}</h4>
-                            <span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-black inline-block mt-2">${gig.skill}</span>
-                        </div>
-                        <div class="bg-slate-900 text-white px-3 py-2 rounded-xl text-center">
-                            <span class="text-lg font-black">★ ${gig.avgRating?.toFixed(1)||0}</span>
-                            <div class="text-[9px]">${gig.ratings?.length||0} reviews</div>
-                        </div>
-                    </div>
-                    <div class="my-4 space-y-2 text-sm">
-                        <p><i class="fas fa-calendar-alt w-6 text-emerald-600"></i> ${gig.exp} years exp</p>
-                        <p><i class="fas fa-map-marker-alt w-6 text-rose-500"></i> ${gig.city}</p>
-                        <p><i class="fab fa-whatsapp w-6 text-green-500"></i> ${gig.phone}</p>
-                    </div>
-                    <div class="flex justify-between items-center pt-4 border-t mt-4">
-                        <div>
-                            <span class="text-xs uppercase text-slate-400">Visit fee</span>
-                            <p class="text-2xl font-black text-emerald-600">Rs.${gig.price}</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="openPromoModal('${gig.id}')" class="bg-amber-100 hover:bg-amber-200 p-3 rounded-xl transition-all" title="Promote Gig">
-                                <i class="fas fa-crown text-amber-600"></i>
-                            </button>
-                            <button onclick="deleteWorker('${gig.id}')" class="bg-red-100 hover:bg-red-200 p-3 rounded-xl transition-all" title="Delete Gig">
-                                <i class="fas fa-trash text-red-600"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        // Populate city dropdowns
         function populateCityDropdowns() {
             const cityFilter = document.getElementById('city-filter');
             const gigSelect = document.getElementById('gig-city-select');
-            if(cityFilter) {
-                cityFilter.innerHTML = '<option value="All">All Cities (170+)</option>';
-                uniqueCities.forEach(city => { cityFilter.innerHTML += `<option value="${city}">${city}</option>`; });
-            }
-            if(gigSelect) {
-                gigSelect.innerHTML = '<option value="">-- Select City --</option>';
-                uniqueCities.forEach(city => { gigSelect.innerHTML += `<option value="${city}">${city}</option>`; });
-            }
+            if(cityFilter) cityFilter.innerHTML = '<option value="All">All Cities (170+)</option>' + uniqueCities.map(c => `<option value="${c}">${c}</option>`).join('');
+            if(gigSelect) gigSelect.innerHTML = '<option value="">-- Select City --</option>' + uniqueCities.map(c => `<option value="${c}">${c}</option>`).join('');
         }
         
-        // Save Gig with manual city OR selected city
         window.saveGig = async () => {
             if(!auth.currentUser) return showPage('auth');
             let finalCity = document.getElementById('manual-city-input').value.trim();
             const selectedCityDropdown = document.getElementById('gig-city-select').value;
             if(!finalCity && selectedCityDropdown) finalCity = selectedCityDropdown;
             if(!finalCity) return alert("Please type or select a city from 170+ list!");
-            if(!uniqueCities.includes(finalCity) && !uniqueCities.some(c => c.toLowerCase() === finalCity.toLowerCase())) {
-                if(confirm(`"${finalCity}" naye shehar ki tarah add karna chahte ho? Ye list me included hoga.`)) {
-                    uniqueCities.push(finalCity);
-                    populateCityDropdowns();
-                } else return;
-            }
             const data = {
                 name: document.getElementById('gig-name').value,
                 skill: document.getElementById('gig-skill').value,
@@ -442,8 +519,6 @@
             showPage('hire');
             document.getElementById('manual-city-input').value = '';
             document.getElementById('gig-city-select').value = '';
-            document.getElementById('gig-name').value = '';
-            document.getElementById('gig-phone').value = '';
         };
         
         window.globalSearch = () => { const val = document.getElementById('home-search').value.toLowerCase(); showPage('hire'); const filtered = allWorkers.filter(w => w.city?.toLowerCase().includes(val) || w.skill?.toLowerCase().includes(val) || w.name?.toLowerCase().includes(val)); renderWorkers(filtered); };
@@ -484,13 +559,61 @@
         window.openPromoModal=(id)=>{ currentWorkerId=id; document.getElementById('promo-modal').classList.remove('hidden'); };
         window.closePromoModal=()=>document.getElementById('promo-modal').classList.add('hidden');
         window.selectPromoPlan=(plan,price)=>{ const worker=allWorkers.find(w=>w.id===currentWorkerId); const msg=`Asalam o Alaikum! Featured plan: ${plan} for ${worker.name} (${worker.skill}). Price Rs.${price}`; window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(msg)}`,'_blank'); closePromoModal(); };
+        window.openSupportChat = () => { window.open(`https://wa.me/${supportNumber}?text=${encodeURIComponent("Assalam u Alaikum! Kamm Kar Support Team, mujhe help chahiye.")}`, '_blank'); };
+        
+        // Load User Profile
+        async function loadUserProfile() {
+            if(!auth.currentUser) { showPage('auth'); return; }
+            document.getElementById('profile-user-name').innerText = auth.currentUser.displayName || auth.currentUser.email.split('@')[0];
+            document.getElementById('profile-user-email').innerText = auth.currentUser.email;
+            const userGigs = allWorkers.filter(w => w.userId === auth.currentUser.uid);
+            document.getElementById('profile-gig-count').innerText = userGigs.length;
+            let totalReviews = 0, totalStars = 0;
+            userGigs.forEach(gig => { if(gig.ratings && gig.ratings.length) { totalReviews += gig.ratings.length; totalStars += gig.ratings.reduce((sum, r) => sum + r.stars, 0); } });
+            document.getElementById('profile-review-count').innerText = totalReviews;
+            document.getElementById('profile-avg-rating').innerText = totalReviews > 0 ? (totalStars / totalReviews).toFixed(1) : "0.0";
+            renderUserGigs(userGigs);
+        }
+        
+        function renderUserGigs(gigs) {
+            const container = document.getElementById('my-gigs-list');
+            if(!gigs.length) { container.innerHTML = `<div class="col-span-full text-center py-24"><div class="bg-white rounded-[3rem] p-12 shadow-sm border"><i class="fas fa-box-open text-6xl text-slate-300 mb-4"></i><p class="text-slate-400 font-black text-xl">Koi gig nahi mili</p><button onclick="showPage('post-gig')" class="mt-6 bg-emerald-600 text-white px-8 py-4 rounded-2xl font-black">Pehli Gig Banayein</button></div></div>`; return; }
+            container.innerHTML = gigs.map(gig => `<div class="bg-white rounded-[2rem] shadow-lg border p-6 relative group hover:shadow-xl transition-all">${gig.isPinned ? '<div class="absolute top-4 left-4"><span class="pinned-badge">⭐ Featured</span></div>' : ''}<div class="flex justify-between items-start"><div><h4 class="text-xl font-black">${gig.name} ${gig.isVerified ? '<i class="fas fa-check-circle blue-tick"></i>' : ''}</h4><span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-black inline-block mt-2">${gig.skill}</span></div><div class="bg-slate-900 text-white px-3 py-2 rounded-xl text-center"><span class="text-lg font-black">★ ${gig.avgRating?.toFixed(1)||0}</span><div class="text-[9px]">${gig.ratings?.length||0} reviews</div></div></div><div class="my-4 space-y-2 text-sm"><p><i class="fas fa-calendar-alt w-6 text-emerald-600"></i> ${gig.exp} years exp</p><p><i class="fas fa-map-marker-alt w-6 text-rose-500"></i> ${gig.city}</p><p><i class="fab fa-whatsapp w-6 text-green-500"></i> ${gig.phone}</p></div><div class="flex justify-between items-center pt-4 border-t mt-4"><div><span class="text-xs uppercase text-slate-400">Visit fee</span><p class="text-2xl font-black text-emerald-600">Rs.${gig.price}</p></div><div class="flex gap-2"><button onclick="openPromoModal('${gig.id}')" class="bg-amber-100 hover:bg-amber-200 p-3 rounded-xl transition-all"><i class="fas fa-crown text-amber-600"></i></button><button onclick="deleteWorker('${gig.id}')" class="bg-red-100 hover:bg-red-200 p-3 rounded-xl transition-all"><i class="fas fa-trash text-red-600"></i></button></div></div></div>`).join('');
+        }
         
         // Auth handlers
         let authMode='login';
         window.toggleAuthMode=(mode)=>{ authMode=mode; document.getElementById('signup-fields').classList.toggle('hidden',mode==='login'); document.getElementById('auth-submit-btn').innerText=mode==='login'?'Login Karein':'Register Karein'; };
-        window.handleAuth=async(e)=>{ e.preventDefault(); const email=document.getElementById('auth-email').value; const pass=document.getElementById('auth-password').value; const name=document.getElementById('auth-name').value; try{ if(authMode==='signup'){ const res=await createUserWithEmailAndPassword(auth,email,pass); await updateProfile(res.user,{displayName:name}); } else await signInWithEmailAndPassword(auth,email,pass); showPage('home'); } catch(err){ alert(err.message); } };
+        
+        window.handleAuth=async(e)=>{ 
+            e.preventDefault(); 
+            const email=document.getElementById('auth-email').value; 
+            const pass=document.getElementById('auth-password').value; 
+            const name=document.getElementById('auth-name').value;
+            const referralCode = document.getElementById('referral-code-input')?.value || null;
+            try{ 
+                if(authMode==='signup'){ 
+                    const res=await createUserWithEmailAndPassword(auth,email,pass); 
+                    await updateProfile(res.user,{displayName:name});
+                    await checkAndUpdateReferral(referralCode, res.user.uid, name);
+                } else { 
+                    await signInWithEmailAndPassword(auth,email,pass); 
+                }
+                showPage('home'); 
+            } catch(err){ alert(err.message); } 
+        };
         window.logout=()=>signOut(auth);
-        window.openSupportChat = () => { window.open(`https://wa.me/${supportNumber}?text=${encodeURIComponent("Assalam u Alaikum! Kamm Kar Support Team, mujhe help chahiye.")}`, '_blank'); };
+        
+        // Check URL for referral code on page load
+        const urlParams = new URLSearchParams(window.location.search);
+        const refCode = urlParams.get('ref');
+        if (refCode) {
+            sessionStorage.setItem('pendingReferral', refCode);
+        }
+        const pendingRef = sessionStorage.getItem('pendingReferral');
+        if (pendingRef && document.getElementById('referral-code-input')) {
+            document.getElementById('referral-code-input').value = pendingRef;
+        }
         
         onAuthStateChanged(auth,(user)=>{
             const deskDiv=document.getElementById('auth-buttons-desktop'); 
@@ -498,30 +621,27 @@
             if(user){ 
                 deskDiv.innerHTML=`<button onclick="showPage('post-gig')" class="bg-white text-emerald-600 px-6 py-2.5 rounded-2xl font-black">Post Gig</button><button onclick="logout()" class="ml-3 text-white/80"><i class="fas fa-sign-out-alt"></i></button>`; 
                 mobDiv.innerHTML=`<button onclick="showPage('post-gig');toggleMobileMenu()" class="w-full bg-white text-emerald-600 py-4 rounded-2xl font-black">Post Gig</button><button onclick="logout();" class="w-full bg-rose-500/30 py-4 rounded-2xl font-black mt-2">Logout</button>`;
-                if(document.getElementById('page-profile') && !document.getElementById('page-profile').classList.contains('hidden')) {
-                    loadUserProfile();
-                }
-            }
-            else { 
+                if(!currentUserData) loadUserReferralData(user.uid);
+            } else { 
                 deskDiv.innerHTML=`<button onclick="showPage('auth')" class="bg-white text-emerald-600 px-8 py-2.5 rounded-2xl font-black">Login</button>`; 
                 mobDiv.innerHTML=`<button onclick="showPage('auth')" class="w-full bg-white text-emerald-600 py-4 rounded-2xl font-black">Login</button>`;
             }
         });
         
-        // Real-time listeners
         onSnapshot(collection(db,'artifacts',appIdConst,'public','data','workers'),(snap)=>{ 
             allWorkers=snap.docs.map(d=>({id:d.id,...d.data()})); 
             renderWorkers(allWorkers); 
             renderAdminTable(allWorkers); 
             document.getElementById('loading-overlay')?.classList.add('hidden');
-            if(auth.currentUser && document.getElementById('page-profile') && !document.getElementById('page-profile').classList.contains('hidden')) {
-                loadUserProfile();
-            }
+            if(auth.currentUser && document.getElementById('page-profile') && !document.getElementById('page-profile').classList.contains('hidden')) loadUserProfile();
         });
         populateCityDropdowns();
-        
-        // Manual city sync
         document.getElementById('gig-city-select')?.addEventListener('change',(e)=>{ if(e.target.value) document.getElementById('manual-city-input').value=e.target.value; });
+        
+        // Clear pending referral after use
+        if (sessionStorage.getItem('pendingReferral')) {
+            setTimeout(() => sessionStorage.removeItem('pendingReferral'), 5000);
+        }
     </script>
 </body>
 </html>
