@@ -13,32 +13,30 @@
         .blue-tick { color: #1d9bf0; margin-left: 4px; font-size: 0.9em; }
         .pinned-badge { background: #fef3c7; color: #92400e; padding: 2px 12px; border-radius: 99px; font-size: 10px; font-weight: 800; border: 1px solid #f59e0b; }
         .verified-badge { background: #d1fae5; color: #065f46; padding: 2px 12px; border-radius: 99px; font-size: 10px; font-weight: 800; }
-        .floating-support {
-            position: fixed; bottom: 30px; right: 30px; z-index: 1000; background: #25D366;
-            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer;
-            transition: all 0.3s ease;
-        }
+        .floating-support { position: fixed; bottom: 30px; right: 30px; z-index: 1000; background: #25D366; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.3s ease; }
         .floating-support:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
         .profile-stats-card { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
         .referral-card { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
         .copy-btn { transition: all 0.2s ease; }
         .copy-btn:active { transform: scale(0.95); }
-        .scroll-to-top {
-            position: fixed; bottom: 30px; left: 30px; z-index: 1000;
-            background: #059669; width: 50px; height: 50px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
+        .scroll-to-top { position: fixed; bottom: 30px; left: 30px; z-index: 1000; background: #059669; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         .scroll-to-top:hover { transform: translateY(-3px); background: #047857; }
         .category-card { transition: all 0.3s ease; }
         .category-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-        .worker-card { transition: all 0.3s ease; }
+        .worker-card { transition: all 0.3s ease; cursor: pointer; }
         .worker-card:hover { transform: translateY(-5px); }
-        .animate-pulse-slow { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         .gradient-text { background: linear-gradient(135deg, #059669, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero-pattern { background-image: radial-gradient(#10b981 1px, transparent 1px); background-size: 30px 30px; }
+        .image-preview { position: relative; display: inline-block; }
+        .image-preview .remove-img { position: absolute; top: -8px; right: -8px; background: red; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; }
+        .gallery-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; display: none; align-items: center; justify-content: center; flex-direction: column; }
+        .gallery-modal.active { display: flex; }
+        .gallery-img { max-width: 90vw; max-height: 80vh; object-fit: contain; }
+        .gallery-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
+        .gallery-prev, .gallery-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; padding: 16px; cursor: pointer; font-size: 24px; border-radius: 50%; }
+        .gallery-prev { left: 20px; }
+        .gallery-next { right: 20px; }
+        .upload-progress { transition: width 0.3s ease; }
     </style>
 </head>
 <body class="bg-slate-50 font-sans text-slate-900">
@@ -56,6 +54,15 @@
     <!-- SCROLL TO TOP BUTTON -->
     <div class="scroll-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
         <i class="fas fa-arrow-up text-white text-xl"></i>
+    </div>
+
+    <!-- GALLERY MODAL -->
+    <div id="gallery-modal" class="gallery-modal">
+        <span class="gallery-close" onclick="closeGallery()">&times;</span>
+        <button class="gallery-prev" onclick="prevGalleryImage()">&#10094;</button>
+        <img id="gallery-img" class="gallery-img" src="" alt="">
+        <button class="gallery-next" onclick="nextGalleryImage()">&#10095;</button>
+        <div id="gallery-counter" class="absolute bottom-5 left-0 right-0 text-center text-white bg-black/50 py-2 rounded-full mx-auto w-32">1 / 1</div>
     </div>
 
     <!-- NAVIGATION -->
@@ -256,7 +263,7 @@
             </div>
         </section>
 
-        <!-- REFERRAL SECTION (No earning mentions) -->
+        <!-- REFERRAL SECTION -->
         <section id="page-referral" class="page-section hidden">
             <div class="max-w-4xl mx-auto">
                 <div class="referral-card rounded-2xl p-6 md:p-8 text-white mb-8 shadow-xl text-center">
@@ -327,7 +334,7 @@
             </div>
         </section>
 
-        <!-- POST GIG SECTION -->
+        <!-- POST GIG SECTION WITH IMAGE UPLOAD -->
         <section id="page-post-gig" class="page-section hidden">
             <div class="max-w-2xl mx-auto bg-white p-6 md:p-10 rounded-2xl md:rounded-3xl shadow-xl border border-slate-100">
                 <h2 class="text-2xl md:text-4xl font-black text-center mb-6 md:mb-8 text-slate-800">Post Your Service</h2>
@@ -342,6 +349,26 @@
                     </div>
                     <div><label class="block text-xs font-black text-slate-400 uppercase mb-1">WhatsApp Number</label><input type="text" id="gig-phone" placeholder="03XXXXXXXXX" class="w-full p-3 md:p-4 bg-slate-50 rounded-xl"></div>
                     <div><label class="block text-xs font-black text-slate-400 uppercase mb-1">About Your Service</label><textarea id="gig-bio" rows="3" placeholder="Tell customers about your experience and expertise..." class="w-full p-3 md:p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500"></textarea></div>
+                    
+                    <!-- IMAGE UPLOAD SECTION -->
+                    <div>
+                        <label class="block text-xs font-black text-slate-400 uppercase mb-1">Upload Photos (Max 4)</label>
+                        <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center bg-slate-50">
+                            <input type="file" id="gig-images" accept="image/*" multiple class="hidden" onchange="previewImages(this)">
+                            <button type="button" onclick="document.getElementById('gig-images').click()" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg font-medium text-sm hover:bg-slate-300 transition">
+                                <i class="fas fa-upload mr-2"></i> Select Images
+                            </button>
+                            <p class="text-xs text-slate-400 mt-2">Upload up to 4 images (JPG, PNG) - First image will be thumbnail</p>
+                        </div>
+                        <div id="image-preview-container" class="flex flex-wrap gap-3 mt-3"></div>
+                        <div id="upload-progress-container" class="hidden mt-2">
+                            <div class="bg-slate-200 rounded-full h-2 overflow-hidden">
+                                <div id="upload-progress-bar" class="upload-progress bg-emerald-600 h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <p class="text-xs text-slate-500 text-center mt-1"><span id="upload-progress-text">0%</span> - Uploading...</p>
+                        </div>
+                    </div>
+                    
                     <div>
                         <label class="block text-xs font-black text-slate-400 uppercase mb-1">Your City</label>
                         <div class="flex flex-col gap-2">
@@ -351,7 +378,9 @@
                             </select>
                         </div>
                     </div>
-                    <button onclick="saveGig()" class="w-full bg-emerald-600 text-white py-4 md:py-5 rounded-xl font-black text-lg hover:bg-emerald-700 shadow-lg transition-all active:scale-95 mt-4">Post Service <i class="fas fa-arrow-right ml-2"></i></button>
+                    <button onclick="saveGigWithImages()" id="submit-gig-btn" class="w-full bg-emerald-600 text-white py-4 md:py-5 rounded-xl font-black text-lg hover:bg-emerald-700 shadow-lg transition-all active:scale-95 mt-4">
+                        Post Service <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
                 </div>
             </div>
         </section>
@@ -378,7 +407,7 @@
     <div id="rating-modal" class="fixed inset-0 bg-black/50 hidden z-[200] flex items-center justify-center p-4"><div class="bg-white p-6 rounded-2xl max-w-md"><h3 class="font-black text-lg">Rate This Professional</h3><div class="flex justify-center gap-2 text-3xl my-4" id="rating-stars-mod"><i class="far fa-star cursor-pointer" onclick="setRating(1)"></i><i class="far fa-star" onclick="setRating(2)"></i><i class="far fa-star" onclick="setRating(3)"></i><i class="far fa-star" onclick="setRating(4)"></i><i class="far fa-star" onclick="setRating(5)"></i></div><textarea id="rating-comment" rows="2" placeholder="Share your experience..." class="w-full border rounded-xl p-3 text-sm"></textarea><button onclick="submitRating()" class="bg-emerald-600 text-white w-full py-2.5 rounded-xl font-black mt-3">Submit</button><button onclick="closeRatingModal()" class="w-full mt-2 text-slate-400 text-sm">Skip</button></div></div>
     <div id="reviews-modal" class="fixed inset-0 bg-black/50 hidden z-[200] flex items-center justify-center p-4"><div class="bg-white rounded-2xl max-w-lg w-full p-5 max-h-[80vh] overflow-auto"><div class="flex justify-between items-center mb-3"><h3 class="font-black text-lg">Customer Reviews</h3><button onclick="closeReviewsModal()" class="text-2xl">&times;</button></div><div id="reviews-list-modal" class="space-y-3"></div></div></div>
 
-    <!-- FIREBASE IMPORT + LOGIC (Compact & Optimized) -->
+    <!-- FIREBASE IMPORT + LOGIC WITH CLOUDINARY -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -392,10 +421,180 @@
         const adminWhatsApp = "03455672710";
         const supportNumber = "923455672710";
         
+        // Cloudinary Configuration
+        const CLOUDINARY_CLOUD_NAME = "dmikqzfuu";
+        const CLOUDINARY_UPLOAD_PRESET = "kammkar";
+        const CLOUDINARY_API_KEY = "688587287569421";
+        
         let allWorkers = [], isAdminActive = false, currentWorkerId = null, selectedRating = 0;
+        let selectedImages = [];
+        let currentGalleryImages = [];
+        let currentGalleryIndex = 0;
+        
         const pakCities = ["Karachi","Lahore","Islamabad","Rawalpindi","Faisalabad","Multan","Gujranwala","Sialkot","Peshawar","Quetta","Bahawalpur","Sargodha","Sukkur","Hyderabad","Abbottabad","Mardan","Mingora","Nawabshah","Mirpur Khas","Rahim Yar Khan","Dera Ghazi Khan","Dera Ismail Khan","Chiniot","Jhang","Kasur","Okara","Sahiwal","Sheikhupura","Toba Tek Singh","Vehari","Gujrat","Hafizabad","Mandi Bahauddin","Narowal","Chakwal","Jhelum","Attock","Kohat","Bannu","Swabi","Charsadda","Nowshera","Swat","Haripur","Mansehra","Batagram","Kohistan","Gilgit","Skardu","Hunza","Ghanche","Shigar","Astore","Diamer","Ghizer","Chitral","Upper Dir","Lower Dir","Malakand","Buner","Shangla","Torghar","Lakki Marwat","Tank","Karak","Hangu","Orakzai","Kurram","North Waziristan","South Waziristan","Zhob","Loralai","Killa Abdullah","Pishin","Chaman","Nushki","Khuzdar","Lasbela","Hub","Gwadar","Turbat","Panjgur","Kech","Awaran","Kalat","Mastung","Sibi","Jafarabad","Nasirabad","Barkhan","Musakhel","Sherani","Kohlu","Dera Bugti","Sohbatpur","Umerkot","Tharparkar","Badin","Thatta","Sujawal","Tando Allahyar","Tando Muhammad Khan","Matiari","Jamshoro","Dadu","Qambar Shahdadkot","Larkana","Shikarpur","Jacobabad","Kashmore","Ghotki","Khairpur","Sanghar","Naushahro Feroze","Shaheed Benazirabad","Karachi Central","Karachi East","Karachi South","Karachi West","Malir","Korangi","Bahawalnagar","Pakpattan","Lodhran","Khanewal","Muzaffargarh","Layyah","Bhakkar","Khushab","Mianwali","Talagang","Rawalpindi Cantt","Murree","Kahuta","Taxila","Wah Cantt","Nankana Sahib","Faisalabad Jaranwala","Samundri","Tandlianwala","Kamalia","Pattoki","Renala Khurd","Daska","Pasrur","Zafarwal","Jalalpur Jattan","Kharian","Kunjah","Lalamusa","Wazirabad","Gujrat Jalalpur","Phalia","Mailsi","Dunyapur","Kot Addu","Alipur","Jampur","Rajanpur","Rojhan","Muzaffarabad AJK","Bagh","Rawalakot","Kotli","Mirpur AJK","Bhimber","Haveli","Neelum","Jhelum Valley","Sudhnati"];
         const uniqueCities = [...new Set(pakCities)].sort();
 
+        // Gallery Functions
+        window.openGallery = (images, index) => {
+            if (!images || images.length === 0) return;
+            currentGalleryImages = images;
+            currentGalleryIndex = index;
+            document.getElementById('gallery-img').src = images[index];
+            document.getElementById('gallery-counter').innerText = `${index+1} / ${images.length}`;
+            document.getElementById('gallery-modal').classList.add('active');
+        };
+        
+        window.closeGallery = () => {
+            document.getElementById('gallery-modal').classList.remove('active');
+        };
+        
+        window.prevGalleryImage = () => {
+            if (currentGalleryIndex > 0) {
+                currentGalleryIndex--;
+                document.getElementById('gallery-img').src = currentGalleryImages[currentGalleryIndex];
+                document.getElementById('gallery-counter').innerText = `${currentGalleryIndex+1} / ${currentGalleryImages.length}`;
+            }
+        };
+        
+        window.nextGalleryImage = () => {
+            if (currentGalleryIndex < currentGalleryImages.length - 1) {
+                currentGalleryIndex++;
+                document.getElementById('gallery-img').src = currentGalleryImages[currentGalleryIndex];
+                document.getElementById('gallery-counter').innerText = `${currentGalleryIndex+1} / ${currentGalleryImages.length}`;
+            }
+        };
+        
+        // Image Preview
+        window.previewImages = (input) => {
+            const container = document.getElementById('image-preview-container');
+            container.innerHTML = '';
+            selectedImages = [];
+            
+            const files = Array.from(input.files);
+            if (files.length > 4) {
+                alert("Maximum 4 images allowed!");
+                input.value = '';
+                return;
+            }
+            
+            files.forEach((file, idx) => {
+                if (!file.type.match('image.*')) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    selectedImages.push({ file, dataUrl: e.target.result, index: idx });
+                    const div = document.createElement('div');
+                    div.className = 'image-preview';
+                    div.innerHTML = `<img src="${e.target.result}" class="w-20 h-20 object-cover rounded-lg border"><span class="remove-img" onclick="removeImage(${idx})">&times;</span>`;
+                    container.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+        };
+        
+        window.removeImage = (index) => {
+            selectedImages = selectedImages.filter(img => img.index !== index);
+            const container = document.getElementById('image-preview-container');
+            container.innerHTML = '';
+            selectedImages.forEach(img => {
+                const div = document.createElement('div');
+                div.className = 'image-preview';
+                div.innerHTML = `<img src="${img.dataUrl}" class="w-20 h-20 object-cover rounded-lg border"><span class="remove-img" onclick="removeImage(${img.index})">&times;</span>`;
+                container.appendChild(div);
+            });
+            if (selectedImages.length === 0) {
+                document.getElementById('gig-images').value = '';
+            }
+        };
+        
+        // Upload to Cloudinary
+        async function uploadToCloudinary(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+            formData.append('api_key', CLOUDINARY_API_KEY);
+            
+            const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            return data.secure_url;
+        }
+        
+        async function uploadMultipleImages(images) {
+            const urls = [];
+            const progressContainer = document.getElementById('upload-progress-container');
+            const progressBar = document.getElementById('upload-progress-bar');
+            const progressText = document.getElementById('upload-progress-text');
+            
+            if (images.length > 0) {
+                progressContainer.classList.remove('hidden');
+                for (let i = 0; i < images.length; i++) {
+                    const percent = ((i + 1) / images.length) * 100;
+                    progressBar.style.width = `${percent}%`;
+                    progressText.innerText = `${Math.round(percent)}%`;
+                    const url = await uploadToCloudinary(images[i].file);
+                    urls.push(url);
+                }
+                setTimeout(() => progressContainer.classList.add('hidden'), 1000);
+            }
+            return urls;
+        }
+        
+        // Save Gig with Images
+        window.saveGigWithImages = async () => {
+            if(!auth.currentUser) return showPage('auth');
+            let finalCity = document.getElementById('manual-city-input').value.trim() || document.getElementById('gig-city-select').value;
+            if(!finalCity) return alert("Please select your city!");
+            
+            const submitBtn = document.getElementById('submit-gig-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Uploading...';
+            
+            let imageUrls = [];
+            if (selectedImages.length > 0) {
+                imageUrls = await uploadMultipleImages(selectedImages);
+            }
+            
+            const data = {
+                name: document.getElementById('gig-name').value,
+                skill: document.getElementById('gig-skill').value,
+                exp: document.getElementById('gig-exp').value || "1",
+                price: document.getElementById('gig-price').value || "500",
+                phone: document.getElementById('gig-phone').value,
+                bio: document.getElementById('gig-bio').value || "",
+                city: finalCity,
+                images: imageUrls,
+                thumbnail: imageUrls[0] || null,
+                ratings: [], avgRating: 0, userId: auth.currentUser.uid,
+                isVerified: false, isPinned: false, createdAt: Date.now(), views: 0
+            };
+            
+            if(!data.name || !data.phone) {
+                alert("Name and WhatsApp number required!");
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Post Service <i class="fas fa-arrow-right ml-2"></i>';
+                return;
+            }
+            
+            await addDoc(collection(db, 'artifacts', appIdConst, 'public', 'data', 'workers'), data);
+            alert(`Service posted successfully in ${data.city}!`);
+            
+            // Reset form
+            document.getElementById('gig-name').value = '';
+            document.getElementById('gig-phone').value = '';
+            document.getElementById('gig-bio').value = '';
+            document.getElementById('manual-city-input').value = '';
+            document.getElementById('image-preview-container').innerHTML = '';
+            document.getElementById('gig-images').value = '';
+            selectedImages = [];
+            
+            showPage('hire');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Post Service <i class="fas fa-arrow-right ml-2"></i>';
+        };
+        
         function generateReferralCode(uid) { return uid.substring(0, 8).toUpperCase(); }
         
         async function createUserReferralDoc(userId, userName, userPhone, referredBy = null) {
@@ -454,29 +653,6 @@
             if(gigSelect) gigSelect.innerHTML = '<option value="">-- Select City --</option>' + uniqueCities.map(c => `<option value="${c}">${c}</option>`).join('');
         }
         
-        window.saveGig = async () => {
-            if(!auth.currentUser) return showPage('auth');
-            let finalCity = document.getElementById('manual-city-input').value.trim() || document.getElementById('gig-city-select').value;
-            if(!finalCity) return alert("Please select your city!");
-            const data = {
-                name: document.getElementById('gig-name').value,
-                skill: document.getElementById('gig-skill').value,
-                exp: document.getElementById('gig-exp').value || "1",
-                price: document.getElementById('gig-price').value || "500",
-                phone: document.getElementById('gig-phone').value,
-                bio: document.getElementById('gig-bio').value || "",
-                city: finalCity,
-                ratings: [], avgRating: 0, userId: auth.currentUser.uid,
-                isVerified: false, isPinned: false, createdAt: Date.now(), views: 0
-            };
-            if(!data.name || !data.phone) return alert("Name and WhatsApp number required!");
-            await addDoc(collection(db, 'artifacts', appIdConst, 'public', 'data', 'workers'), data);
-            alert(`Service posted successfully in ${data.city}!`);
-            showPage('hire');
-            document.getElementById('manual-city-input').value = '';
-            document.getElementById('gig-bio').value = '';
-        };
-        
         window.globalSearch = () => { const val = document.getElementById('home-search').value.toLowerCase(); showPage('hire'); applyFilters(); };
         window.filterByCategory = (cat) => { showPage('hire'); document.getElementById('skill-filter').value = cat; applyFilters(); };
         
@@ -504,21 +680,29 @@
             const container = document.getElementById('worker-list');
             if(!workers.length) { container.innerHTML = '<div class="col-span-full text-center py-16 text-slate-400 font-medium">No professionals found</div>'; return; }
             container.innerHTML = workers.map(w => `
-                <div class="worker-card bg-white rounded-2xl shadow-lg border p-5 relative">
+                <div class="worker-card bg-white rounded-2xl shadow-lg border p-5 relative" onclick="openGigDetail('${w.id}')">
                     ${w.isPinned ? '<div class="absolute -top-2 left-4"><span class="pinned-badge text-xs">⭐ Featured</span></div>' : ''}
-                    <div class="flex justify-between items-start"><div><h4 class="text-xl font-black">${w.name} ${w.isVerified ? '<i class="fas fa-check-circle blue-tick text-sm"></i>' : ''}</h4><span class="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-black inline-block mt-1">${w.skill}</span></div><div onclick="openReviewsModal('${w.id}')" class="bg-slate-800 text-white px-3 py-1.5 rounded-xl text-center cursor-pointer"><span class="font-black">★ ${w.avgRating?.toFixed(1)||0}</span><div class="text-[9px]">${w.ratings?.length||0} reviews</div></div></div>
+                    ${w.thumbnail ? `<img src="${w.thumbnail}" class="w-full h-40 object-cover rounded-xl mb-3" onerror="this.src='https://placehold.co/400x300?text=No+Image'">` : `<div class="w-full h-40 bg-slate-100 rounded-xl mb-3 flex items-center justify-center"><i class="fas fa-image text-4xl text-slate-300"></i></div>`}
+                    <div class="flex justify-between items-start"><div><h4 class="text-xl font-black">${w.name} ${w.isVerified ? '<i class="fas fa-check-circle blue-tick text-sm"></i>' : ''}</h4><span class="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-black inline-block mt-1">${w.skill}</span></div><div onclick="event.stopPropagation();openReviewsModal('${w.id}')" class="bg-slate-800 text-white px-3 py-1.5 rounded-xl text-center cursor-pointer"><span class="font-black">★ ${w.avgRating?.toFixed(1)||0}</span><div class="text-[9px]">${w.ratings?.length||0} reviews</div></div></div>
                     <div class="my-3 space-y-1 text-sm"><p><i class="fas fa-calendar-alt w-5 text-emerald-600 text-xs"></i> ${w.exp} years exp</p><p><i class="fas fa-map-marker-alt w-5 text-rose-500 text-xs"></i> ${w.city}</p>${w.bio ? `<p class="text-slate-500 text-xs italic">"${w.bio.substring(0,60)}${w.bio.length>60?'...':''}"</p>` : ''}</div>
-                    <div class="flex justify-between items-center pt-3 border-t"><div><span class="text-[10px] uppercase text-slate-400">Service fee</span><p class="text-xl font-black text-emerald-600">Rs.${w.price}</p></div><div class="flex gap-2">${auth.currentUser?.uid === w.userId ? `<button onclick="openPromoModal('${w.id}')" class="bg-amber-100 p-2 rounded-lg"><i class="fas fa-crown text-amber-600 text-sm"></i></button><button onclick="deleteWorker('${w.id}')" class="bg-red-100 p-2 rounded-lg"><i class="fas fa-trash text-red-600 text-sm"></i></button>` : ''}<button onclick="handleHire('${w.id}','${w.phone}')" class="bg-emerald-600 text-white px-4 py-2 rounded-xl font-black text-sm flex gap-1 items-center"><i class="fab fa-whatsapp"></i>Contact</button></div></div>
+                    <div class="flex justify-between items-center pt-3 border-t"><div><span class="text-[10px] uppercase text-slate-400">Service fee</span><p class="text-xl font-black text-emerald-600">Rs.${w.price}</p></div><div class="flex gap-2"><button onclick="event.stopPropagation();handleHire('${w.id}','${w.phone}')" class="bg-emerald-600 text-white px-4 py-2 rounded-xl font-black text-sm flex gap-1 items-center"><i class="fab fa-whatsapp"></i>Contact</button></div></div>
                 </div>
             `).join('');
         }
+        
+        window.openGigDetail = (gigId) => {
+            const gig = allWorkers.find(w => w.id === gigId);
+            if (gig && gig.images && gig.images.length > 0) {
+                openGallery(gig.images, 0);
+            }
+        };
         
         function renderFeaturedWorkers() {
             const container = document.getElementById('featured-workers-list');
             if(!container) return;
             const featured = allWorkers.filter(w => w.isPinned).slice(0,3);
             if(featured.length) {
-                container.innerHTML = featured.map(w => `<div class="bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl p-4 border-2 border-amber-200"><div class="flex items-center gap-3 mb-2"><i class="fas fa-crown text-amber-500 text-xl"></i><span class="font-black text-amber-800">${w.name}</span></div><p class="text-sm">${w.skill} • ${w.city}</p><p class="text-emerald-600 font-black mt-2">Rs.${w.price}/service</p><button onclick="filterByCategory('${w.skill}')" class="mt-2 text-sm bg-emerald-600 text-white px-4 py-1.5 rounded-lg">Contact Now</button></div>`).join('');
+                container.innerHTML = featured.map(w => `<div class="bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl p-4 border-2 border-amber-200 cursor-pointer" onclick="openGigDetail('${w.id}')">${w.thumbnail ? `<img src="${w.thumbnail}" class="w-full h-32 object-cover rounded-lg mb-2">` : ''}<div class="flex items-center gap-3 mb-2"><i class="fas fa-crown text-amber-500 text-xl"></i><span class="font-black text-amber-800">${w.name}</span></div><p class="text-sm">${w.skill} • ${w.city}</p><p class="text-emerald-600 font-black mt-2">Rs.${w.price}/service</p><button onclick="event.stopPropagation();filterByCategory('${w.skill}')" class="mt-2 text-sm bg-emerald-600 text-white px-4 py-1.5 rounded-lg">Contact Now</button></div>`).join('');
             } else { container.innerHTML = '<p class="text-slate-400 col-span-full text-center py-6">No featured professionals yet</p>'; }
         }
         
@@ -528,6 +712,8 @@
             tbody.innerHTML = workers.map(w => `<tr class="border-b"><td class="p-4"><p class="font-black text-sm">${w.name}</p><p class="text-[10px] text-slate-400">${w.skill}</p></td><td class="p-4 text-sm">${w.city}</td><td><button onclick="toggleVerification('${w.id}',${w.isVerified})" class="px-3 py-1 rounded-full text-xs ${w.isVerified ? 'bg-green-100 text-green-700' : 'bg-gray-100'}">${w.isVerified ? 'Verified' : 'Verify'}</button></td><td><button onclick="togglePinned('${w.id}',${w.isPinned})" class="px-3 py-1 rounded-full text-xs ${w.isPinned ? 'bg-amber-100 text-amber-700' : 'bg-gray-100'}">${w.isPinned ? 'Featured' : 'Pin'}</button></td><td class="text-right"><button onclick="deleteWorker('${w.id}')" class="text-red-500 text-sm"><i class="fas fa-trash-alt"></i></button></td></tr>`).join('');
             document.getElementById('stat-total-gigs') && (document.getElementById('stat-total-gigs').innerText = allWorkers.length);
             document.getElementById('stat-verified') && (document.getElementById('stat-verified').innerText = allWorkers.filter(w=>w.isVerified).length);
+            document.getElementById('stat-total-users') && (document.getElementById('stat-total-users').innerText = [...new Set(allWorkers.map(w=>w.userId))].length);
+            document.getElementById('stat-referrals') && (document.getElementById('stat-referrals').innerText = allWorkers.reduce((sum,w)=>sum+(w.referralCount||0),0));
         }
         
         window.filterAdminTable = (val) => { const filtered = allWorkers.filter(w => w.name.toLowerCase().includes(val)||w.city.toLowerCase().includes(val)||w.skill.toLowerCase().includes(val)); renderAdminTable(filtered); };
@@ -571,7 +757,7 @@
         function renderUserGigs(gigs) {
             const container = document.getElementById('my-gigs-list');
             if(!gigs.length) { container.innerHTML = `<div class="col-span-full text-center py-12"><div class="bg-white rounded-2xl p-8 shadow-sm border"><i class="fas fa-box-open text-4xl text-slate-300 mb-3"></i><p class="text-slate-400 font-medium">No service listings yet</p><button onclick="showPage('post-gig')" class="mt-4 bg-emerald-600 text-white px-6 py-2 rounded-xl font-black text-sm">Create Your First Listing</button></div></div>`; return; }
-            container.innerHTML = gigs.map(gig => `<div class="bg-white rounded-xl shadow-lg border p-4 relative">${gig.isPinned ? '<div class="absolute -top-2 left-3"><span class="pinned-badge text-[9px]">⭐ Featured</span></div>' : ''}<div class="flex justify-between items-start"><div><h4 class="text-lg font-black">${gig.name} ${gig.isVerified ? '<i class="fas fa-check-circle blue-tick text-xs"></i>' : ''}</h4><span class="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full text-[9px] font-black inline-block mt-1">${gig.skill}</span></div><div class="bg-slate-800 text-white px-2 py-1 rounded-lg text-center"><span class="text-sm font-black">★ ${gig.avgRating?.toFixed(1)||0}</span><div class="text-[8px]">${gig.ratings?.length||0} reviews</div></div></div><div class="my-2 space-y-1 text-xs"><p><i class="fas fa-calendar-alt w-4 text-emerald-600"></i> ${gig.exp} years exp</p><p><i class="fas fa-map-marker-alt w-4 text-rose-500"></i> ${gig.city}</p><p><i class="fas fa-eye w-4 text-blue-500"></i> ${gig.views || 0} views</p></div><div class="flex justify-between items-center pt-3 border-t mt-2"><div><span class="text-[9px] uppercase text-slate-400">Service fee</span><p class="text-lg font-black text-emerald-600">Rs.${gig.price}</p></div><div class="flex gap-2"><button onclick="openPromoModal('${gig.id}')" class="bg-amber-100 p-1.5 rounded-lg"><i class="fas fa-crown text-amber-600 text-xs"></i></button><button onclick="deleteWorker('${gig.id}')" class="bg-red-100 p-1.5 rounded-lg"><i class="fas fa-trash text-red-600 text-xs"></i></button></div></div></div>`).join('');
+            container.innerHTML = gigs.map(gig => `<div class="bg-white rounded-xl shadow-lg border p-4 relative cursor-pointer" onclick="openGigDetail('${gig.id}')">${gig.isPinned ? '<div class="absolute -top-2 left-3"><span class="pinned-badge text-[9px]">⭐ Featured</span></div>' : ''}${gig.thumbnail ? `<img src="${gig.thumbnail}" class="w-full h-36 object-cover rounded-lg mb-2">` : `<div class="w-full h-36 bg-slate-100 rounded-lg mb-2 flex items-center justify-center"><i class="fas fa-image text-3xl text-slate-300"></i></div>`}<div class="flex justify-between items-start"><div><h4 class="text-lg font-black">${gig.name} ${gig.isVerified ? '<i class="fas fa-check-circle blue-tick text-xs"></i>' : ''}</h4><span class="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full text-[9px] font-black inline-block mt-1">${gig.skill}</span></div><div class="bg-slate-800 text-white px-2 py-1 rounded-lg text-center"><span class="text-sm font-black">★ ${gig.avgRating?.toFixed(1)||0}</span><div class="text-[8px]">${gig.ratings?.length||0} reviews</div></div></div><div class="my-2 space-y-1 text-xs"><p><i class="fas fa-calendar-alt w-4 text-emerald-600"></i> ${gig.exp} years exp</p><p><i class="fas fa-map-marker-alt w-4 text-rose-500"></i> ${gig.city}</p><p><i class="fas fa-eye w-4 text-blue-500"></i> ${gig.views || 0} views</p></div><div class="flex justify-between items-center pt-3 border-t mt-2"><div><span class="text-[9px] uppercase text-slate-400">Service fee</span><p class="text-lg font-black text-emerald-600">Rs.${gig.price}</p></div><div class="flex gap-2"><button onclick="event.stopPropagation();openPromoModal('${gig.id}')" class="bg-amber-100 p-1.5 rounded-lg"><i class="fas fa-crown text-amber-600 text-xs"></i></button><button onclick="event.stopPropagation();deleteWorker('${gig.id}')" class="bg-red-100 p-1.5 rounded-lg"><i class="fas fa-trash text-red-600 text-xs"></i></button></div></div></div>`).join('');
         }
         
         let authMode='login';
@@ -620,6 +806,12 @@
             renderAdminTable(allWorkers); 
             document.getElementById('loading-overlay')?.classList.add('hidden');
             if(auth.currentUser && document.getElementById('page-profile') && !document.getElementById('page-profile').classList.contains('hidden')) loadUserProfile();
+        });
+        
+        // Also listen for users collection to update stats
+        onSnapshot(collection(db, 'referrals'), (snap) => {
+            const totalUsers = snap.docs.length;
+            document.getElementById('stat-total-users') && (document.getElementById('stat-total-users').innerText = totalUsers);
         });
         
         populateCityDropdowns();
