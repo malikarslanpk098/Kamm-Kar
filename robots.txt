@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://malikarslanpk098.github.io/Kamm-Kar/sitemap.xml
